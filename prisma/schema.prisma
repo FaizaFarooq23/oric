@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// After migration, run prisma generate to update the Prisma Client.
+// Also run the sql script stored in the sql folder to create triggers in the database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  account_number Int @id @default(autoincrement())
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  access_logs AccessLogs[]
+  education Education[]
+}
+
+model Faculty {
+  name String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  department String @unique @db.VarChar(255)
+  date_of_birth DateTime @db.DateTime(6)
+  qualification String @db.VarChar(30)
+  designation String @db.VarChar(30)
+  cnic String @unique @db.VarChar(30)
+  contact_number String @unique @db.VarChar(30)
+  address String @db.VarChar(255) @default("")
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Admin {
+    email String @unique @db.VarChar(255)
+    username String @unique @db.VarChar(255)
+    password String @db.VarChar(255)
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
+}
+
+model AccessLogs {
+  id Int @id @default(autoincrement())
+  account_number Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  account Account @relation(fields: [account_number], references: [account_number], onDelete: Cascade)
+}
+
+
+model ResearchProject {
+  username String @db.VarChar(255)
+  project_id Int @id @default(autoincrement())
+  title String @db.VarChar(255)
+  category String? @db.VarChar(255)
+  type_of_research String? @db.VarChar(255)
+  funding_agency String? @db.VarChar(255)
+  funded_project String? @db.VarChar(255)
+  funding_received String? @db.VarChar(255)
+  funding_utilized String? @db.VarChar(255)
+  ip_disclosure String? @db.VarChar(255)
+  submission_date DateTime? @db.DateTime(6)
+  start_date DateTime @db.DateTime(6)
+  end_date DateTime? @db.DateTime(6)
+  status String @db.VarChar(30)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  achievement Achievement[]
+  misc Misc[]
+}
+
+model Achievement {
+  achievement_id Int @id @default(autoincrement())
+  project_id Int
+  category String @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  research_project ResearchProject @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+}
+
+model Misc {
+  misc_id Int @id @default(autoincrement())
+  project_id Int
+  type String @db.VarChar(255)
+  industory String @db.VarChar(255)
+  details String? @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  research_project ResearchProject @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+}
+
+model Education {
+  education_id Int @id @default(autoincrement())
+  account_number Int
+  degree String? @db.VarChar(255) 
+  institute String? @db.VarChar(255) 
+  cgpa Float? @db.Float @default(0)
+  year DateTime? @db.DateTime(6)
+  field_of_study String? @db.VarChar(255) 
+  registration_number String? @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  account Account @relation(fields: [account_number], references: [account_number], onDelete: Cascade)
+}

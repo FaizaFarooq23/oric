@@ -1,0 +1,33 @@
+{
+  "name": "oric",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@prisma/client": "^5.7.0",
+    "axios": "^1.6.3",
+    "next": "14.0.3",
+    "next-auth": "^4.24.5",
+    "react": "^18",
+    "react-circular-progressbar": "^2.1.0",
+    "react-customizable-progressbar": "^1.2.0",
+    "react-dom": "^18",
+    "react-icons": "^4.12.0",
+    "react-simple-modal-provider": "^1.9.0",
+    "react-spinners": "^0.13.8",
+    "recharts": "^2.10.3",
+    "simple-react-modal": "^0.5.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "prisma": "^5.8.0",
+    "tailwindcss": "^3.3.0"
+  }
+}
