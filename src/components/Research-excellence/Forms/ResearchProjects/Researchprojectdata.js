@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 // import Modal, { useModalState } from "react-simple-modal-provider";
 
 export default function Researchprojectdata({ isOpen, closeModal, data }) {
-  const x = data.status_of_proposal
+  const x = data.Status_of_proposal
 
   return (
     <Modal
@@ -27,23 +27,30 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
             <span className="text-black text-base font-semibold  border-b-2">Type of Research</span>
             <span className="text-black text-base font-semibold border-b-2">{data.type_of_research}</span>
           </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Name of Research Grant</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Name_of_Research_Grant}</span>
-          </div>
           { data.type_of_research==="Solo Project" &&
             <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base font-semibold  border-b-2">Category</span>
             <span className="text-black text-base font-semibold border-b-2">{data.category}</span>
+      
           </div>
+         
           }
+          <div className="grid grid-cols-2 gap-x-8">
+            <span className="text-black text-base font-semibold border-b-2">Name of Research Grant</span>
+            <span className="text-black text-base font-semibold border-b-2">{data.Name_of_Research_Grant}</span>
+          </div>
+         
+          <div className="grid grid-cols-2 gap-x-8">
+            <span className="text-black text-base font-semibold  border-b-2">Nationality</span>
+            <span className="text-black text-base font-semibold border-b-2">{data.Nationality}</span>
+          </div>
           
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Status of Research Proposal</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.status_of_proposal}</span>
+            <span className="text-black text-base font-semibold border-b-2 ">Status of Proposal</span>
+            <span className="text-black text-base font-semibold border-b-2">{data.Status_of_proposal}</span>
           </div>
 
-          {data.status_of_project === "Completed" &&
+          {data.Status_of_project === "Completed" &&
             <div className="grid grid-cols-2 gap-x-8">
               <span className="text-black text-base font-semibold border-b-2">Date of Completion</span>
               <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Completion}</span>
@@ -77,11 +84,11 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
             <>
               <div className="grid grid-cols-2 gap-x-8 ">
                 <span className="text-black text-base font-semibold border-b-2">Date of Submission</span>
-                <span className="text-black text-base font-semibold border-b-2">{data.Data_of_Submission}</span>
+                <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Submission}</span>
               </div>
 
               {
-                data.status_of_proposal === "Approved" &&
+                data.Status_of_proposal === "Approved" &&
                 <>
                   <div className="grid grid-cols-2 gap-x-8">
                     <span className="text-black text-base font-semibold border-b-2">Date of Approval</span>
@@ -90,12 +97,12 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
                   { (data.type_of_research==="Solo Project" && data.category==="Non-HEC" ) &&
                      <div className="grid grid-cols-2 gap-x-8">
                      <span className="text-black text-base font-semibold border-b-2">ORIC Overhead</span>
-                     <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Approval}</span>
+                     <span className="text-black text-base font-semibold border-b-2">{data.ORIC_Overhead}</span>
                    </div>
                   }
                   <div className="grid grid-cols-2 gap-x-8">
                     <span className="text-black text-base font-semibold border-b-2">Status of Project</span>
-                    <span className="text-black text-base font-semibold border-b-2">{data.status_of_project}</span>
+                    <span className="text-black text-base font-semibold border-b-2">{data.Status_of_project}</span>
                   </div>
                 </>
 
@@ -196,7 +203,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
           </div>
           <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base font-semibold border-b-2">Total Funding Approved</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.funding_approved} </span>
+            <span className="text-black text-base font-semibold border-b-2">{data.funding_received} </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base font-semibold border-b-2">Total Funding Utilized</span>
@@ -246,7 +253,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
           <span className="text-black text-base font-semibold  border-b-2">{data.Remarks} </span>
         </div>
         {
-          data.status_of_project==="Completed" &&
+          data.Status_of_project==="Completed" &&
           <div className="grid grid-cols-2 gap-x-8">
           <span className="text-black text-base font-semibold  border-b-2">Key Project deliverables</span>
           <span className="text-black text-base font-semibold  border-b-2">{data.delivery} </span>

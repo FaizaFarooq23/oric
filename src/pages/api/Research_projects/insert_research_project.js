@@ -36,7 +36,9 @@ export default async function handler(req, res){
         Counterparts ,
          Sponcering_Agency_Name ,
         Sponcering_Agency_Country ,
-        Sponcering_Agency_Address , } = req.body;
+        Sponcering_Agency_Address ,
+    ORIC_Overhead,
+Nationality } = req.body;
     try{
     const research_project = await prisma.Research_Project.create({
         data: {
@@ -74,6 +76,8 @@ export default async function handler(req, res){
              Sponcering_Agency_Name :Sponcering_Agency_Name,
             Sponcering_Agency_Country :Sponcering_Agency_Country,
             Sponcering_Agency_Address :Sponcering_Agency_Address ,
+            ORIC_Overhead:ORIC_Overhead,
+            Nationality,Nationality
         },
 
     });

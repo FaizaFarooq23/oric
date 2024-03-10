@@ -10,7 +10,7 @@ function Researchprojectform({children}) {
   const [TitleofResearch, setTitleofResearch] = useState("");
   const [ThematicArea, setThematicArea] = useState("");
   const [NameResearchGrant, setNameResearchGrant] = useState("");
-  const [Category, setCategory] = useState("HEC");
+  const [category, setcategory] = useState("HEC");
   const [Status_of_proposal, setStatus_of_proposal] = useState("Submitted");
   const [Status_of_project, setStatus_of_project] = useState("Ongoing");
   const [DateofContract, setDateofContract] = useState("");
@@ -47,8 +47,8 @@ function Researchprojectform({children}) {
   const[ContractAgreementCopy, setContractAgreementCopy] =useState("");
   const[ORIC_overhead, setORIC_overhead] =useState("");
   const [stage, setStage] = useState(1);
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+  const handlecategoryChange = (e) => {
+    setcategory(e.target.value);
   }
   const handleStatus_of_proposalChange = (e) => {
     setStatus_of_proposal(e.target.value);
@@ -113,7 +113,7 @@ const handleSubmit = async () => {
       Thematic_Area: ThematicArea,
       type_of_research: typeofresearch,
       Name_of_Research_Grant: NameResearchGrant,
-      category: Category,
+      category: category,
       Status_of_proposal: Status_of_proposal,
       Status_of_project: Status_of_project,
       Date_of_Contract: DateofContract ? new Date(DateofContract) : null,
@@ -152,6 +152,8 @@ const handleSubmit = async () => {
       Award_Letter_Copy: AwardLetterCopy,
       Completion_Letter_Copy: CompletionLetterCopy,
       Contract_Agreement_Copy: ContractAgreementCopy,
+      ORIC_Overhead:ORIC_overhead,
+      Nationality:funding_nationality
     };
 
     // Make the POST request to save the data
@@ -207,7 +209,7 @@ const handleSubmit = async () => {
           handleOptionChange={handleTypeofresearchChange}
         />
            {
-          (typeofresearch==="Solo Project" && Category==="Non-HEC"&& Status_of_proposal==="Approved") &&
+          (typeofresearch==="Solo Project" && category==="Non-HEC"&& Status_of_proposal==="Approved") &&
             <InputField
         label={"ORIC Overhead "}
         value={ORIC_overhead}
@@ -240,10 +242,10 @@ const handleSubmit = async () => {
         />
         {  typeofresearch==="Solo Project" &&
           <Dropdown
-          label={"Category"}
+          label={"category"}
           dropdownOptions={["HEC", "Non-HEC"]}
-          value={Category}
-          handleOptionChange={handleCategoryChange}
+          value={category}
+          handleOptionChange={handlecategoryChange}
         />
         }
 
@@ -459,7 +461,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
         />
         }
           {
-          Category==="Non-HEC"&&
+          category==="Non-HEC"&&
           <InputField
           label={"Funding Body"}
           value={fundingagency}
@@ -492,7 +494,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
         <InputField
           label={"Collaborating Partners(if any)"}
           value={CollaboratingPartner}
-          setVal={setCategory}
+          setVal={setcategory}
         />
         <InputField
           label={"Co-funding Partners(if any)"}
