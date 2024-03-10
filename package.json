@@ -19,15 +19,17 @@
     "react-customizable-progressbar": "^1.2.0",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
+    "react-modal": "^3.16.1",
     "react-simple-modal-provider": "^1.9.0",
     "react-spinners": "^0.13.8",
+    "react-toastify": "^10.0.4",
     "recharts": "^2.10.3",
     "simple-react-modal": "^0.5.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "prisma": "^5.8.0",
+    "prisma": "^5.10.2",
     "tailwindcss": "^3.3.0"
   }
 }

@@ -167,12 +167,14 @@ export default function Researches({children}) {
         label={"Start Date"}
         value={startDate}
         setVal={setStartDate}
+        type={"date"}
       />
 
       <InputField
         label={"End Date"}
         value={endDate}
         setVal={setEndDate}
+        type={"date"}
       />
 
 

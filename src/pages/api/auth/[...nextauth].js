@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import NextAuth from "next-auth/next";
-
 import CredentialsProvider from "next-auth/providers/credentials";
 
 
@@ -26,9 +25,6 @@ export default NextAuth({
                 formdata.append("password", credentials.password);
                 const username = credentials.username
                 const password = credentials.password
-
-                
-
 
                 const user = await prisma.Account.findFirst({
                     where: {

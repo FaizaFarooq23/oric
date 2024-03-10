@@ -8,7 +8,7 @@ export default function Dropdown({
   dropdownOptions,
 }) {
   return (
-    <div  className=" grid grid-cols-2  ">
+    <div  className=" grid grid-cols-2  text-black ">
       <label className="text-black text-base font-medium">
         {label}
         </label>

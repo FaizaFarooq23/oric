@@ -40,32 +40,32 @@ export default function Education() {
     // setEducationalData(data)
   }, [session]);
 
-  const data = [
-    {
-      label: "Degree",
-      value: "BS",
-    },
-    {
-      label: "Field of Study",
-      value: "MBBS",
-    },
-    {
-      label: "Institute",
-      value: "NED University",
-    },
-    {
-      label: "Registration Number",
-      value: "1192983982398271",
-    },
-    {
-      label: "Cgpa",
-      value: "3.8",
-    },
-    {
-      label: "Graduation Year",
-      value: "2017",
-    },
-  ];
+  // const data = [
+  //   {
+  //     label: "Degree",
+  //     value: "BS",
+  //   },
+  //   {
+  //     label: "Field of Study",
+  //     value: "MBBS",
+  //   },
+  //   {
+  //     label: "Institute",
+  //     value: "NED University",
+  //   },
+  //   {
+  //     label: "Registration Number",
+  //     value: "1192983982398271",
+  //   },
+  //   {
+  //     label: "Cgpa",
+  //     value: "3.8",
+  //   },
+  //   {
+  //     label: "Graduation Year",
+  //     value: "2017",
+  //   },
+  // ];
 
   
 

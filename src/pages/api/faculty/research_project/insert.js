@@ -19,8 +19,8 @@ export default async function handler(req, res){
             funding_utilized: funding_utilized,
             ip_disclosure: ip_disclosure,
             submission_date: submission_date,
-            start_date: start_date,
-            end_date: end_date,
+            start_date: new Date(start_date),
+            end_date: new Date(end_date),
             status: status,
         },
     });

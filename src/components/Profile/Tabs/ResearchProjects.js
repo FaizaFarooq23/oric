@@ -6,10 +6,7 @@ import Researches from '../components/ResearchProjects/Researches';
 import { useModal } from 'react-simple-modal-provider';
 import ResearchFields from '../components/ResearchProjects/ResearchFields';
 import { useSession } from 'next-auth/react';
-import axios from 'axios';
-
-
-
+import axios from 'axios'
 
 export default function ResearchProjects() {
     const { open: openModal } = useModal("ResearchProjectsModal");

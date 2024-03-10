@@ -4,14 +4,17 @@ import { UserProvider } from '@/context/UserContext/GlobalProvider';
 import '@/styles/globals.css'
 import { SessionProvider } from "next-auth/react";
 import { ModalProvider } from 'react-simple-modal-provider';
+
 import ResearchProjectModal from '@/components/Profile/components/ResearchProjects/Researches';
-
-
+import LiasendevelopedFormModal from '@/components/Research-excellence/Forms/Liasen/Liasendeveloped';
+import ResearchProjectFormModal from '@/components/Research-excellence/Forms/ResearchProjects/Researchprojectform';
+import CasestudyFormModal from '@/components/Research-excellence/Forms/CaseStudy/CasestudyForm';
+import ResearchLinkageFormModal from '@/components/Research-excellence/Forms/ResearchLinkages/ResearchLinkageForm';
 export default function App({ Component, session, pageProps }) {
   return (
 
     <SessionProvider session={session}>
-      <ModalProvider value={[EducationFormModal, AwardsModal, ResearchProjectModal]}>
+      <ModalProvider value={[EducationFormModal, AwardsModal, ResearchProjectModal,LiasendevelopedFormModal,ResearchProjectFormModal,CasestudyFormModal,ResearchLinkageFormModal]}>
 
         <UserProvider>
           <main>
