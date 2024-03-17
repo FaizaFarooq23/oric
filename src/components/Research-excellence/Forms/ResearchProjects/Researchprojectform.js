@@ -28,6 +28,7 @@ function Researchprojectform({children}) {
   const [DepartmentofCoPi, setDepartmentofCoPi] = useState("");
   const [DesignationofCoPi, setDesignationofCoPi] = useState("")
   const [fundingRequested, setFundingRequested] = useState("");
+  const [fundingRealesed, setFundingRealesed] = useState("");
   const [fundingApproved, setFundingApproved] = useState("");
   const [funding_nationality, setfunding_nationality] = useState("National");
   const [fundingUtilized, setFundingUtilized] = useState("");
@@ -47,6 +48,9 @@ function Researchprojectform({children}) {
   const[ContractAgreementCopy, setContractAgreementCopy] =useState("");
   const[ORIC_overhead, setORIC_overhead] =useState("");
   const [stage, setStage] = useState(1);
+  const Dialog = ({ isOpen, onClose, heading, message }) => {
+    if (!isOpen) return null;
+  }  
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
   }
@@ -92,8 +96,8 @@ const handleSubmit = async () => {
     // Validate required fields
     if (
       TitleofResearch === "" ||
-      ThematicArea === "" ||
-      NameResearchGrant === ""
+      ThematicArea === "" 
+   
     ) {
       alert("Please fill all the required fields");
       return;
@@ -138,7 +142,8 @@ const handleSubmit = async () => {
       Designation_of_CoPi: DesignationofCoPi,
       funding_agency: fundingagency,
       funding_requested: fundingRequested,
-      funding_received: fundingApproved,
+      funding_realized: fundingRealesed,
+      funding_approved: fundingApproved,
       funding_utilized: fundingUtilized,
       Collaborating_Partner: CollaboratingPartner,
       Cofunding_Partner: CofundingPartner,
@@ -460,6 +465,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
           setVal={setfundingagency}
         />
         }
+        
           {
           category==="Non-HEC"&&
           <InputField
@@ -479,7 +485,11 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
           value={fundingApproved}
           setVal={setFundingApproved}
         />
-
+  <InputField
+          label={"Total Funding Realesed"}
+          value={fundingRealesed}
+          setVal={setFundingRealesed}
+        />
 
         <InputField
           label={"Total Funding Utilized"}
@@ -494,7 +504,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
         <InputField
           label={"Collaborating Partners(if any)"}
           value={CollaboratingPartner}
-          setVal={setcategory}
+          setVal={setCollaboratingPartner}
         />
         <InputField
           label={"Co-funding Partners(if any)"}

@@ -112,13 +112,14 @@ model Education {
   updated_at DateTime @default(now())
   account Account @relation(fields: [account_number], references: [account_number], onDelete: Cascade)
 }
+
 model liasen{
   username String @db.VarChar(255)
   Liasen_id Int @id @default(autoincrement())
-  Liasen_developed_with String @db.VarChar(255)
- Date_of_exceution DateTime @db.DateTime(6)
- 
+   Liasen_developed_with String @db.VarChar(255)
+  Date_of_exceution DateTime @db.DateTime(6)
 }
+
 model Policy_CaseStudy{
    id Int  @id @default(autoincrement())
    username String @db.VarChar(255)
@@ -137,6 +138,7 @@ model Policy_CaseStudy{
    username String @db.VarChar(255)
    Type_of_Linkage String @db.VarChar(255)
    Feild_of_Study String @db.VarChar(255)
+     Nationality String @db.VarChar(255)
    Name_of_Research_Grant String @db.VarChar(255)
    Date_of_Agreement  DateTime @db.DateTime(6)
    Name_of_Host_Institute String @db.VarChar(255)
@@ -172,7 +174,8 @@ model Policy_CaseStudy{
   Designation_of_CoPi String? @db.VarChar(255)
   funding_agency String? @db.VarChar(255)
   funding_requested String? @db.VarChar(255)
-  funding_received String? @db.VarChar(255)
+   funding_approved String? @db.VarChar(255)
+  funding_realesed String? @db.VarChar(255)
   funding_utilized String? @db.VarChar(255)
   Collaborating_Partner  String? @db.VarChar(255)
   Cofunding_Partner String? @db.VarChar(255)
@@ -188,3 +191,21 @@ model Policy_CaseStudy{
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
+model Consultancy_Contract{
+   id Int  @id @default(autoincrement())
+   username String @db.VarChar(255)
+   Type_of_ConsultancyServices String @db.VarChar(255)
+   Title String @db.VarChar(255)
+   Name_of_Pi String @db.VarChar(255)
+    Designation_of_Pi String? @db.VarChar(255)
+   Department_of_Pi String? @db.VarChar(255)
+   Date_of_Execution  DateTime @db.DateTime(6)
+   Company_Name String @db.VarChar(255)
+   Company_Address String @db.VarChar(255)
+   start_Date  DateTime? @db.DateTime(6)
+   end_Date DateTime? @db.DateTime(6)
+   Contract_Value String @db.VarChar(255)
+   ORIC_percentage String @db.VarChar(255) 
+   Remarks String @db.VarChar(255)
+   deliverables String @db.VarChar(255)
+   }

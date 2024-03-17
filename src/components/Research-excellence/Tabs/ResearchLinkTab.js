@@ -9,7 +9,7 @@ import Liasenfeilds from '../Forms/Liasen/Liasenfeilds';
 import Linkfield from '../Forms/ResearchLinkages/Linkfeild';
 
 export default function ResearchLinkTab() {
-  const { open: openModal } = useModal("CaseStudyFormModal");
+  const { open: openModal } = useModal("ResearchLinkageFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [research_linkageData, setresearch_linkageData] = useState([]);
@@ -33,6 +33,15 @@ export default function ResearchLinkTab() {
 
     fetchResearch_LinkageData();
   }, [session]);
+   
+const handleDeleteProject = async (id) => {
+  try {
+    await axios.delete(`/api/Research_projects/delete_research_link?id=${id}`);
+    console.log('Project deleted successfully');
+  } catch (error) {
+    console.error('Error deleting project:', error);
+  }
+};
 
   return (
     <div >
@@ -46,7 +55,7 @@ export default function ResearchLinkTab() {
     <ResearchLinkageForm/>
       )}
        {research_linkageData.map((data, index) => (
-        <Linkfield key={index} data={data} />
+        <Linkfield key={index} data={data} onDelete={handleDeleteProject} />
       ))}
     </div>
   );

@@ -16,14 +16,17 @@ function CasestudyForm({children}) {
     const [Breif, setBreif] = useState("");
     const [issueverification,setissueverification]=useState("");
     const [Casestudycopy, setCasestudycopy] = useState("");
+    const { data: session } = useSession();
     const handleAdvocacyToolschange = (e) => {
         setAdvocacyTools(e.target.value);
     }
     const handleBreifchange = (e) => {
         setBreif(e.target.value);
     }
-   
-    const handleSubmit = async () => {
+    useEffect(() => {
+        console.log(session)
+      }, [session]);
+const       handleSubmit = async () => {
         try {
           if (NameGovernmentBody === "" || DateofPresentation === "" || AreaAdvocated ===""|| AdvocacyTools ===""|| BackingResearchStatus ===""|| CoalitionPartners ===""|| issueverification ==="" ) {
             alert("Please fill all the fields");

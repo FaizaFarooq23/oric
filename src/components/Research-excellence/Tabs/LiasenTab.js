@@ -31,12 +31,18 @@ export default function LiasenTab() {
 
     fetchLiasenData();
   }, [session]);
-
+  const handleDeleteProject = async (Liasen_id) => {
+    try {
+      await axios.delete(`/api/Research_projects/delete_liasen?Liasen_id=${Liasen_id}`);
+      console.log('Project deleted successfully');
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
   return (
     <div>
       <div className='flex justify-end items-center gap-x-8 text-2xl m-4'>
         <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-        <RiDeleteBin6Line className='text-red-600' />
       </div>
       
       {isFormVisible && (
@@ -45,7 +51,7 @@ export default function LiasenTab() {
       
      
       {liasenData.map((data, index) => (
-      <Liasenfeilds key={index} data={data} />
+      <Liasenfeilds key={index} data={data} onDelete={handleDeleteProject} />
       ))}
     </div>
   );

@@ -3,6 +3,7 @@ import CaseStudy from "./components/CaseStudy/CaseStudy";
 import ResearchLinks from "./components/ResearchLinks/ResearchLinks";
 import RD from "./components/LiasenDeveloped/RD";
 import Research_Projects from "./components/Research_Projects/Research_Projects";
+import Consultancy_contract from "./components/ConsultacyContract/Consultancy_contract";
 
 export default function Tabs() {
   const tabs = [
@@ -23,12 +24,15 @@ export default function Tabs() {
         name: "Liasen Development ",
         component: <RD/>,
       },
-    
+      {
+        name: "Consultancy Contract ",
+        component: <Consultancy_contract/>,
+      },
     
   
   ];
 
-  const [activeTab, setActiveTab] = useState("Personal");
+  const [activeTab, setActiveTab] = useState("Research Projects");
 
   const handleTabChange = (tab) => {
     setActiveTab(tab.name);

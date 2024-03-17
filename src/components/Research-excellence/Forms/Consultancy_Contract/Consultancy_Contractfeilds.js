@@ -1,8 +1,8 @@
 import DataDisplay from "@/components/Profile/components/Common/DataDisplay";
 import React ,{useState} from "react";
-import Linkdata from "./Linkdata";
 import { RiDeleteBin6Line } from 'react-icons/ri';
-export default function Linkfield({data ,onDelete}) {
+import Consultancy_data from "./Consultancy_data";
+export default function ConsultacyContractfield({data ,onDelete}) {
   const [showMore, setShowMore] = useState(false);
   const [isformVisible, setisformVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,24 +33,24 @@ export default function Linkfield({data ,onDelete}) {
       </div>
 
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
-        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Type of LinkageS</span>
+        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Title of ProjectS</span>
         </div>
         <div className="flex items-end justify-center ">
-          <span className="text-black ">{data.Type_of_Linkage}</span>
+          <span className="text-black ">{data.Title}</span>
         </div>
       </div>
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
-        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Feild Of Study</span>
+        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Type of Consultancy Services</span>
         </div>
         <div className="flex items-end justify-center ">
-          <span className="text-black ">{data.Feild_of_Study}</span>
+          <span className="text-black ">{data.Type_of_ConsultancyServices}</span>
         </div>
       </div>
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
-        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Date of Agreement</span>
+        <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Date of Execution</span>
         </div>
         <div className="flex items-end justify-center ">
-          <span className="text-black ">{data.Date_of_Agreement}</span>
+          <span className="text-black ">{data.Date_of_Execution}</span>
         </div>
       </div>
       </div>
@@ -59,7 +59,8 @@ export default function Linkfield({data ,onDelete}) {
 <button onClick={openModal}>Click to View Full Details
 </button>
 </div>  
-<Linkdata isOpen={isModalOpen} closeModal={closeModal} data={data}/>
+<Consultancy_data isOpen={isModalOpen} closeModal={closeModal} data={data}/>
+
   
 </div>
   );

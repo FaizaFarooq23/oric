@@ -32,7 +32,7 @@ export default function ResearchProjects() {
         }
         }
 
-        
+      
         useEffect(() => {
             // fetch data from db
             if(session){

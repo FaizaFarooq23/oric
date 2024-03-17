@@ -42,11 +42,11 @@ export default function Linkdata({ isOpen, closeModal ,data }) {
           <div className='grid grid-cols-2 gap-y-8 pt-6 gap-x-16'> 
            <div className="grid grid-cols-2 gap-x-10">
            <span className="text-black text-base border-b-2 font-semibold">Name of Host Institute</span>
-          <span className="text-black text-base border-b-2 font-semibold">{data.Name_of_Hotel_Institute}</span>
+          <span className="text-black text-base border-b-2 font-semibold">{data.Name_of_Host_Institute}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
            <span className="text-black text-base border-b-2 font-semibold">Address of Host Institue</span>
-          <span className="text-black text-base border-b-2 font-semibold">{data.Address_of_Hotel_Institute} </span>
+          <span className="text-black text-base border-b-2 font-semibold">{data.Address_of_Host_Institute} </span>
            </div>
            <h1 className= 'text-blue-900  font-serif font-bold text-xl  py-2 m-2 border-black'>Collaborating Agency Detail</h1>
           </div> 

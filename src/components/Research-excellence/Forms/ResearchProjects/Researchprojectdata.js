@@ -13,7 +13,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
       className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto h-screen  overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-12 "
     >
       <div className='flex flex-col gap-x-10 gap-y-10  gap-x-10 p-6'>
-        <h1 className='text-black font-serif font-bold text-xl  py-2 border-black'>Research Linkage Details</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Linkage Details</h1>
         <div className="grid grid-cols-2 gap-x-8 ">
           <span className="text-black text-base gap-x-8 font-semibold  border-b-2">Title of Research Project</span>
           <span className="text-black text-base font-semibold  border-b-2">{data.title}</span>
@@ -116,7 +116,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
 
         <div>
-          <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Details of Pi</h1>
+          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Pi</h1>
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
@@ -137,7 +137,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
           data.type_of_research==="Joint Research" &&
           <>
             <div>
-          <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Details of CoPi</h1>
+          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of CoPi</h1>
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
@@ -159,7 +159,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         {  data.type_of_research==="Contract Research" &&
 <>
 <div>
-  <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Details of Sponcering Agency</h1>
+  <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Sponcering Agency</h1>
 </div>
 <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
   <div className="grid grid-cols-2 gap-x-8">
@@ -180,7 +180,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         }
 
       
-        <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Details of Funding</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Funding</h1>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           {
             data.type_of_research==="Joint Research" &&
@@ -212,7 +212,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
 
         <div>
-          <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Details of Partners</h1>
+          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Partners</h1>
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
@@ -224,7 +224,7 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
             <span className="text-black text-base font-semibold border-b-2">{data.Cofunding_Partner} </span>
           </div>
         </div>
-        <h1 className='text-black font-serif font-bold text-xl  py-2  border-black'>Additional Details</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Additional Details</h1>
         <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base gap-x-24 font-semibold border-b-2 w-60 ">Proposal Submission Email Copy</span>
             <span className="text-black text-base font-semibold border-b-2">National </span>
@@ -260,7 +260,8 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
         }
         
-        <button className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close Modal</button>
+        <button className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close</button>
+        
       </div>
 
     </Modal>
