@@ -112,7 +112,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black">
+        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
           Research Linkage Details
         </h1>
       </div>
@@ -161,7 +161,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black">
+        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
           Host Institue Details
         </h1>
       </div>
@@ -179,7 +179,7 @@ function ResearchLinkageForm({ children }) {
         setVal={setAdressofHostInstitute}
       />
       <div>
-        <h1 className="text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black">
+        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
           Collaborating Agency Details
         </h1>
       </div>
@@ -216,7 +216,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="flex flex-col gap-y-3">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black">
+        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
           Additional Details
         </h1>
       </div>

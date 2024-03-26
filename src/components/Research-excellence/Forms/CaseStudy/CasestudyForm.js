@@ -75,7 +75,7 @@ const       handleSubmit = async () => {
             <div className='py-2 m-2 flex flex-col gap-y-8   '>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
             <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Enter Details About Policy Advocacy</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Enter Details About Policy Advocacy</h1>
 
         </div>
         
