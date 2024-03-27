@@ -103,7 +103,7 @@ useEffect(() => {
     setOpen={setOpen}
     >
     <div className="h-screen overflow-y-auto bg-white shadow-lg rounded-md mx-auto  my-2 px-10 w-4/5  ">
-    <h1 className="text-blue-900 font-serif font-bold text-xl border-l-2 py-2 m-2 border-blue-900">
+    <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-blue-900">
               Enter Details About Consultacy Contract Executed through ORIC
             </h1>
       <div className="py-2 m-2 flex flex-col gap-y-8   ">

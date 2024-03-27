@@ -1,181 +1,245 @@
 import React, { useState } from "react";
 import Dropdown from "../Common/Dropdown";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import InputField from "../Common/InputField";
+import RadioButtonGroup from "../Common/Radiobutton";
 
 export default function AwardsModal({ children }) {
   const [isOpen, setOpen] = useModalState();
-
-  const [title, setTitle] = useState("Copley");
-  const [type, setType] = useState("National");
-  const [category, setCategory] = useState("Best Researcher");
-  const [sponser, setSponser] = useState("Royal Society");
-  const [field, setField] = useState("Science");
-  const [year, setYear] = useState("2020");
-
-
-  const dropdowns = [
-    {
-      label: "Title",
-      option: [
-        "Copley",
-        "Japan Prize",
-        " Nobel Prize ",
-        "Turing Award",
-        "Fields Medal",
-        "Abel Prize",
-        "Crafoord Prize",
-        "Kyoto Prize",
-        "Lasker Award",
-        "Pulitzer Prize",
-        "Turing Award",
-        "Wolf Prize",
-        "Wollaston Medal",
-        "Wright Brothers Medal",
-        "Zayed International Prize for the Environment",
-        "Zayed International Prize for the Environme",
-      ],
-      selectedValue: "",
-    },
-    {
-      label: "Type",
-      option: ["National", "International"],
-      selectedValue: "",
-    },
-
-    {
-      label: "Category",
-      option: ["Best Researcher", "Best Young Researcher", "Best Publication "],
-        selectedValue: "",
-    },
-    {
-      label: "Sponser",
-      option: [
-        "Royal Society",
-        "Japan Prize Foundation",
-        "The Royal Swedish Academy of Sciences",
-        "Welch Foundation",
-      ],
-      selectedValue: "",
-    },
-    {
-      label: "Field ",
-      option: ["Science", "Technology", "Engineering", "Mathematics"],
-      selectedValue: "",
-    },
-    {
-      label: "Year",
-      option: [
-        "2020",
-        "2021",
-        "2022",
-        "2023",
-        "2024",
-        "2025",
-        "2026",
-        "2027",
-        "2028",
-        "2029",
-      ],
-      selectedValue: "",
-    },
-  ];
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+  const [title, setTitle] = useState("");
+  const [organization_name, setorganization_name] = useState("");
+  const [Relevant_Certificate, setRelevant_Certificate] = useState("yes");
+  const [amount, setamount] = useState("");
+  const [details, setdetails] = useState("");
+  const [name_of_winner, setname_of_winner] = useState("");
+  const [Designation_of_winner, setDesignation_of_winner] = useState("");
+  const [department_of_winner, setdepartment_of_winner] = useState("");
+  const [Remarks, setRemarks] = useState("");
+  const [copy_of_Mou, setcopy_of_Mou] = useState("");
+  const [stage, setStage] = useState(1);
+  const handleRelevantCertificateChange = (option) => {
+    setRelevant_Certificate(option);
   };
 
-  const handleTypeChange = (e) => {
-    setType(e.target.value);
-  }
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  }
-
-  const handleSponserChange = (e) => {
-    setSponser(e.target.value);
-  }
-
-  const handleFieldChange = (e) => {
-    setField(e.target.value);
-  }
-
-  const handleYearChange = (e) => {
-    setYear(e.target.value);
-  }
-
-
+  const handledetails = (e) => {
+    setdetails(e.target.value);
+  };
+  const handleRemarks = (option) => {
+    setRemarks(option.target.value);
+  };
 
   const handleSubmit = async () => {
-    console.log(title, type, category, sponser, field, year)
+    alert("You clicked");
     setOpen(false);
+  };
+// Define a function to handle moving to the next stage
+const nextStage = () => {
+  setStage(stage + 1);
+};
+
+// Define a function to handle moving to the previous stage
+const prevStage = () => {
+  setStage(stage - 1);
+  if (stage === 0) {
+    setStage(1);
   }
-
-
-
-
+};
   return (
     <Modal
       id={"AwardsModal"}
       consumer={children}
       isOpen={isOpen}
       setOpen={setOpen}
-
     >
-        <div className="flex items-center justify-center">
-      <div className=" w-[70%] flex flex-col  gap-y-8  bg-white shadow-lg rounded-md px-10 py-8 ">
-        <div className=" grid grid-cols-2 gap-y-8 gap-x-20 ">
-          <Dropdown
-            label={"Title"}
-            dropdownOptions={dropdowns[0].option}
-            value={title}
-            handleOptionChange={handleTitleChange}
-          />
+      <div className="">
+        {stage===1&&
+          <>
+           <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+           <div>
+            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+             Enter Infromation about National or International Honors or Awards Won
+            </h1>
+          </div>
+          <div className=" grid grid-cols-2 gap-y-8 gap-x-20 ">
+            <InputField
+              label={"Title of Award"}
+              value={title}
+              setVal={setTitle}
+            />
 
-          <Dropdown
-          label={"Type"}
-          dropdownOptions={dropdowns[1].option}
-          value={type}
-          handleOptionChange={handleTypeChange}
-          />
+            <InputField
+              label={"Organization Name"}
+              value={organization_name}
+              setVal={setorganization_name}
+            />
 
-          <Dropdown
-          label={"Category"}
-          dropdownOptions={dropdowns[2].option}
-          value={category}
-          handleOptionChange={handleCategoryChange}
-          />
+<InputField
+              label={"Amount of Prize Money"}
+              value={amount}
+              setVal={setamount}
+            />
+          </div>
+          <RadioButtonGroup
+  label={"Any Relevant Certificate or award Received"}
+  options={["Yes", "No"]}
+  value={Relevant_Certificate}
+  handleChange={handleRelevantCertificateChange}
+/>
+          <div className="flex flex-row ml-auto ">
+            <button
+              onClick={nextStage}
+              className="bg-blue-900 text-white px-4 py-2  w-40 rounded-md mt-4 w-1/4"
+            >
+              Next
+            </button>
+          </div>
+    
+        </div>
+          </>
+        }
+       
+        {
+          stage===2 && (
+          <>
+ <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+           <div>
+            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+             Enter Infromation about Winner
+            </h1>
+          </div>
+          <div className=" grid grid-cols-2 gap-y-8 gap-x-20 ">
+            <InputField
+              label={"Name"}
+              value={name_of_winner}
+              setVal={setname_of_winner}
+            />
 
-          <Dropdown
-          label={"Sponser"}
-          dropdownOptions={dropdowns[3].option}
-          value={sponser}
-          handleOptionChange={handleSponserChange}
-          />
+            <InputField
+              label={"Department"}
+              value={department_of_winner}
+              setVal={setdepartment_of_winner}
+            />
 
-          <Dropdown
-          label={"Field"}
-          dropdownOptions={dropdowns[4].option}
-          value={field}
-          handleOptionChange={handleFieldChange}
-          />
-
-          <Dropdown
-          label={"Year"}
-          dropdownOptions={dropdowns[5].option}
-          value={year}
-          handleOptionChange={handleYearChange}
-          />
-
-
+            <InputField
+              label={"Designation"}
+              value={Designation_of_winner}
+              setVal={setDesignation_of_winner}
+            />
+          </div>
+          <div className="grid grid-cols-2 justify-between items-end ">
+            <button
+              onClick={prevStage}
+              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+            >
+              Previous
+            </button>
+            <button
+              onClick={nextStage}
+              className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
+            >
+              Next
+            </button>
+          </div>
+          </div>
           
-        </div>
-        <div className="flex items-center justify-center w-full">
-          <button onClick={handleSubmit} className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4">
-            Save
-          </button>
-        </div>
-      </div>
+          
+          </>)
+        }
+       {stage === 3 && (
+        <>
+          <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
+            <div>
+              <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 border-black">
+                Additional Details
+              </h1>
+            </div>
+            <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
+              <InputField
+                label={"Mou Copy"}
+                value={copy_of_Mou}
+                setVal={setcopy_of_Mou}
+                type={"file.pdf"}
+              />
+           
+            </div>
+            <label
+              htmlFor="textarea"
+              className="text-base font-medium text-black"
+            >
+             Breif  Detail of Work Honoured:
+            </label>
+            <textarea
+              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+              rows="4"
+              cols="50"
+              id="Textarea"
+              value={details}
+              onChange={handledetails}
+            />
+            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+              <button
+                onClick={prevStage}
+                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+              >
+                Previous
+              </button>
+              <button
+                onClick={nextStage}
+                className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {stage === 4 && (
+        <>
+          <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
+            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+              Additional Details
+            </h1>
+            <label
+              htmlFor="textarea"
+              className="text-base font-medium text-black"
+            >
+              Remarks:
+            </label>
+            <textarea
+              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+              rows="4"
+              cols="50"
+              id="Textarea"
+              value={Remarks}
+              onChange={handleRemarks}
+            />
+           
+            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+              <button
+                onClick={prevStage}
+                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4 "
+              >
+                Previous
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+       <div className="flex items-center justify-center w-full">
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+            >
+              Save
+            </button>
+          </div>
       </div>
     </Modal>
   );

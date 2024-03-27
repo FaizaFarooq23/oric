@@ -193,7 +193,7 @@ const handleSubmit = async () => {
     {stage === 1 &&
     <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 " >
       <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Research Project Information</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Research Project Information</h1>
       </div>
       <InputField
         label={"Title of Research Proposal"}
@@ -352,7 +352,7 @@ const handleSubmit = async () => {
 {
 stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
  <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Details of Pi</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Details of Pi</h1>
       </div>
       <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
         <InputField
@@ -377,7 +377,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
       {typeofresearch=="Joint Research" &&
       <>
         <div>
-          <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Details of CoPi</h1>
+          <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Details of CoPi</h1>
           </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16 '>
         <InputField
@@ -410,7 +410,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
 {typeofresearch=="Contract Research" &&
       <>
         <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Details of Sponcering Agency</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Details of Sponcering Agency</h1>
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16 '>
                 <InputField
@@ -453,7 +453,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
      {
       stage==3 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
 <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Details of Funding</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Details of Funding</h1>
       </div>
 
       <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
@@ -498,7 +498,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
         />
       </div>
       <div>
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Details of Partners</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Details of Partners</h1>
       </div>
       <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
         <InputField
@@ -534,7 +534,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
         stage===4 && 
         <>
         <div className='flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ml-auto mr-auto w-5/6 ' >
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Additional Details</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Additional Details</h1>
       <div className='grid grid-cols-2 gap-y-8 gap-x-16'>
       <InputField 
         label={"Proposal Submission Email Copy"}
@@ -586,7 +586,7 @@ stage === 2 &&<div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-
  <>
  
  <div className='grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full' >
-        <h1 className='text-black font-serif font-bold text-xl border-l-2 py-2 m-2 border-black'>Additional Details</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black'>Additional Details</h1>
  {
   typeofresearch==="Contract Research"
 }

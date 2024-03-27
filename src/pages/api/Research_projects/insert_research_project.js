@@ -68,7 +68,7 @@ Nationality } = req.body;
             funding_agency :funding_agency,
             funding_requested :funding_requested,
             funding_approved:funding_approved,
-            funding_realesed :funding_released,
+            funding_realesed :funding_realesed,
             funding_utilized :funding_utilized,
             Collaborating_Partner  :Collaborating_Partner,
             Cofunding_Partner :Cofunding_Partner,

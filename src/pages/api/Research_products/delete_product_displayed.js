@@ -2,12 +2,12 @@ import prisma from '@/lib/prisma';
 
 export default async function handler(req, res) {
   if (req.method === 'DELETE') {
-    const { liasen_id } = req.query;
+    const { id } = req.query;
 
     try {
-      await prisma.liasen.delete({
+      await prisma.Product_Displayed.delete({
         where: {
-          Liasen_id: parseInt(liasen_id),
+        id: parseInt(id),
         },
       });
       res.status(200).json({ message: 'Project deleted successfully' });
@@ -16,6 +16,6 @@ export default async function handler(req, res) {
       res.status(500).json({ message: 'Error deleting project' });
     }
   } else {
-    res.status(405).end(); // Method Not Allowe
+    res.status(405).end(); // Method Not Allowed
   }
 }

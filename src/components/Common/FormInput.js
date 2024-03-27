@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function FormInput({ lable, value, setVal, type }) {
+export default function FormInput({ lable, value, setVal, type ,placeholder}) {
   return (
     <div className=' w-full'>
         <label
@@ -13,6 +13,7 @@ export default function FormInput({ lable, value, setVal, type }) {
           defaultValue={value}
           type={type}
           autoComplete="off"
+          placeholder={placeholder}
           required
           className="w-full appearance-none rounded-lg 
        bg-gray-100 py-2 px-3 text-black placeholder-gray-500 focus:z-10 focus:border-mustard-yellow  focus:ring-slate-100  focus:outline-none  sm:text-sm"
