@@ -24,8 +24,6 @@ export default function App({ Component, session, pageProps }) {
           CasestudyFormModal,
           ResearchLinkageFormModal,
           ConsultancyContractFormModal
-
-       
         ]}
       >
         <UserProvider>
