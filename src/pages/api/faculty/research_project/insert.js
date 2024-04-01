@@ -7,7 +7,7 @@ export default async function handler(req, res){
     
     
     try{
-    const project = await prisma.researchProject.create({
+    const project = await prisma.Research_Project.create({
         data: {
           username: username,
             title: title,

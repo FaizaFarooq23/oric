@@ -1,19 +1,20 @@
-import AwardsModal from "@/components/Profile/components/Awards/Awards";
-import EducationFormModal from "@/components/Profile/components/Education/EducationForm";
+
+import EducationFormModal from "@/components/FacultyDashboard/Profile/components/Education/EducationForm";
 import { UserProvider } from "@/context/UserContext/GlobalProvider";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ModalProvider } from "react-simple-modal-provider";
-import ResearchProjectModal from "@/components/Profile/components/ResearchProjects/Researches";
-import LiasendevelopedFormModal from "@/components/Research-excellence/Forms/Liasen/Liasendeveloped";
-import ResearchProjectFormModal from "@/components/Research-excellence/Forms/ResearchProjects/Researchprojectform";
-import CasestudyFormModal from "@/components/Research-excellence/Forms/CaseStudy/CasestudyForm";
-import ResearchLinkageFormModal from "@/components/Research-excellence/Forms/ResearchLinkages/ResearchLinkageForm";
-import ConsultancyContractFormModal from "@/components/Research-excellence/Forms/Consultancy_Contract/Consultancy_ContractForm";
-import IPandPatentFormModal from "@/components/Research-excellence/Forms/IPDisclosure/IPform";
-import Product_DisplayedFormModal from "@/components/Research-excellence/Forms/ResearchProducts/ProductDisplayedform";
-import IPLicensingModal from "@/components/Research-excellence/Forms/IP_Licensing/IP_LicensingForm";
-import Product_to_IndustryFormModal from "@/components/Research-excellence/Forms/Product_to_Industry/Product_to_industryForm";
+import ResearchProjectModal from "@/components/FacultyDashboard/Profile/components/ResearchProjects/Researches";
+import LiasendevelopedFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Liasen/Liasendeveloped";
+import ResearchProjectFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchProjects/Researchprojectform";
+import CasestudyFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/CaseStudy/CasestudyForm";
+import ResearchLinkageFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchLinkages/ResearchLinkageForm";
+import ConsultancyContractFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Consultancy_Contract/Consultancy_ContractForm";
+import IPandPatentFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/IPDisclosure/IPform";
+import Product_DisplayedFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchProducts/ProductDisplayedform";
+import IPLicensingModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/IP_Licensing/IP_LicensingForm";
+import Product_to_IndustryFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Product_to_Industry/Product_to_industryForm";
+import AwardsModal from "@/components/FacultyDashboard/Profile/components/Awards/Awards";
 // import ResearchLinkageFormModal from "@/components/Research-excellence/Forms/ResearchLinkages/ResearchLinkageForm";
 export default function App({ Component, session, pageProps }) {
   return (

@@ -15,7 +15,7 @@ export default function Search() {
     </div>
     <div className='flex  items-center gap-x-1'>
       <img src="images/profile.png" alt="profile" className='h-12 w-16 rounded-2xl' />
-      <MdKeyboardArrowDown className='text-2xl hover:text-blue-900 cursor-pointer'/>
+      <MdKeyboardArrowDown className='text-2xl hover:text-blue-900 cursor-pointer '/>
 
     </div>
     </div>

@@ -1,0 +1,195 @@
+import React, { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import FormInput from "../../Common/FormInput";
+import { useRouter } from "next/router";
+import PhoneInputComponent from "../../Common/PhoneNumberInput";
+import CnicInput from "../../Common/CNICInput";
+export default function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [department, setDepartment] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [qualification, setQualification] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [cnic, setCnic] = useState("");
+  const router = useRouter();
+  const [cnicError, setCnicError] = useState("");
+  const handleRegister = async () => {
+    
+    const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
+    const isValidCnic = cnicRegex.test(cnic);
+    if (!isValidCnic) {
+      setCnicError("Invalid CNIC format. Please enter in the format: xxxxx-xxxxxxx-x");
+      return; // Return early if CNIC format is invalid
+    }
+    try {
+      const response = await fetch("/api/register_faculty", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phoneNumber,
+          confirmPassword,
+          username,
+          department,
+          dateOfBirth,
+          qualification,
+          designation,
+          cnic,
+        }),
+      });
+
+      if (response.ok) {
+        // Registration successful
+        console.log("Registration successful");
+        alert("Registration successful");
+        router.push("/");
+      } else {
+        // Handle registration error
+        const data = await response.json();
+        console.error("Registration failed:", data.error);
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("Error during registration");
+    }
+  };
+
+  // // Function to format CNIC (e.g., 12345-1234567-8)
+  // const [isValidCnic, setIsValidCnic] = useState(true);
+
+  // const handleCnicChange = (e) => {
+  //   const inputCnic = e.target.value;
+  //   const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
+  //   const isValidFormat = cnicRegex.test(inputCnic);
+  //   setIsValidCnic(isValidFormat);
+  //   if (isValidFormat) {
+  //     setCnic(inputCnic);
+  //   } else {
+  //     // Set an empty string or any other value when CNIC format is incorrect
+  //     setCnic("");
+  //   }
+  // };
+
+  return (
+    <div className="w-screen h-screen flex flex-col justify-between">
+      <div className=" flex flex-col items-center">
+        <div className="flex justify-between items-center px-12 ">
+          <div className="flex justify-center ">
+            <img src="images/white-logo.png" alt="logo" className="h-24" />
+          </div>
+        </div>
+        <div className="w-screen  pt-8 gap-x-16 border-t flex justify-between items-center pl-40 pr-20">
+          <div
+            className={`w-[600px] bg-white py-10 px-10 flex flex-col gap-y-4 rounded-xl`}
+          >
+            <div className=" flex gap-x-4 gap-y-5">
+              <FormInput
+                lable={"Name"}
+                value={name}
+                type={"text"}
+                setVal={setName}
+              />
+              <FormInput
+                lable={"Username"}
+                value={username}
+                type={"text"}
+                setVal={setUsername}
+              />
+            </div>
+            <div className=" flex gap-x-4 gap-y-5">
+              <FormInput
+                lable={"Password"}
+                value={password}
+                type={"password"}
+                setVal={setPassword}
+              />
+              <FormInput
+                lable={"Confirm Password"}
+                value={confirmPassword}
+                type={"password"}
+                setVal={setConfirmPassword}
+              />
+            </div>
+            <div className=" flex gap-x-4 gap-y-5">
+              <FormInput
+                lable={"Email"}
+                value={email}
+                type={"email"}
+                setVal={setEmail}
+              />
+              <FormInput
+                lable={"Date of Birth"}
+                value={dateOfBirth}
+                type={"date"}
+                setVal={setDateOfBirth}
+              />
+            </div>
+            <div className=" flex gap-x-4 gap-y-5">
+            <CnicInput
+            label={'CNIC'} 
+            value={cnic}
+            onChange={setCnic}
+            error={cnicError}
+          />
+              <PhoneInputComponent
+                label={"Phone Number"} // Pass the label as a prop
+                value={phoneNumber}
+                onChange={setPhoneNumber}
+                country={"pk"} // Specify the default country
+              />
+            </div>
+            <div className=" flex gap-x-4 gap-y-5 ">
+              <FormInput
+                lable={"Department"}
+                value={department}
+                type={"text"}
+                setVal={setDepartment}
+              />
+              <FormInput
+                lable={"Qualification"}
+                value={qualification}
+                type={"text"}
+                setVal={setQualification}
+              />
+              <FormInput
+                lable={"Designation"}
+                value={designation}
+                type={"text"}
+                setVal={setDesignation}
+              />
+            </div>
+
+            <div className="w-full flex justify-center items-center mt-10">
+              <button
+                onClick={handleRegister}
+                className="flex w-[60%] justify-center border border-transparent bg-mustard-yellow py-2 px-4 text-sm font-medium text-blue-900 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+
+          <div className="w-[40%]">
+            <div className="flex justify-end">
+              <img
+                src="images/illustration.png"
+                alt="man"
+                className="h-96 pt-16 "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

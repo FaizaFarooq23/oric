@@ -55,24 +55,47 @@ model AccessLogs {
 }
 
 
-model ResearchProject {
+model Research_Project {
   username String @db.VarChar(255)
   project_id Int @id @default(autoincrement())
   title String @db.VarChar(255)
+  Thematic_Area String @db.VarChar(255)
+  Name_of_Research_Grant String @db.VarChar(255)
   category String? @db.VarChar(255)
-  type_of_research String? @db.VarChar(255)
+  Status_of_proposal String? @db.VarChar(255)
+  Status_of_project String? @db.VarChar(255)
+  Date_of_Contract DateTime? @db.DateTime(6)    
+  Date_of_ContractSigned DateTime? @db.DateTime(6)
+  Date_of_Approval DateTime? @db.DateTime(6)
+  Date_of_Submission DateTime? @db.DateTime(6)
+  Date_of_Completion DateTime? @db.DateTime(6)
+  start_Date  DateTime? @db.DateTime(6)
+  end_Date DateTime? @db.DateTime(6)
+  Name_of_pi String? @db.VarChar(255)
+  Designation_of_Pi String? @db.VarChar(255)
+  Department_of_Pi String? @db.VarChar(255)
+  Name_of_Copi String? @db.VarChar(255)
+  University_of_CoPi String? @db.VarChar(255)
+  Department_of_CoPi String? @db.VarChar(255)
+  Designation_of_CoPi String? @db.VarChar(255)
   funding_agency String? @db.VarChar(255)
-  funded_project String? @db.VarChar(255)
-  funding_received String? @db.VarChar(255)
+  funding_requested String? @db.VarChar(255)
+   funding_approved String? @db.VarChar(255)
+  funding_realesed String? @db.VarChar(255)
   funding_utilized String? @db.VarChar(255)
-  ip_disclosure String? @db.VarChar(255)
-  submission_date DateTime? @db.DateTime(6)
- start_date DateTime? @db.DateTime(6)
- end_date DateTime? @db.DateTime(6)
-  status String @db.VarChar(30)
+  Collaborating_Partner  String? @db.VarChar(255)
+  Cofunding_Partner String? @db.VarChar(255)
+  Remarks String? @db.VarChar(255)
+  delivery String? @db.VarChar(255)
+  type_of_research String? @db.VarChar(255)
+  Counterparts String? @db.VarChar(255)
+   Sponcering_Agency_Name String? @db.VarChar(255)
+  Sponcering_Agency_Country String? @db.VarChar(255)
+  Sponcering_Agency_Address String? @db.VarChar(255)
+  ORIC_Overhead String? @db.VarChar(255)
+  Nationality String? @db.VarChar(255)
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-
   achievement Achievement[]
   misc Misc[]
 }
@@ -84,7 +107,7 @@ model Achievement {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  research_project ResearchProject @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+  research_project Research_Project @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
 }
 
 model Misc {
@@ -96,7 +119,7 @@ model Misc {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  research_project ResearchProject @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+  research_project Research_Project @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
 }
 
 model Education {
@@ -149,48 +172,7 @@ model Policy_CaseStudy{
    Features String @db.VarChar(255)
    }
 
-  model Research_Project {
-  username String @db.VarChar(255)
-  project_id Int @id @default(autoincrement())
-  title String @db.VarChar(255)
-  Thematic_Area String @db.VarChar(255)
-  Name_of_Research_Grant String @db.VarChar(255)
-  category String? @db.VarChar(255)
-  Status_of_proposal String? @db.VarChar(255)
-  Status_of_project String? @db.VarChar(255)
-  Date_of_Contract DateTime? @db.DateTime(6)    
-  Date_of_ContractSigned DateTime? @db.DateTime(6)
-  Date_of_Approval DateTime? @db.DateTime(6)
-  Date_of_Submission DateTime? @db.DateTime(6)
-  Date_of_Completion DateTime? @db.DateTime(6)
-  start_Date  DateTime? @db.DateTime(6)
-  end_Date DateTime? @db.DateTime(6)
-  Name_of_pi String? @db.VarChar(255)
-  Designation_of_Pi String? @db.VarChar(255)
-  Department_of_Pi String? @db.VarChar(255)
-  Name_of_Copi String? @db.VarChar(255)
-  University_of_CoPi String? @db.VarChar(255)
-  Department_of_CoPi String? @db.VarChar(255)
-  Designation_of_CoPi String? @db.VarChar(255)
-  funding_agency String? @db.VarChar(255)
-  funding_requested String? @db.VarChar(255)
-   funding_approved String? @db.VarChar(255)
-  funding_realesed String? @db.VarChar(255)
-  funding_utilized String? @db.VarChar(255)
-  Collaborating_Partner  String? @db.VarChar(255)
-  Cofunding_Partner String? @db.VarChar(255)
-  Remarks String? @db.VarChar(255)
-  delivery String? @db.VarChar(255)
-  type_of_research String? @db.VarChar(255)
-  Counterparts String? @db.VarChar(255)
-   Sponcering_Agency_Name String? @db.VarChar(255)
-  Sponcering_Agency_Country String? @db.VarChar(255)
-  Sponcering_Agency_Address String? @db.VarChar(255)
-  ORIC_Overhead String? @db.VarChar(255)
-  Nationality String? @db.VarChar(255)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-}
+  
 model Consultancy_Contract{
    id Int  @id @default(autoincrement())
    username String @db.VarChar(255)

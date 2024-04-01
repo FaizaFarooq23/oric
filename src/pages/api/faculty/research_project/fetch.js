@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const username = req.query.username;
 
   try {
-    const projects = await prisma.researchProject.findMany({
+    const projects = await prisma.Research_Project.findMany({
       where: {
         username: username,
       },
