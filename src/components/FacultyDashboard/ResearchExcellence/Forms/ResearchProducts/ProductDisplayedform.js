@@ -137,7 +137,7 @@ function Product_DisplayedForm({children}) {
           <div className="flex flex-row   ml-auto ">
             <button
               onClick={nextStage}
-              className="bg-blue-900 text-white px-4 py-2  w-40 rounded-md mt-4 w-1/4"
+              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
             >
               Next
             </button>
