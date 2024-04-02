@@ -31,7 +31,14 @@ export default function ResearchProjectTab() {
 
     fetchResearch_ProjectData();
   }, [session]);
-
+  const handleDeleteProject = async (project_id) => {
+    try {
+      await axios.delete(`/api/Research_projects/delete_research_project?projectId=${project_id}`);
+      console.log('Project deleted successfully');
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
   // Filter function based on the selected options
   const filterData = (data) => {
     const statusFilter =
@@ -86,7 +93,7 @@ export default function ResearchProjectTab() {
       {/* Render research projects based on the filtered data */}
       {research_projectData.filter(filterData).map((data, index) => (
         <div className="flex flex-col" key={index}>
-          <Researchprojectfeilds data={data} />
+          <Researchprojectfeilds data={data} onDelete={handleDeleteProject} />
         </div>
       ))}
     </div>

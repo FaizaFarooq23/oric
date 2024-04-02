@@ -16,19 +16,10 @@ export default function index() {
   return (
     <Baselayout >
     <div className='flex justify-center flex-col gap-x-6 px-8' >
-    <div className="flex  justify-between px-4 mt-4 rounded-lg">
-        {user &&
-        <div className="flex flex-col" >
-          <span className="text-2xl font-bold">Hey {user.name}!</span>
-          <span className=' text-xl'><h1>Aquire Ideas For Your Next Research Project</h1></span>
-        </div>
-        }
-         <div className='bg-div-gray flex py-2 h-10 mt-2 w-50% justify-end items-end px-2 items-end  rounded-xl '>
-        <IoSearchSharp className='text-xl' /> 
-        <input type="text" placeholder="Search...." className=' focus:outline-none w-full bg-div-gray px-4'/>
-    </div>
-        </div>
-       
+      <div className='text-2xl m-2 items-center text-center font-base  justify-center align-center italic font-sans '>
+  <h1> Research Gallery
+    </h1>
+       </div>
     <div>
         <hr className="my-4 border-t-2 color-black border-black-300 "/>
 </div>

@@ -9,7 +9,6 @@ import IPDisclosure from "./components/IPDisclosure/IPDisclosure";
 import { Product_Displayed } from "./components/Product_displaued/Product_Displayed";
 import IP_Licensing from "./components/IP_Licensing/IP_Licensing";
 import Product_to_industry from "./components/Product_to_Industry/Product_to_industry";
-// import IPLicensing from "./components/IPLicensing/IPLicensing";
 export default function Tabs() {
   const [selectionTab, setSelectionTab] = useState("");
   const [showModal, setShowModal] = useState(true); // Set showModal to true by default
@@ -98,8 +97,6 @@ export default function Tabs() {
           </button>
         </div>
         </div>
-        
-       
         </div>
         
       

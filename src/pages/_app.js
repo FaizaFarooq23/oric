@@ -32,7 +32,7 @@ export default function App({ Component, session, pageProps }) {
           ConsultancyContractFormModal,
           IPandPatentFormModal,
           Product_DisplayedFormModal,
-          Product_to_IndustryFormModal       
+          Product_to_IndustryFormModal,       
         ]}
       >
         

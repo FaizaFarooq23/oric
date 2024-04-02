@@ -64,21 +64,6 @@ export default function Register() {
     }
   };
 
-  // // Function to format CNIC (e.g., 12345-1234567-8)
-  // const [isValidCnic, setIsValidCnic] = useState(true);
-
-  // const handleCnicChange = (e) => {
-  //   const inputCnic = e.target.value;
-  //   const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
-  //   const isValidFormat = cnicRegex.test(inputCnic);
-  //   setIsValidCnic(isValidFormat);
-  //   if (isValidFormat) {
-  //     setCnic(inputCnic);
-  //   } else {
-  //     // Set an empty string or any other value when CNIC format is incorrect
-  //     setCnic("");
-  //   }
-  // };
 
   return (
     <div className="w-screen h-screen flex flex-col justify-between">

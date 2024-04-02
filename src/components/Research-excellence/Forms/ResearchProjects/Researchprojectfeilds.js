@@ -25,21 +25,21 @@ export default function Researchprojectfeilds({data,onDelete}) {
         </div>
     <div className={`flex  flex-row  justify-between px-10 py-8  `}>
      
-      <div className={`flex flex-col w-auto  gap-y-4 m-3  gap-x-8`}>
+      <div className={`flex flex-col w-60  gap-y-4 m-3  gap-x-8`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Title of Research Project</span>
         </div>
         <div className="flex items-end justify-center ">
           <span className="text-black ">{data.title}</span>
         </div>
       </div>
-      <div className={`flex flex-col w-auto gap-y-4 m-3 gap-x-8`}>
+      <div className={`flex flex-col w-56 gap-y-4 m-3 gap-x-8`}>
         <div className=" flex items-start justify-start w-40"> <span className="text-gray-500  font-medium">Thematic Area</span>
         </div>
         <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Thematic_Area}</span>
         </div>
       </div>
-      <div className={`flex flex-col gap-y-4  w-auto m-3 gap-x-8`}>
+      <div className={`flex flex-col gap-y-4  w-56 m-3 gap-x-8`}>
           <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Status of Proposal</span>
           </div>
           
@@ -47,7 +47,7 @@ export default function Researchprojectfeilds({data,onDelete}) {
             <span className="text-black ">{data.Status_of_proposal}</span>
           </div>
         </div>
-      <div className={`flex flex-col w-auto gap-y-4 m-3   gap-x-8`}>
+      <div className={`flex flex-col w-56 gap-y-4 m-3   gap-x-8`}>
         <div className=" flex items-start justify-center w-56"> <span className="text-gray-500  font-medium">Name of Research Grant</span>
         </div>
         <div className="flex items-end justify-center ">
@@ -55,7 +55,7 @@ export default function Researchprojectfeilds({data,onDelete}) {
         </div>
       </div>
     
-     <div className={`flex flex-col gap-y-4  w-auto m-3 gap-x-8`}>
+     <div className={`flex flex-col gap-y-4  w-56 m-3 gap-x-8`}>
           <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Type of Research</span>
           </div>
           

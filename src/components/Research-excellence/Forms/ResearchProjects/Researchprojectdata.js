@@ -1,7 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal';
 // import Modal, { useModalState } from "react-simple-modal-provider";
-
+import { FaTimes, FaEdit } from 'react-icons/fa'; 
 export default function Researchprojectdata({ isOpen, closeModal, data }) {
   const x = data.Status_of_proposal
 
@@ -12,7 +12,15 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
       contentLabel="Research Project Details"
       className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto h-screen  overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-12 "
     >
-      <div className='flex flex-col gap-x-10 gap-y-10  gap-x-10 p-6'>
+      <div>
+      <div className="flex justify-end items-end gap-x-6">
+        {/* Edit icon */}
+        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+        {/* Cross icon */}
+        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+      </div>
+      <div className='flex flex-col gap-x-10 gap-y-10  px-6 '>
+     
         <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Linkage Details</h1>
         <div className="grid grid-cols-2 gap-x-8 ">
           <span className="text-black text-base gap-x-8 font-semibold  border-b-2">Title of Research Project</span>
@@ -248,21 +256,22 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
           }
          
         </div>
-        <div className="grid grid-cols-2 gap-x-8">
-          <span className="text-black text-base font-semibold  border-b-2">Remarks</span>
+        <div className="grid gap-y-8 gap-x-8">
+          <span className="text-black text-base w-40 font-semibold  border-b-2">Remarks:</span>
           <span className="text-black text-base font-semibold  border-b-2">{data.Remarks} </span>
         </div>
         {
           data.Status_of_project==="Completed" &&
-          <div className="grid grid-cols-2 gap-x-8">
-          <span className="text-black text-base font-semibold  border-b-2">Key Project deliverables</span>
+          <div className="grid  gap-x-8">
+          <span className="text-black text-base w-56 font-semibold  border-b-2">Key Project deliverables</span>
           <span className="text-black text-base font-semibold  border-b-2">{data.delivery} </span>
         </div>
         }
-        
-        <button className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close</button>
+      
         
       </div>
+      </div>
+      
 
     </Modal>
   );

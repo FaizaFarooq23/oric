@@ -127,9 +127,9 @@ model Policy_CaseStudy{
    Advocacy_tools String @db.VarChar(255)
    Area_advocated String @db.VarChar(255)
    Date_of_presentation  DateTime @db.DateTime(6)
-   Banking_research_status  String @db.VarChar(255)
-   Coalation_Partner String @db.VarChar(255)
-   Breif_Details String @db.VarChar(255) 
+   Banking_research_status  String @db.VarChar(1500)
+   Coalation_Partner String @db.VarChar(1000)
+   Breif_Details String @db.VarChar(1500) 
    Issue_verification String @db.VarChar(255)
    }
 
@@ -145,8 +145,8 @@ model Policy_CaseStudy{
    Address_of_Host_Institute String @db.VarChar(255)
    Collaborating_Agency String @db.VarChar(255)
    Collaborating_Agency_Address String @db.VarChar(255) 
-   Scope String @db.VarChar(255)
-   Features String @db.VarChar(255)
+   Scope String @db.VarChar(1500)
+   Features String @db.VarChar(1500)
    }
 
   model Research_Project {
@@ -179,8 +179,8 @@ model Policy_CaseStudy{
   funding_utilized String? @db.VarChar(255)
   Collaborating_Partner  String? @db.VarChar(255)
   Cofunding_Partner String? @db.VarChar(255)
-  Remarks String? @db.VarChar(255)
-  delivery String? @db.VarChar(255)
+  Remarks String? @db.VarChar(1500)
+  delivery String? @db.VarChar(1500)
   type_of_research String? @db.VarChar(255)
   Counterparts String? @db.VarChar(255)
    Sponcering_Agency_Name String? @db.VarChar(255)
@@ -188,6 +188,10 @@ model Policy_CaseStudy{
   Sponcering_Agency_Address String? @db.VarChar(255)
   ORIC_Overhead String? @db.VarChar(255)
   Nationality String? @db.VarChar(255)
+  Submission_Email_Copy String? @db.VarChar(255) // Store file path or URL
+  Award_Letter_Copy String? @db.VarChar(255) // Store file path or URL
+  Completion_Letter_Copy String? @db.VarChar(255) // Store file path or URL
+  Contract_Agreement_Copy String? @db.VarChar(255) // Store file path or URL
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
@@ -206,8 +210,8 @@ model Consultancy_Contract{
    end_Date DateTime? @db.DateTime(6)
    Contract_Value String @db.VarChar(255)
    ORIC_percentage String @db.VarChar(255) 
-   Remarks String @db.VarChar(255)
-   deliverables String @db.VarChar(255)
+   Remarks String @db.VarChar(1500)
+   deliverables String @db.VarChar(1500)
    }
 model Awards{
    id Int  @id @default(autoincrement())
@@ -220,7 +224,7 @@ model Awards{
   Name_of_winner String @db.VarChar(255)
   Designation_of_winner String? @db.VarChar(255)
   Department_of_winer String? @db.VarChar(255)
-  Remarks String @db.VarChar(255)
+  Remarks String @db.VarChar(1500)
   }
 
 model IPandPatent {

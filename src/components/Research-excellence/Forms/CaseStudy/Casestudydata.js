@@ -1,14 +1,21 @@
 import React from 'react'
 import Modal from 'react-modal';
+import { FaTimes, FaEdit } from 'react-icons/fa'; 
 export default function Casestudydata({ isOpen, closeModal ,data}) {
   return (
     <Modal
     isOpen={isOpen}
     onRequestClose={closeModal}
     contentLabel="Case Study Details"
-    className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto mt-2 overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-10 "
+    className="flex gap-y-8 flex-col bg-white max-h-screen shadow-lg ml-auto mt-20 overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-10 "
   >
     <div >
+    <div className="flex justify-end items-end gap-x-6">
+        {/* Edit icon */}
+        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+        {/* Cross icon */}
+        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+      </div>
           <div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black'>Advocacy Details</h1>
            </div>
@@ -47,16 +54,16 @@ export default function Casestudydata({ isOpen, closeModal ,data}) {
            <span className="text-black text-base font-semibold border-b-2">{data.Issue_verification}</span>
            </div>
           </div>
-          <div className="grid  grid-cols-2 gap-x-10">
+          <div className="grid  grid-rows-2 gap-x-10">
            <span className="text-black text-base font-semibold border-b-2 ">Breif Details</span>
-          <span className="text-black text-base font-semibold border-b-2">
+          <div className="text-black text-base font-semibold border-b-2">
             <p>
              {data.Breif_Details}
             </p>
-            </span>
+            </div>
            </div>
            
-           <button  className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close Modal</button>
+           
     </div>
     </Modal>
   );
