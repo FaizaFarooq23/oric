@@ -1,20 +1,15 @@
 
-import Baselayout from '@/components/Baselayout/Baselayout'
-import Hamburgar from '@/components/Dashboard/Hamburgar'
-import RightPanel from '@/components/Dashboard/RightPanel'
+
+import Baselayout from '@/components/FacultyDashboard/Baselayout/Baselayout';
+import Research_Gallery from '@/components/FacultyDashboard/ResearchGallery/Research_Gallery';
 import { UserContext } from '@/context/UserContext/GlobalProvider'
-import axios from 'axios'
-import { IoSearchSharp } from "react-icons/io5";
-import { useSession } from 'next-auth/react'
-import React, { useContext, useEffect } from 'react'
-import Researchexcellence  from '@/components/Research-excellence/excellence'
-import Welcome from '@/components/Dashboard/components/HamburgarComponents/Welcome'
-import Search from '@/components/Dashboard/components/RightPanel/Search'
-import Research_Gallery from '@/components/Research_Gallery/Research_Gallery'
+import React, { useContext} from 'react'
+
 export default function index() {
   const {user} = useContext(UserContext);
   return (
     <Baselayout >
+    
     <div className='flex justify-center flex-col gap-x-6 px-8' >
       <div className='text-2xl m-2 items-center text-center font-base  justify-center align-center italic font-sans '>
   <h1> Research Gallery

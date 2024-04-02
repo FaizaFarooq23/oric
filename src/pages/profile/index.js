@@ -1,5 +1,5 @@
-import Baselayout from '@/components/Baselayout/Baselayout'
-import Profile from '@/components/Profile/Profile'
+import Baselayout from '@/components/FacultyDashboard/Baselayout/Baselayout'
+import Profile from '@/components/FacultyDashboard/Profile/Profile';
 import { UserContext } from '@/context/UserContext/GlobalProvider';
 import React, { useContext, useState } from 'react'
 

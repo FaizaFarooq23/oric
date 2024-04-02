@@ -1,44 +1,84 @@
-import Baselayout from '@/components/Baselayout/Baselayout'
-import Hamburgar from '@/components/Dashboard/Hamburgar'
-import RightPanel from '@/components/Dashboard/RightPanel'
-import { UserContext } from '@/context/UserContext/GlobalProvider'
-import axios from 'axios'
-import { useSession } from 'next-auth/react'
-import React, { useContext, useEffect } from 'react'
+import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
+import Baselayout from "@/components/FacultyDashboard/Baselayout/Baselayout";
+import Hamburgar from "@/components/Dashboard/Hamburgar";
+import RightPanel from "@/components/Dashboard/RightPanel";
+import { UserContext } from "@/context/UserContext/GlobalProvider";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import React, { useContext, useEffect, useState } from "react";
 
-export default function dashboard() {
-  const {data: session} = useSession();
-  const { updateUser } = useContext(UserContext); 
-  
-  
+export default function Dashboard() {
+  const { data: session } = useSession();
+  const { updateUser } = useContext(UserContext);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  console.log("Calling page")
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/faculty/get_faculty` , {
+        const res = await axios.get(`/api/faculty/get_faculty`, {
           params: {
             username: session.user.username,
-          }
+          },
         });
-        console.log(res)
+        console.log(res);
         updateUser(res.data.faculty);
+        setIsAdmin(false);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching personal information:", error);
       }
     };
-    if(session){
-      console.log(session)
+    if (session && session.user.username !== "admin") {
       fetchData();
     }
   }, [session]);
 
+  
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const res = await axios.get(`/api/admin/get_admin`, {
+          params: {
+            username: session.user.username,
+          },
+        });
+        console.log(res);
+        updateUser(res.data.admin);
+        setIsAdmin(true);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching personal information:", error);
+      }
+    };
+    if (session && session.user.username === "admin" && isAdmin === false) {
+      console.log("Calling admin")  
+      fetchAdminData();
+    }
+
+  }, [session]);
+
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-      <Baselayout >
-        <div className='flex justify-center gap-x-6'>
-          <Hamburgar />
-          <RightPanel />
+    <div className="">
+      {!isAdmin ? (
+        <Baselayout>
+          <div className="flex justify-center gap-x-6">
+           <Hamburgar />
+            <RightPanel /> 
+          </div>
+        </Baselayout>
+      ) : (
+        <div>
+          <AdminDashboard />
         </div>
-      </Baselayout>
-
-  )
+      )}
+    </div>
+  );
 }

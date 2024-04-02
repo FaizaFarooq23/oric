@@ -24,7 +24,14 @@ body {
 
 .shadow-left{
   box-shadow: 10px 5px 10px -10px #000;
+}
 
+.admin-shadow-left{
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.custom-shadow{
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 
@@ -60,4 +67,20 @@ body {
   /* Change the size of the thumb */
   height: 30px;
   width: 30px;
+}
+.ag-theme-quartz {
+  --ag-foreground-color: black !important;
+  --ag-background-color: rgb(255, 255, 255) !important;
+  --ag-header-foreground-color: white !important;
+  --ag-header-background-color: #1E3A8A !important;
+  --ag-odd-row-background-color: rgb(255, 255, 255) !important;
+  --ag-header-column-resize-handle-color: white !important;
+  --ag-font-size: 17px !important;
+  --ag-icon-color: white !important;
+}
+.ag-theme-quartz .ag-icon-menu:before,
+.ag-theme-quartz .ag-icon-asc:before,
+.ag-theme-quartz .ag-icon-desc:before,
+.ag-theme-quartz .ag-icon-filter:before{
+  color: #FFFFFF !important;
 }

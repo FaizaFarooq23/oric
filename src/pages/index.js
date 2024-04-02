@@ -1,4 +1,4 @@
-import Login from '@/components/Login/Login'
+import Login from '@/components/FacultyDashboard/Login/Login'
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
