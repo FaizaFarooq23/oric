@@ -8,7 +8,7 @@ export default function AdminBar() {
 const barData = [
 {
 icon: <TbApps />,
-url:" "
+url:" /dashboard"
 },
 {
 icon: <FaResearchgate />,
@@ -16,7 +16,7 @@ url:" "
 },
 {
 icon: <TbReport  />,
-url:" "
+url:" /reports",
 },
 {
 icon: <GiCalendarHalfYear />,

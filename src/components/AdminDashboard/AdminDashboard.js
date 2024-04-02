@@ -42,15 +42,14 @@ export default function AdminDashboard() {
     const res = await fetch("/api/stats/research_stats");
     const data = await res.json();
     setMonthlyResearches(data.month_researches);
-  }
-
+  };
 
   const getData = async () => {
     const res = await fetch("/api/stats/reports");
     const data = await res.json();
     return data;
   };
- useEffect(() => {
+  useEffect(() => {
     getData().then((data) => {
       console.log(data);
       setData(data);
@@ -59,37 +58,31 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetch_monthly_researches();
-  }
-  , []);
-  
-
+  }, []);
 
   return (
     <div className=" overflow-hidden">
-
       <AdminLayout>
         <div className="flex flex-col w-full px-6 gap-y-8 py-6 ">
-        <div className="flex items-center justify-between gap-x-6  w-full">
-          {statsData.map((item, index) => (
-            <StatCards
-              icon={item.icon}
-              total={item.total}
-              description={item.description}
-              color={item.color}
-              key={index}
-            />
-          ))}
-        </div>
-
-        <div className=" w-full ">
-            <MonthlyChart initialData={monthly_researches} />
-        </div>
-
-        <div className="w-[80vw]">
-          {data &&
-          <Grid data={data} />
-}
-        </div>
+          <div className="flex items-center justify-between gap-x-6  w-full">
+            {statsData.map((item, index) => (
+              <StatCards
+                icon={item.icon}
+                total={item.total}
+                description={item.description}
+                color={item.color}
+                key={index}
+              />
+            ))}
+          </div>
+          <div className="flex items-center">
+            <div className=" w-full ">
+              <MonthlyChart initialData={monthly_researches} />
+            </div>
+            <div className=" w-full ">
+              <MonthlyChart initialData={monthly_researches} />
+            </div>
+          </div>
         </div>
       </AdminLayout>
     </div>

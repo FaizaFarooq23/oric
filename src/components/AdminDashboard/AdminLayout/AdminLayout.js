@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
       </div>
       <div className="flex ">
         <div className=" relative w-16 flex h-screen items-center z-50">
-          <AdminBar />
+          <AdminBar/>
         </div>
 
         <div className="flex justify-center items-start w-full py-[5%] px-10">{children}</div>

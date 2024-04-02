@@ -53,9 +53,10 @@ export default async function handler(req, res) {
         } else {
             top_departments[department] = 1;
         }
-        // Check the researchhes of the start date
-        if (start_date){
-            const month = start_date.getMonth();
+        // Check the researches submission date
+        const Date_of_Submission = new Date(projects[i].Date_of_Submission);
+        if (Date_of_Submission){
+            const month = Date_of_Submission.getMonth();
             month_researches[month].researches++;
         }
 

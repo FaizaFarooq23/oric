@@ -15,10 +15,17 @@ export default function Grid({ data }) {
     { field: 'Thematic_Area', filter: true, headerName: 'Thematic Area', },
     { field: 'funding_agency', filter: true, headerName: 'Funding Agency', },
     { field: 'funding_utilized', filter: true, headerName: 'Funding Amount', },
-    { field: 'project_Type', filter: true, headerName: 'Project Type',},
+    { field: 'category', filter: true, headerName: 'Project Type',},
     { field: 'start_Date', filter: true, headerName: 'Start Date', valueFormatter: params => params.value.split("T")[0]},
-    { field: 'Date_of_Completion', filter: true, headerName: 'End Date', valueFormatter: params => params.value?.split("T")[0]},
-    { field: 'Status_of_proposal', filter: true, headerName: 'Status', },
+    { field: 'end_Date', filter: true, headerName: 'End Date', valueFormatter: params => params.value?.split("T")[0]},
+    { field: 'Status_of_proposal', filter: true, headerName: 'Proposal Status', },
+    { field: 'Status_of_project', filter: true, headerName: 'Project Status', },
+    { field: 'Department_of_Pi', filter: true, headerName: 'Department', },
+    { field: 'Date_of_Submission', filter: true, headerName: 'Date of Submission', valueFormatter: params => params.value?.split("T")[0]},
+    { field: 'funding_approved', filter: true, headerName: 'Funding Approved', },
+    { field: 'funding_utilized', filter: true, headerName: 'Funding Utilized', },
+    { field: 'funding_remaining', filter: true, headerName: 'Funding Remaining', },
+
     // {
     //   headerName: 'SIM 1',
     //   groupId: 'group1',
@@ -61,6 +68,7 @@ export default function Grid({ data }) {
         rowData={data}
         columnDefs={colDefs}
         rowSelection={'single'}
+        suppressHorizontalScroll={true}
         onSelectionChanged={onSelectionChanged} />
     </div>
   );
