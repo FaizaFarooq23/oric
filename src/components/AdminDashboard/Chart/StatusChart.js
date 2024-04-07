@@ -29,9 +29,11 @@ export default function MonthlyChart({ initialData }) {
             <XAxis dataKey="month" axisLine={false} />
             <YAxis axisLine={false} />
             <Tooltip/>
-            <Legend values="Monthly Researhces" />
+            <Legend  />
             <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-            <Bar type="monotone" dataKey="Researches" fill="#0D47A1" activeBar={<Rectangle fill="#FFC42A"/>} />
+            <Bar type="monotone" dataKey="Submitted" fill="#0D47A1" activeBar={<Rectangle fill="#0D47A1"/>} />
+            <Bar type="monotone" dataKey="Approved" fill="#3e92cc" activeBar={<Rectangle fill="#3e92cc"/>} />
+          
           </BarChart>
         </ResponsiveContainer>
       </div>

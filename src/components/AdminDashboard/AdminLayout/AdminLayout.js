@@ -3,6 +3,7 @@ import AdminHeader from "../Header/AdminHeader";
 import AdminBar from "../AdminBar/AdminBar";
 
 export default function AdminLayout({ children }) {
+ 
   return (
     <div className="w-full">
       <div>

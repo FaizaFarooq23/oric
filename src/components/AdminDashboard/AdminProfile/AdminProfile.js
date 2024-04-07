@@ -1,0 +1,88 @@
+import React from 'react'
+import Breadcrum from './Breadcrum'
+import AdminLayout from '../AdminLayout/AdminLayout'
+import Image from 'next/image'
+import Link from 'next/link'
+import { IoCameraOutline } from 'react-icons/io5'
+
+export default function AdminProfile() {
+  return (
+   <AdminLayout>
+   <div className="mx-auto py-8">
+    <Breadcrum pageName="Profile" />
+    <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="relative h-35 md:h-65">
+        <img
+          src={"/images/profile.png"}
+          alt="profile cover"
+          className="h-[260px] w-full rounded-tl-sm rounded-tr-sm object-cover object-center"
+      
+        />
+        <div className="absolute bottom-1 right-1 z-10 xsm:bottom-4 xsm:right-4">
+          <label
+            htmlFor="cover"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded bg-blue-900 px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80 xsm:px-4"
+          >
+            <input
+              type="file"
+              name="cover"
+              id="cover"
+              className="sr-only"
+            />
+            <span>
+            <IoCameraOutline />
+            </span>
+            <span>Edit</span>
+          </label>
+        </div>
+      </div>
+      <div className="px-4 pb-6 text-center ">
+        <div className="relative z-10  mx-auto w-[12%] -mt-16   rounded-full bg-white/20 p-1 backdrop-blur   sm:p-3">
+          <div className="relative drop-shadow-2 rounded-full">
+            <img
+              src={"/images/profile.png"}
+              className='rounded-full items-center '
+              alt="profile"
+            />
+            <label
+              htmlFor="profile"
+              className=" absolute top-[70%]  bottom-0 right-0 flex w-8 h-8 cursor-pointer items-center justify-center rounded-full bg-blue-900 text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
+            >
+             <IoCameraOutline />
+              <input
+                type="file"
+                name="profile"
+                id="profile"
+                className="sr-only"
+              />
+            </label>
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-4">
+         <div> <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
+            Faiza Farooq
+          </h3>
+          <p className="font-medium">UI/UX Designer</p>
+          </div>
+
+          <div className="mx-auto max-w-180">
+            <h4 className="font-semibold text-black dark:text-white">
+              About Me
+            </h4>
+            <p className="mt-4.5">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Pellentesque posuere fermentum urna, eu condimentum mauris
+              tempus ut. Donec fermentum blandit aliquet. Etiam dictum
+              dapibus ultricies. Sed vel aliquet libero. Nunc a augue
+              fermentum, pharetra ligula sed, aliquam lacus.
+            </p>
+          </div>
+
+       
+        </div>
+      </div>
+    </div>
+  </div>
+  </AdminLayout>
+  )
+}

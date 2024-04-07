@@ -5,8 +5,8 @@ import { CiMoneyCheck1 } from "react-icons/ci";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaResearchgate } from "react-icons/fa6";
 import { MdOutlineQueryStats } from "react-icons/md";
-import Grid from "./Grid/Grid";
 import MonthlyChart from "./Chart/Chart";
+import StatusChart from "./Chart/StatusChart";
 const statsData = [
   {
     icon: <FaResearchgate />,
@@ -55,16 +55,19 @@ export default function AdminDashboard() {
       setData(data);
     });
   }, []);
-
+  
   useEffect(() => {
     fetch_monthly_researches();
   }, []);
+
+
+
 
   return (
     <div className=" overflow-hidden">
       <AdminLayout>
         <div className="flex flex-col w-full px-6 gap-y-8 py-6 ">
-          <div className="flex items-center justify-between gap-x-6  w-full">
+          <div className="flex items-center justify-between gap-x-4  w-full">
             {statsData.map((item, index) => (
               <StatCards
                 icon={item.icon}
@@ -80,7 +83,7 @@ export default function AdminDashboard() {
               <MonthlyChart initialData={monthly_researches} />
             </div>
             <div className=" w-full ">
-              <MonthlyChart initialData={monthly_researches} />
+              <StatusChart initialData={monthly_researches} />
             </div>
           </div>
         </div>

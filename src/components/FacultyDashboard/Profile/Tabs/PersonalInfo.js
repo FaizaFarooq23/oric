@@ -18,6 +18,9 @@ export default function PersonalInfo() {
   const { user } = useContext(UserContext)
 
   useEffect(() => {
+    if (user.username === "admin") {
+      return;
+    }
     console.log(user)
     if (user) {
       setMyUser(user);

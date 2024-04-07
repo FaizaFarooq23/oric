@@ -15,18 +15,18 @@ export default async function handler(req, res) {
     let top_departments = {};
 
     const month_researches = [
-        { month: "January", researches: 0 },
-        { month: "February", researches: 0 },
-        { month: "March", researches: 0 },
-        { month: "April", researches: 0 },
-        { month: "May", researches: 0 },
-        { month: "June", researches: 0 },
-        { month: "July", researches: 0 },
-        { month: "August", researches: 0 },
-        { month: "September", researches: 0 },
-        { month: "October", researches: 0 },
-        { month: "November", researches: 0 },
-        { month: "December", researches: 0 },
+        { month: "Jan", Researches: 0 ,Submitted:0,Approved:0},
+        { month: "Feb", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Mar", Researches: 0,Submitted:0,Approved:0 },
+        { month: "April",Researches: 0,Submitted:0,Approved:0 },
+        { month: "May", Researches: 0,Submitted:0,Approved:0 },
+        { month: "June", Researches: 0,Submitted:0,Approved:0 },
+        { month: "July", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Aug", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Sep", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Oct", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Nov", Researches: 0,Submitted:0,Approved:0 },
+        { month: "Dec", Researches: 0,Submitted:0,Approved:0 },
     ]
 
     for (let i = 0; i < projects.length; i++) {
@@ -57,11 +57,24 @@ export default async function handler(req, res) {
         const Date_of_Submission = new Date(projects[i].Date_of_Submission);
         if (Date_of_Submission){
             const month = Date_of_Submission.getMonth();
-            month_researches[month].researches++;
+            month_researches[month].Researches++;
         }
-
-
-        
+       // fetch researches having status of proposal submitted or approved with in months 
+       if(projects[i].Status_of_proposal === "Submitted"){
+        const Date_of_Submission = new Date(projects[i].Date_of_Submission);
+        if (Date_of_Submission){
+            const month = Date_of_Submission.getMonth();
+            month_researches[month].Submitted++;
+        }
+    }
+    
+    if(projects[i].Status_of_proposal === "Approved"){
+        const Date_of_Submission = new Date(projects[i].Date_of_Submission);
+        if (Date_of_Submission){
+            const month = Date_of_Submission.getMonth();
+            month_researches[month].Approved++;
+        }
+    }
     }
 
 
