@@ -1,16 +1,15 @@
 import React from 'react'
 import Breadcrum from './Breadcrum'
 import AdminLayout from '../AdminLayout/AdminLayout'
-import Image from 'next/image'
-import Link from 'next/link'
 import { IoCameraOutline } from 'react-icons/io5'
+import ProfileForm from './ProfileForm'
 
 export default function AdminProfile() {
   return (
    <AdminLayout>
-   <div className="mx-auto py-8">
+   <div className="w-full py-8">
     <Breadcrum pageName="Profile" />
-    <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default ">
       <div className="relative h-35 md:h-65">
         <img
           src={"/images/profile.png"}
@@ -59,26 +58,14 @@ export default function AdminProfile() {
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
-         <div> <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
+         <div> <h3 className="mb-1.5 text-2xl font-semibold text-black ">
             Faiza Farooq
           </h3>
-          <p className="font-medium">UI/UX Designer</p>
+          <p className="font-medium">ORIC Head</p>
           </div>
-
-          <div className="mx-auto max-w-180">
-            <h4 className="font-semibold text-black dark:text-white">
-              About Me
-            </h4>
-            <p className="mt-4.5">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Pellentesque posuere fermentum urna, eu condimentum mauris
-              tempus ut. Donec fermentum blandit aliquet. Etiam dictum
-              dapibus ultricies. Sed vel aliquet libero. Nunc a augue
-              fermentum, pharetra ligula sed, aliquam lacus.
-            </p>
-          </div>
-
-       
+          <div className='flex items-center justify-center'>
+       <ProfileForm/>
+       </div>
         </div>
       </div>
     </div>
