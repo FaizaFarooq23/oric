@@ -8,7 +8,7 @@ export default function AdminLayout({ children }) {
     <div className="w-full">
       <div>
         {" "}
-        <AdminHeader sidebarOpen={true} />
+        <AdminHeader  />
       </div>
       <div className="flex ">
         <div className=" relative w-16 flex h-screen items-center z-50">

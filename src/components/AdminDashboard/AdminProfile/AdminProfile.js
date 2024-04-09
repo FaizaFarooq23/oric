@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Breadcrum from './Breadcrum'
 import AdminLayout from '../AdminLayout/AdminLayout'
 import { IoCameraOutline } from 'react-icons/io5'
 import ProfileForm from './ProfileForm'
 
 export default function AdminProfile() {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    designation: '',
+    emailAddress: '',
+    password: '',
+    confirmPassword: ''
+  });
   return (
    <AdminLayout>
    <div className="w-full py-8">
@@ -59,12 +66,12 @@ export default function AdminProfile() {
         </div>
         <div className="flex flex-col gap-y-4">
          <div> <h3 className="mb-1.5 text-2xl font-semibold text-black ">
-            Faiza Farooq
+            {formData.fullName}
           </h3>
-          <p className="font-medium">ORIC Head</p>
+          <p className="font-medium">{formData.designation}</p>
           </div>
           <div className='flex items-center justify-center'>
-       <ProfileForm/>
+       <ProfileForm formData={formData} setFormData={setFormData}/>
        </div>
         </div>
       </div>
