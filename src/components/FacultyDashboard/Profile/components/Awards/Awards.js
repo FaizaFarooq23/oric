@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import InputField from "../Common/InputField";
 import RadioButtonGroup from "../Common/Radiobutton";
-
+import axios from "axios";
 export default function AwardsModal({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [title, setTitle] = useState("");
@@ -16,6 +17,7 @@ export default function AwardsModal({ children }) {
   const [Remarks, setRemarks] = useState("");
   const [copy_of_Mou, setcopy_of_Mou] = useState("");
   const [stage, setStage] = useState(1);
+  const { data: session } = useSession();
   const handleRelevantCertificateChange = (option) => {
     setRelevant_Certificate(option);
   };
@@ -26,10 +28,40 @@ export default function AwardsModal({ children }) {
   const handleRemarks = (option) => {
     setRemarks(option.target.value);
   };
-
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
   const handleSubmit = async () => {
-    alert("You clicked");
-    setOpen(false);
+    try {
+      if (title==="") {
+        alert("Please fill all the fields");
+        return;
+      }
+      if (session.user.username === "") {
+        alert("Please login to continue");
+        signOut();
+        return;
+      }
+      const res = await axios.post(`/api/faculty/Awards/insertAwards`, {
+        username: session.user.username,
+        Title_of_award: title,
+        Name_of_organization: organization_name,
+        Relevant_Award: Relevant_Certificate,
+        Breif_Details: details,
+        Amount_of_prize: amount,
+        Name_of_winner: name_of_winner,
+        Designation_of_winner: Designation_of_winner,
+        Department_of_winer: department_of_winner,
+        Remarks: Remarks,
+      });
+
+      setOpen(false);
+      setShowModal(true);
+
+      console.log(res);
+    } catch (error) {
+      console.error("Error inserting information:", error);
+    }
   };
   // Define a function to handle moving to the next stage
   const nextStage = () => {
@@ -55,7 +87,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
               <div>
-                <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
                   Enter Infromation about National or International Honors or
                   Awards Won
                 </h1>
@@ -88,7 +120,7 @@ export default function AwardsModal({ children }) {
               <div className="flex flex-row ml-auto ">
                 <button
                   onClick={nextStage}
-                  className="bg-blue-900 text-white px-4 py-2  rounded-md mt-4 w-1/4"
+                  className="bg-blue-900 text-white px-4 py-2  rounded-md"
                 >
                   Next
                 </button>
@@ -101,7 +133,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
               <div>
-                <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
                   Enter Infromation about Winner
                 </h1>
               </div>
@@ -145,7 +177,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
               <div>
-                <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 border-black">
+                <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
                   Additional Details
                 </h1>
               </div>
@@ -192,7 +224,7 @@ export default function AwardsModal({ children }) {
         {stage === 4 && (
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-              <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
                 Additional Details
               </h1>
               <label
@@ -227,14 +259,7 @@ export default function AwardsModal({ children }) {
             </div>
           </>
         )}
-        <div className="flex items-center justify-center w-full">
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-          >
-            Save
-          </button>
-        </div>
+       
       </div>
     </Modal>
   );

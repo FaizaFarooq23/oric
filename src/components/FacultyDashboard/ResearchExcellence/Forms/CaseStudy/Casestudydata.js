@@ -7,7 +7,7 @@ export default function Casestudydata({ isOpen, closeModal ,data}) {
     isOpen={isOpen}
     onRequestClose={closeModal}
     contentLabel="Case Study Details"
-    className="flex gap-y-8 flex-col bg-white max-h-screen shadow-lg ml-auto mt-20 overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-10 "
+    className="flex gap-y-8 flex-col bg-white max-h-screen shadow-lg ml-auto overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-10 "
   >
     <div >
     <div className="flex justify-end items-end gap-x-6">
@@ -35,16 +35,9 @@ export default function Casestudydata({ isOpen, closeModal ,data}) {
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
             <span className="text-black text-base font-semibold border-b-2 ">Date Of Presentation</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_presentation}</span>
+           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_presentation.split("T")[0]}</span>
                </div>
-               <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Banking Research Status</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Banking_research_status}</span>
-               </div>
-             <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Advocacy Tools</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Advocacy_tools}</span>
-            </div>
+              
            <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base font-semibold border-b-2">Case Study Copy</span>
            <span className="text-black text-base font-semibold border-b-2">National </span>
@@ -54,12 +47,20 @@ export default function Casestudydata({ isOpen, closeModal ,data}) {
            <span className="text-black text-base font-semibold border-b-2">{data.Issue_verification}</span>
            </div>
           </div>
-          <div className="grid  grid-rows-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Breif Details</span>
+          <div className="grid  grid-rows-2 gap-y-8  gap-x-10">
+           <span className="text-black text-base font-semibold border-b-2 w-24 mt-2 ">Breif Details:</span>
           <div className="text-black text-base font-semibold border-b-2">
             <p>
              {data.Breif_Details}
             </p>
+            </div>
+            <div className="grid grid-rows-2 gap-y-8  gap-x-10 "> 
+            <span className="text-black text-base font-semibold border-b-2 w-48 ">Banking Research Status:</span>
+           <span className="text-black text-base font-semibold border-b-2 ">{data.Banking_research_status}</span>
+               </div>
+             <div className="grid grid-rows-2 gap-y-8  gap-x-10">
+            <span className="text-black text-base font-semibold border-b-2 w-40 ">Advocacy Tools:</span>
+           <span className="text-black text-base font-semibold border-b-2">{data.Advocacy_tools}</span>
             </div>
            </div>
            

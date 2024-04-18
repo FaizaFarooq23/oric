@@ -1,5 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal';
+import { FaTimes, FaEdit } from 'react-icons/fa';
 export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
   return (
     <Modal
@@ -9,6 +10,12 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
     className="flex gap-y-8 flex-col bg-white shadow-lg h-screen pb-8  mb-4 ml-auto max-h-screen overflow-y-auto  mr-auto rounded-md  w-4/5 border-4 p-10 "
   >
     <div >
+    <div className="flex justify-end items-end gap-x-6">
+        {/* Edit icon */}
+        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+        {/* Cross icon */}
+        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+      </div>
           <div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black'>Research products / process / prototype gone into prefeasibility / industrial scale testing or prototype development</h1>
            </div>
@@ -97,7 +104,7 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
            </div>
           </div>
          
-           <button  className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close </button>
+           
     </div>
     </Modal>
   );

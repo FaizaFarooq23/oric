@@ -1,5 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal';
+import { FaTimes, FaEdit } from 'react-icons/fa'; 
 export default function IPLicensingdata({ isOpen, closeModal ,data}) {
   return (
     <Modal
@@ -9,6 +10,12 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
     className="flex gap-y-8 flex-col bg-white shadow-lg h-screen pb-8  mb-4 ml-auto max-h-screen overflow-y-auto  mr-auto rounded-md  w-4/5 border-4 p-10 "
   >
     <div >
+    <div className="flex justify-end items-end gap-x-6">
+        {/* Edit icon */}
+        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+        {/* Cross icon */}
+        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+      </div>
           <div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black'>IP Disclosures and Patent Information</h1>
            </div>
@@ -22,7 +29,7 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
             <span className="text-black text-base font-semibold border-b-2 ">Status of Licensee</span>
            <span className="text-black text-base font-semibold border-b-2 ">{data.Status_of_Licensee}</span>
                </div> 
-               { data.Status_of_Licensee==="signed" ?(
+               { data.Status_of_Licensee==="Signed" ?(
                 <>
                  <div className="grid grid-cols-2 gap-x-10 "> 
             <span className="text-black text-base font-semibold border-b-2 ">Type of Licensee</span>
@@ -30,7 +37,7 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
             <span className="text-black text-base font-semibold border-b-2 ">Date of Agreement</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_Agreement}</span>
+           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_Agreement.split("T")[0]}</span>
                </div>
                 </>):(<>
                     <div className="grid grid-cols-2 gap-x-10 "> 
@@ -86,11 +93,11 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
            <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base font-semibold border-b-2">Start Date</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.start_Date}</span>
+           <span className="text-black text-base font-semibold border-b-2">{data.start_Date.split("T")[0]}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base font-semibold border-b-2">End Date</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.end_Date}</span>
+           <span className="text-black text-base font-semibold border-b-2">{data.end_Date.split("T")[0]}</span>
            </div>
           </div>
            <h1 className='text-blue-900 font-serif font-bold text-xl mt-6  py-2 border-black'>Additional Details</h1>
@@ -116,7 +123,7 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
             </p>
             </span>
            </div>
-           <button  className="bg-blue-900 text-white px-4 flex mx-auto text-center justify-center py-2 rounded-md mt-12 mb-2 w-1/4" onClick={closeModal}>Close </button>
+          
     </div>
     </Modal>
   );

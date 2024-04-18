@@ -39,7 +39,10 @@ export default async function handler(req, res){
         Sponcering_Agency_Country ,
         Sponcering_Agency_Address ,
     ORIC_Overhead,
-Nationality } = req.body;
+Nationality,
+reviwedbyIRB,
+  Date_of_review ,
+  meetingdecision } = req.body;
     try{
     const research_project = await prisma.Research_Project.create({
         data: {
@@ -79,7 +82,10 @@ Nationality } = req.body;
             Sponcering_Agency_Country :Sponcering_Agency_Country,
             Sponcering_Agency_Address :Sponcering_Agency_Address ,
             ORIC_Overhead:ORIC_Overhead,
-            Nationality,Nationality
+            Nationality,Nationality,
+            reviwedbyIRB:reviwedbyIRB,
+  Date_of_review :Date_of_review,
+  meetingdecision:meetingdecision
         },
 
     });

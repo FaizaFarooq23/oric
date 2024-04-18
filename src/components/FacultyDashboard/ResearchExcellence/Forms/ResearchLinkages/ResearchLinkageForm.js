@@ -40,7 +40,7 @@ function ResearchLinkageForm({ children }) {
       newErrors.NameResearchGrant = "";
     }
     if (DateofAgreement.trim() === "") {
-      newErrors.DateofAgreement = "Name of Research Grant  is required";
+      newErrors.DateofAgreement = "Date of Agreement  is required";
       valid = false;
     } else {
       newErrors.DateofAgreement = "";

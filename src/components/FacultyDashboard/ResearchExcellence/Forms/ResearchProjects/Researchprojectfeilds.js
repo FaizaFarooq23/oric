@@ -27,7 +27,7 @@ export default function Researchprojectfeilds({data,onDelete}) {
       <div className={`flex flex-col w-60  gap-y-4 m-3  gap-x-8`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Title of Research Project</span>
         </div>
-        <div className="flex items-end justify-center ">
+        <div className="flex items-end justify-start ">
           <span className="text-black ">{data.title}</span>
         </div>
       </div>
@@ -42,14 +42,14 @@ export default function Researchprojectfeilds({data,onDelete}) {
           <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Status of Proposal</span>
           </div>
           
-          <div className="flex justify-center ">
+          <div className="flex justify-start ">
             <span className="text-black ">{data.Status_of_proposal}</span>
           </div>
         </div>
       <div className={`flex flex-col w-56 gap-y-4 m-3   gap-x-8`}>
-        <div className=" flex items-start justify-center w-56"> <span className="text-gray-500  font-medium">Name of Research Grant</span>
+        <div className=" flex items-start justify-start w-56"> <span className="text-gray-500  font-medium">Name of Research Grant</span>
         </div>
-        <div className="flex items-end justify-center ">
+        <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Name_of_Research_Grant}</span>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function Researchprojectfeilds({data,onDelete}) {
           <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Type of Research</span>
           </div>
           
-          <div className="flex justify-center ">
+          <div className="flex justify-start ">
             <span className="text-black ">{data.type_of_research}</span>
           </div>
         </div>

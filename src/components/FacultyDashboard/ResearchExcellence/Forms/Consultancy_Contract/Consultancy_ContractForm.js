@@ -158,16 +158,10 @@ function ConsultacyContract({ children }) {
       );
 
       setOpen(false);
-
-      //   toast.success('Data saved successfully!', {
-      //     position: toast.POSITION.TOP_CENTER,
-      //     autoClose: 10000,
-      // });
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
     }
-    alert("Clicked clicked u got it gurrl");
   };
 
   return (

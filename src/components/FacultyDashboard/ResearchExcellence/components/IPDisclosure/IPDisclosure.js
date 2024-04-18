@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import IPandPatentForm from '../../Forms/IPDisclosure/IPform'
 import IPTab from '../../Tabs/IPTab'
 
-export className IPDisclosure extends Component {
-  render() {
+export default function IPDisclosure() {
+  
     return (
       // <IPandPatentForm/>
       // <div>IPDisclosure</div>
       <IPTab/>
     )
   }
-}
 
-export default IPDisclosure

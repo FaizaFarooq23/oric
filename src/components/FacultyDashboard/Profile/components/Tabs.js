@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PersonalInfo from "../Tabs/PersonalInfo";
 import Education from "../Tabs/Education";
 import Awards from "../Tabs/Awards";
-import ResearchProjects from "../Tabs/ResearchProjects";
+import Event from "../Tabs/Events";
 
 export default function Tabs() {
   const tabs = [
@@ -17,8 +17,8 @@ export default function Tabs() {
     },
 
     {
-      name: "Research Projects",
-      component: <ResearchProjects/>,
+      name: "Civil Enagement Events",
+      component: <Event/>,
     },
     {
       name: "Awards",

@@ -6,6 +6,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 function Product_to_IndustryForm({children}) {
+  const [errors, setErrors] = useState({});
   const [isOpen, setOpen] = useModalState();
   const [Name_of_leadInventor, setName_of_leadInventor] = useState("");
   const [Designation_of_leadInventor, setDesignation_of_leadInventor] =
@@ -46,10 +47,81 @@ function Product_to_IndustryForm({children}) {
   const handleDetail_of_Partnerchange = (e) => {
     setDetail_of_Partner(e.target.value);
   };
+  const validateFormStage1 = () => {
+    let valid = true;
+    const newErrors = {};
+    if (Title_of_Invention.trim() === "") {
+      newErrors.TitleofInvention = "Title of Invention is required";
+      valid = false;
+    } else {
+      newErrors.TitleofInvention = "";
+    }
+   
+    if (Feild_of_use.trim() === "") {
+      newErrors.Feild_of_use = "Feild of Use is required";
+      valid = false;
+    } else {
+      newErrors.Feild_of_use = "";
+    }
+    setErrors(newErrors);
+    return valid;
+  }
+  const validateFormStage2 = () => {
+    let valid = true;
+    const newErrors = {};
+
+    if (Name_of_leadInventor.trim() === "") {
+      newErrors.Name_of_leadInventor = "Name of Lead Inventor is required";
+      valid = false;
+    } else {
+      newErrors.Name_of_leadInventor = "";
+    }
+    if (Designation_of_leadInventor.trim() === "") {
+      newErrors.Designation_of_leadInventor = "Designation  is required";
+      valid = false;
+    } else {
+      newErrors.Designation_of_leadInventor = "";
+    }
+    if (Department_of_leadInventor.trim() === "") {
+      newErrors.Department_of_leadInventor = "Department  is required";
+      valid = false;
+    } else {
+      newErrors.Department_of_leadInventor = "";
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+  const validateFormStage5 = () => {
+    let valid = true;
+    const newErrors = {};
+    if (KeyAspects.trim() === "") {
+      newErrors.Keyaspects = "Key Aspects is required";
+      valid = false;
+    } else {
+      newErrors.Keyaspects = "";
+    }
+    setErrors(newErrors);
+    return valid;
+  };
   // Define a function to handle moving to the next stage
   const nextStage = () => {
-    setStage(stage + 1);
-  };
+    switch (stage) {
+      case 1:
+        if (validateFormStage1()) {
+          setStage(stage + 1);
+        }
+        break;
+      case 2:
+        if (validateFormStage2()) {
+          setStage(stage + 1);
+        }
+        break;
+      default:
+        setStage(stage + 1); // Update the state with setStage
+        break;
+    }
+  }
 
   // Define a function to handle moving to the previous stage
   const prevStage = () => {
@@ -66,7 +138,7 @@ function Product_to_IndustryForm({children}) {
   const handleSubmit = async () => {
     try {
       // Validate required fields
-      if (Title_of_Invention === "" ) {
+      if (!validateFormStage5 ) {
         alert("Please fill all the required fields");
         return;
       }
@@ -124,11 +196,17 @@ function Product_to_IndustryForm({children}) {
              Enter Infromation of  Research products / process / prototype gone into prefeasibility / industrial scale testing or prototype development
             </h1>
           </div>
-          <InputField
-            label={"Title_of_Invention"}
-            value={Title_of_Invention}
-            setVal={setTitle_of_Invention}
-          />
+          <div>
+              <InputField
+                label={"Title of Invention"}
+                value={Title_of_Invention}
+                setVal={setTitle_of_Invention}
+                required
+              />
+              {errors.TitleofInvention && (
+                <span className="text-red-500">{errors.TitleofInvention}</span>
+              )}
+            </div>
 
           <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
             
@@ -137,18 +215,26 @@ function Product_to_IndustryForm({children}) {
               dropdownOptions={["National", "International"]}
               value={Nationality}
               handleOptionChange={handleNationalitychange}
+              required
             />
             <Dropdown
               label={"Category"}
               dropdownOptions={["Product", "Process", "Technology", "Others"]}
               value={category}
               handleOptionChange={handlecategoryChange}
+              required
             />
+            <div>
               <InputField
             label={"Feild of Use"}
             value={Feild_of_use}
             setVal={setFeild_of_use}
+            required
           />
+           {errors.Feild_of_use && (
+                <span className="text-red-500">{errors.Feild_of_use}</span>
+              )}
+              </div>
               <Dropdown
                 label={"Development Status"}
                 dropdownOptions={[
@@ -159,6 +245,7 @@ function Product_to_IndustryForm({children}) {
                 ]}
                 value={Development_Status}
                 handleOptionChange={handleDevelopment_Status}
+                required
               />
                 <InputField
                 label={"Financial Support"}
@@ -169,56 +256,78 @@ function Product_to_IndustryForm({children}) {
           <div className="flex flex-row   ml-auto ">
             <button
               onClick={nextStage}
-              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-56"
             >
               Next
             </button>
           </div>
         </div>
       )}
-      {stage === 2 && (
-        <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
-          <div>
-            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
-              Details of Lead
-            </h1>
-          </div>
-          <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-            <InputField
-              label={"Name of Lead Inventor"}
-              value={Name_of_leadInventor}
-              setVal={setName_of_leadInventor}
-            />
+    {stage === 2 && (
+          <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+            <div>
+              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                Details of Lead Inventor
+              </h1>
+            </div>
+            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+              <div>
+                <InputField
+                  label={"Name of Lead Inventor"}
+                  value={Name_of_leadInventor}
+                  setVal={setName_of_leadInventor}
+                  required
+                />
+                {errors.Name_of_leadInventor && (
+                  <span className="text-red-500">
+                    {errors.Name_of_leadInventor}
+                  </span>
+                )}
+              </div>
+              <div>
+                <InputField
+                  label={"Department of Lead Inventor"}
+                  value={Department_of_leadInventor}
+                  setVal={setDepartment_of_leadInventor}
+                  required
+                />
+                {errors.Department_of_leadInventor && (
+                  <span className="text-red-500">
+                    {errors.Department_of_leadInventor}
+                  </span>
+                )}
+              </div>
+              <div>
+                <InputField
+                  label={"Designation of Lead Inventor"}
+                  value={Designation_of_leadInventor}
+                  setVal={setDesignation_of_leadInventor}
+                  required
+                />
+                {errors.Designation_of_leadInventor && (
+                  <span className="text-red-500">
+                    {errors.Designation_of_leadInventor}
+                  </span>
+                )}
+              </div>
+            </div>
 
-            <InputField
-              label={"Department of Lead Inventor"}
-              value={Department_of_leadInventor}
-              setVal={setDepartment_of_leadInventor}
-            />
-
-            <InputField
-              label={"Designation of Lead Inventor"}
-              value={Designation_of_leadInventor}
-              setVal={setDesignation_of_leadInventor}
-            />
+            <div className="grid grid-cols-2 justify-between items-end ">
+              <button
+                onClick={prevStage}
+                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+              >
+                Previous
+              </button>
+              <button
+                onClick={nextStage}
+                className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
+              >
+                Next
+              </button>
+            </div>
           </div>
-
-          <div className="grid grid-cols-2 justify-between items-end ">
-            <button
-              onClick={prevStage}
-              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-            >
-              Previous
-            </button>
-            <button
-              onClick={nextStage}
-              className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
+        )}
       {stage === 3 && (
         <>
           <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
@@ -269,7 +378,7 @@ function Product_to_IndustryForm({children}) {
 
       {stage === 4 && (
         <>
-          <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
+          <div className="grid gap-y-8 grid-col bg-white max-h-screen overflow-y-scroll shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
             <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
               Additional Details
             </h1>
@@ -297,19 +406,24 @@ function Product_to_IndustryForm({children}) {
               onChange={handleRemarks}
             />
             <label
-              htmlFor="textarea"
-              className="text-base font-medium text-black"
-            >
-              Key Aspects
-            </label>
-            <textarea
-              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-              rows="4"
-              cols="50"
-              id="Textarea"
-              value={KeyAspects}
-              onChange={handleKeyAspects}
-            />
+                htmlFor="textarea"
+                className="text-base font-medium text-black"
+              >
+                Write Key Aspects<span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                rows="3"
+                cols="50"
+                id="Textarea"
+                value={KeyAspects}
+                onChange={handleKeyAspects}
+                required
+              />
+               {errors.Keyaspects && (
+              <span className="text-red-500">{errors.Keyaspects}</span>
+            )}
+
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
               <button
                 onClick={prevStage}

@@ -85,8 +85,8 @@ model Research_Project {
   funding_utilized String? @db.VarChar(255)
   Collaborating_Partner  String? @db.VarChar(255)
   Cofunding_Partner String? @db.VarChar(255)
-  Remarks String? @db.VarChar(255)
-  delivery String? @db.VarChar(255)
+  Remarks String? @db.VarChar(2500)
+  delivery String?  @db.VarChar(2500) 
   type_of_research String? @db.VarChar(255)
   Counterparts String? @db.VarChar(255)
    Sponcering_Agency_Name String? @db.VarChar(255)
@@ -94,6 +94,9 @@ model Research_Project {
   Sponcering_Agency_Address String? @db.VarChar(255)
   ORIC_Overhead String? @db.VarChar(255)
   Nationality String? @db.VarChar(255)
+  reviwedbyIRB String? @db.VarChar(255)
+  Date_of_review DateTime? @db.DateTime(6)
+  meetingdecision String? @db.VarChar(255)
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   achievement Achievement[]
@@ -152,7 +155,7 @@ model Policy_CaseStudy{
    Date_of_presentation  DateTime @db.DateTime(6)
    Banking_research_status  String @db.VarChar(1500)
    Coalation_Partner String @db.VarChar(1000)
-   Breif_Details String @db.VarChar(1500) 
+   Breif_Details String @db.VarChar(2500) 
    Issue_verification String @db.VarChar(255)
    }
 
@@ -188,8 +191,8 @@ model Consultancy_Contract{
    end_Date DateTime? @db.DateTime(6)
    Contract_Value String @db.VarChar(255)
    ORIC_percentage String @db.VarChar(255) 
-   Remarks String @db.VarChar(1500)
-   deliverables String @db.VarChar(1500)
+   Remarks String @db.VarChar(2500)
+   deliverables String @db.VarChar(2500)
    }
 model Awards{
    id Int  @id @default(autoincrement())
@@ -198,11 +201,11 @@ model Awards{
    Name_of_organization String @db.VarChar(255)
   Relevant_Award String? @db.VarChar(255)
   Breif_Details String? @db.VarChar(255)
-  Amount_of_prize   DateTime @db.DateTime(6)
+  Amount_of_prize  String? @db.VarChar(255)
   Name_of_winner String @db.VarChar(255)
   Designation_of_winner String? @db.VarChar(255)
   Department_of_winer String? @db.VarChar(255)
-  Remarks String @db.VarChar(1500)
+  Remarks String @db.VarChar(2500)
   }
 
 model IPandPatent {
@@ -236,7 +239,7 @@ model Product_Displayed{
   Title String? @db.VarChar(255)
   Category String @db.VarChar(255)
   Feild_of_use String @db.VarChar(255)
-  Name_of_Forum String @db.VarChar(255)
+  Name_of_Forum String @db.VarChar(2500)
   Detail_of_Forum String? @db.VarChar(255)
   Financial_support String? @db.VarChar(255)
   Nationality String @db.VarChar(255)
@@ -280,4 +283,25 @@ model Product_to_Industry {
   Detail_of_partner String? @db.VarChar(255)
   Financial_support String? @db.VarChar(255)
   Remarks String? @db.VarChar(255)
+}
+
+model Civil_Engagement_Events{
+  id Int @id @default(autoincrement())
+  username String @db.VarChar(255)
+  Title_of_Event String @db.VarChar(255)
+  Date_of_Event DateTime? @db.DateTime(6)
+  Community String? @db.VarChar(255)
+  Remarks String? @db.VarChar(2500)
+  Breif_report String? @db.VarChar(255)
+  Outcome String? @db.VarChar(2500)
+  Collaboration_Developed String @db.VarChar(255)
+  Name_of_Collaborating_org String ?@db.VarChar(255)
+  Sponcerned String? @db.VarChar(255)
+  Name_of_Sponcoring_agency String ?@db.VarChar(255)
+  Grant_Value String? @db.VarChar(255)
+  Role String @db.VarChar(255)
+  Venue String? @db.VarChar(255)
+  Outcome_Material String @db.VarChar(400)
+  event_detail String? @db.VarChar(255)
+
 }

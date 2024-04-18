@@ -34,12 +34,12 @@ export default function Consultancy_data({ isOpen, closeModal ,data }) {
 
            <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base border-b-2 font-semibold">Start Date</span>
-           <span className="text-black text-base border-b-2 font-semibold">{data.start_Date}</span>
+           <span className="text-black text-base border-b-2 font-semibold">{data.start_Date.split("T")[0]}</span>
            </div>
         
             <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base border-b-2 font-semibold">End Date</span>
-           <span className="text-black text-base border-b-2 font-semibold">{data.end_Date}</span>
+           <span className="text-black text-base border-b-2 font-semibold">{data.end_Date.split("T")[0]}</span>
             </div>
             <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base border-b-2 font-semibold">Oric Percentage</span>

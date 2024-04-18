@@ -25,10 +25,10 @@ export default function Linkfield({data ,onDelete}) {
         </div>
     <div className={`flex  flex-row  h-36 justify-between px-10 py-8  `}>
       <div className={`flex flex-col gap-y-4  m-4 gap-x-10`}>
-        <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">SN</span>
+        <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Name of Research Grant</span>
         </div>
         <div className="flex justify-center ">
-          <span className="text-black ">{data.id}</span>
+          <span className="text-black ">{data.Name_of_Research_Grant}</span>
         </div>
       </div>
 
@@ -50,7 +50,7 @@ export default function Linkfield({data ,onDelete}) {
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Date of Agreement</span>
         </div>
         <div className="flex items-end justify-center ">
-          <span className="text-black ">{data.Date_of_Agreement}</span>
+          <span className="text-black ">{data.Date_of_Agreement.split("T")[0]}</span>
         </div>
       </div>
       </div>

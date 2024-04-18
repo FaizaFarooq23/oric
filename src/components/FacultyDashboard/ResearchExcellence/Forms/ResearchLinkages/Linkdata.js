@@ -20,7 +20,7 @@ export default function Linkdata({ isOpen, closeModal ,data }) {
         </div> 
         <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base border-b-2 font-semibold">Date of Agreement</span>
-           <span className="text-black text-base border-b-2 font-semibold">{data.Date_of_Agreement}</span>
+           <span className="text-black text-base border-b-2 font-semibold">{data.Date_of_Agreement.split("T")[0]}</span>
         </div> 
              <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base border-b-2 font-semibold">Feild of Study</span>

@@ -4,7 +4,7 @@ import { UserProvider } from "@/context/UserContext/GlobalProvider";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ModalProvider } from "react-simple-modal-provider";
-import ResearchProjectModal from "@/components/FacultyDashboard/Profile/components/ResearchProjects/Researches";
+import CivilEventsModal from "@/components/FacultyDashboard/Profile/components/Events/Events";
 import LiasendevelopedFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Liasen/Liasendeveloped";
 import ResearchProjectFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchProjects/Researchprojectform";
 import CasestudyFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/CaseStudy/CasestudyForm";
@@ -15,16 +15,14 @@ import Product_DisplayedFormModal from "@/components/FacultyDashboard/ResearchEx
 import IPLicensingModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/IP_Licensing/IP_LicensingForm";
 import Product_to_IndustryFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Product_to_Industry/Product_to_industryForm";
 import AwardsModal from "@/components/FacultyDashboard/Profile/components/Awards/Awards";
-// import ResearchLinkageFormModal from "@/components/Research-excellence/Forms/ResearchLinkages/ResearchLinkageForm";
 export default function App({ Component, session, pageProps }) {
   return (
-    
     <SessionProvider session={session}>
       <ModalProvider
         value={[
           EducationFormModal,
           AwardsModal,
-          ResearchProjectModal,
+          CivilEventsModal,
           LiasendevelopedFormModal,
           ResearchProjectFormModal,
           CasestudyFormModal,
@@ -36,7 +34,7 @@ export default function App({ Component, session, pageProps }) {
           Product_to_IndustryFormModal,       
         ]}
       >
-        
+
         <UserProvider>
           <main>
             <Component {...pageProps} />

@@ -4,7 +4,7 @@ export default function InputField({ label, value, setVal, type ,required}) {
  
 
   return (
-    <div className="grid grid-cols-2 gap-x-3  text-black">
+    <div className="grid grid-cols-2 gap-x-3   text-black">
       {
         required ?(
         <label className="text-base font-medium">
