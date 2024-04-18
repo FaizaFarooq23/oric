@@ -3,11 +3,12 @@ import AdminHeader from "../Header/AdminHeader";
 import AdminBar from "../AdminBar/AdminBar";
 
 export default function AdminLayout({ children }) {
+ 
   return (
     <div className="w-full">
       <div>
         {" "}
-        <AdminHeader sidebarOpen={true} />
+        <AdminHeader  />
       </div>
       <div className="flex ">
         <div className=" relative w-16 flex h-screen items-center z-50">

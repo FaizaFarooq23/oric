@@ -1,13 +1,21 @@
+import AdminProfile from '@/components/AdminDashboard/AdminProfile/AdminProfile';
 import Baselayout from '@/components/FacultyDashboard/Baselayout/Baselayout'
 import Profile from '@/components/FacultyDashboard/Profile/Profile';
 import { UserContext } from '@/context/UserContext/GlobalProvider';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 export default function Index() {
   const [profilePhoto, setProfilePhoto] = useState('images/profile.png');
   const [coverPhoto, setCoverPhoto] = useState('images/cover.png');
   const {user} = useContext(UserContext);
-  
+  const [isAdmin , setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if(user && user.username === 'admin'){
+      setIsAdmin(true);
+    }
+  }, [user]);
+
 
   console.log(user);
 
@@ -34,6 +42,8 @@ export default function Index() {
   }
 
   return (
+    <>
+    {!isAdmin ?(
     <Baselayout>
     {user &&
       <Profile profilePhoto={profilePhoto} coverPhoto={coverPhoto} handleProfilePhotoUpload={handleProfilePhotoUpload}  handleCoverPhotoUpload={handleCoverPhotoUpload}
@@ -45,5 +55,9 @@ export default function Index() {
       />
     }
     </Baselayout>
+    ):(
+<AdminProfile/>
+    )}
+    </>
   );
 }
