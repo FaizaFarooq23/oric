@@ -6,12 +6,13 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import ConsultacyContract from '../Forms/Consultancy_Contract/Consultancy_ContractForm';
 import ConsultacyContractfield from '../Forms/Consultancy_Contract/Consultancy_Contractfeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 export default function ConsultancyContractTab() {
   const { open: openModal } = useModal("ConsultancyContractFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [consultancyData, setconsultancyData] = useState([]);
-
+  const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
 
   useEffect(() => {
     const fetchConsultancy_Data = async () => {
@@ -35,7 +36,11 @@ export default function ConsultancyContractTab() {
 const handleDeleteProject = async (id) => {
   try {
     await axios.delete(`/api/Research_projects/delete_consultancy_contract?id=${id}`);
-    console.log('Project deleted successfully');
+    setShowDeleteSuccessDialog(true);
+      console.log('Project deleted successfully');
+      setTimeout(() => {
+        setShowDeleteSuccessDialog(false);
+      }, 3000);
   } catch (error) {
     console.error('Error deleting project:', error);
   }
@@ -58,6 +63,14 @@ const handleDeleteProject = async (id) => {
         
         </div>
       ))}
+      {
+          showDeleteSuccessDialog &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessDialog(false)
+            }}/>
+          )
+        }
     </div>
   );
 }

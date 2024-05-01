@@ -206,7 +206,32 @@ function IPlicensingForm({ children }) {
   useEffect(() => {
     console.log(session);
   }, [session]);
-
+  function resetFormFields() {
+    setOpen(false);
+    setName_of_leadInventor("");
+    setDesignation_of_leadInventor("");
+    setDepartment_of_leadInventor("");
+    setTitleofInvention("");
+    setcategory("Product");
+    setStatus_of_Negotiations("");
+    setNationality("National");
+    setDevelopment_status("Idea");
+    setDate_of_Agreement("");
+    setKeyaspects("");
+    setStart_Date("");
+    setEnd_Date("");
+    setStatus_of_Licensee("Negotiations Initiated");
+    setFeild_of_use("");
+    setLicensee_Name("");
+    setLicensee_Organization("");
+    setLicensee_Type("Exclusive");
+    setNegotiationcopy("");
+    setAgreementCopy("");
+    setStage(1);
+  }
+  
+  // Call resetFormFields() whenever you need to reset these form fields
+  
   const handleSubmit = async () => {
     try {
       // Validate required fields
@@ -252,6 +277,7 @@ function IPlicensingForm({ children }) {
       const res = await axios.post(`/api/IPLicensing/insert_IPLicensing`, data);
 
       setOpen(false);
+    resetFormFields()
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);

@@ -7,10 +7,13 @@ import { useSession } from 'next-auth/react';
 import Product_to_Industryfield from '../Forms/ResearchProducts/ProductDisplayedFeilds';
 import Product_to_IndustryForm from '../Forms/Product_to_Industry/Product_to_industryForm';
 import Product_to_IndustryFeillds from '../Forms/Product_to_Industry/Product_to_IndustryFeild';
+import SuccessModal from '../components/UI/SuccessMessage';
 export default function Product_to_IndustryTab() {
   const { open: openModal } = useModal("Product_to_IndustryFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
+
   const [Product_to_IndustryData, setProduct_to_IndustryData] = useState([]);
   useEffect(() => {
     const fetchProduct_to_Industrydata = async () => {
@@ -35,6 +38,7 @@ const handleDeleteProject = async (id) => {
   try {
     await axios.delete(`/api/Product_to_Industry/delete_Product?id=${id}`);
     console.log('Project deleted successfully');
+    setShowDeleteSuccessModal(true); // Show SuccessModal after successful deletion
   } catch (error) {
     console.error('Error deleting project:', error);
   }
@@ -57,6 +61,11 @@ const handleDeleteProject = async (id) => {
         
         </div>
       ))}
+        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
+          setShowDeleteSuccessModal(false)
+        }} />}
+
+      
     </div>
   );
 }

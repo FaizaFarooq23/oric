@@ -3,8 +3,6 @@ import Modal from 'react-modal';
 // import Modal, { useModalState } from "react-simple-modal-provider";
 import { FaTimes, FaEdit } from 'react-icons/fa'; 
 export default function Researchprojectdata({ isOpen, closeModal, data }) {
-  const x = data.Status_of_proposal
-
   return (
     <Modal
       isOpen={isOpen}
@@ -14,14 +12,11 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
     >
       <div>
       <div className="flex justify-end items-end gap-x-6">
-        {/* Edit icon */}
-        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
-        {/* Cross icon */}
         <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
       </div>
       <div className='flex flex-col gap-x-10 gap-y-10  px-6 '>
      
-        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Linkage Details</h1>
+        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Project Details</h1>
         <div className="grid grid-cols-2 gap-x-8 ">
           <span className="text-black text-base gap-x-8 font-semibold  border-b-2">Title of Research Project</span>
           <span className="text-black text-base font-semibold  border-b-2">{data.title}</span>
@@ -58,10 +53,18 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
             <span className="text-black text-base font-semibold border-b-2">{data.Status_of_proposal}</span>
           </div>
 
-          {data.Status_of_project === "Completed" &&
+          {data.Status_of_project === "Completed"  &&
             <div className="grid grid-cols-2 gap-x-8">
               <span className="text-black text-base font-semibold border-b-2">Date of Completion</span>
+              {
+              data.Date_of_Completion !== "" ?(
               <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Completion.split("T")[0]}</span>
+              ):(
+                <span className="text-black text-base font-semibold border-b-2">Nill</span>
+
+              )
+              }
+
             </div>
 
           }
@@ -98,10 +101,14 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
               {
                 data.Status_of_proposal === "Approved" &&
                 <>
+                {
+                  data.Date_of_Approval!=="" &&
                   <div className="grid grid-cols-2 gap-x-8">
                     <span className="text-black text-base font-semibold border-b-2">Date of Approval</span>
                     <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Approval.split("T")[0]}</span>
                   </div>
+                }
+                  
                   { (data.type_of_research==="Solo Project" && data.category==="Non-HEC" ) &&
                      <div className="grid grid-cols-2 gap-x-8">
                      <span className="text-black text-base font-semibold border-b-2">ORIC Overhead</span>
@@ -231,10 +238,10 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         {data.Status_of_proposal === "Approved" &&
           <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base font-semibold border-b-2">Total Funding Approved</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.funding_received} </span>
+            <span className="text-black text-base font-semibold border-b-2">{data.funding_approved} </span>
           </div>
 }
-{data.Status_of_proposal === "Approved" &&
+{data.Status_of_proposal === "Completed" &&
           <div className="grid grid-cols-2 gap-x-8">
             <span className="text-black text-base font-semibold border-b-2">Total Funding Utilized</span>
             <span className="text-black text-base font-semibold border-b-2">{data.funding_utilized} </span>
@@ -294,8 +301,6 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         
       </div>
       </div>
-      
-
     </Modal>
   );
 }

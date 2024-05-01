@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { FaTimes, FaEdit } from 'react-icons/fa'; 
 import axios from "axios";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import SuccessModal from '../../components/UI/SuccessMessage';
 function CasestudyForm({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [AreaAdvocated, setAreaAdvocated] = useState("");
@@ -28,6 +29,23 @@ function CasestudyForm({ children }) {
   const handleBreifchange = (e) => {
     setBreif(e.target.value);
   };
+  const resetAdvocacyFormFields = () => {
+    setOpen(false);
+    setAreaAdvocated("");
+    setNameGovernmentBody("");
+    setDateofPresentation("");
+    setAdvocacyTools("");
+    setBackingResearchStatus("");
+    setCoalitionPartners("");
+    setBreif("");
+    setissueverification("");
+    setCasestudycopy("");
+    setErrors({});
+    setShowModal(true);
+  };
+  
+  // Call resetAdvocacyFormFields whenever you need to reset the advocacy form fields
+  
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -110,9 +128,7 @@ function CasestudyForm({ children }) {
         Breif_Details: Breif,
         Issue_verification: issueverification,
       });
-
-      setOpen(false);
-       setShowModal(true); 
+resetAdvocacyFormFields()
 
    
       console.log(res);
@@ -267,9 +283,12 @@ setOpen(false)
             >
               Save
             </button>
-        
+      
           </div>
         </div>
+        {showModal && <SuccessModal isOpen={showModal} onClose={()=>{
+          setShowModal(false)
+        }} />}
       </div>
     </Modal>
      

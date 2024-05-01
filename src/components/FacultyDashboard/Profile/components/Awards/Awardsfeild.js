@@ -1,9 +1,18 @@
 import React from "react";
-export default function AwardsFields({ data }) {
+import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
+export default function AwardsFields({ data ,onDelete}) {
   console.log(data);
   return (
-    <div className={` flex justify-between bg-white shadow-lg rounded-md px-10 py-8 gap-y-10 mt-4 `}>
+    <div className={`flex flex-col bg-white shadow-lg rounded-md  m-4 `}>
+            <div className="flex justify-end items-center mr-6 mt-4">
+        <button onClick={() => onDelete(data.id)}>
+          <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
+        </button>
+      </div>
+      <div className="flex  flex-row  justify-between px-10 py-8">
       <div className={`flex flex-col gap-y-4 flex-wrap gap-x-10`}>
+
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Title</span>
         </div>
         <div className="flex items-end justify-center ">
@@ -15,7 +24,7 @@ export default function AwardsFields({ data }) {
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Name of Organization</span>
         </div>
         <div className="flex items-end justify-center ">
-          <span className="text-black ">{data.Name_of_Organization}</span>
+          <span className="text-black ">{data.Name_of_organization}</span>
         </div>
       </div>
 
@@ -26,7 +35,7 @@ export default function AwardsFields({ data }) {
           <span className="text-black ">{data.Amount_of_prize}</span>
         </div>
       </div>
-      
+      </div>
     </div>
   );
 }

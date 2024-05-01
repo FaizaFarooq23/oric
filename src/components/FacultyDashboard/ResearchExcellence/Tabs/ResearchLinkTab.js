@@ -7,12 +7,14 @@ import { useSession } from 'next-auth/react';
 import ResearchLinkageForm from '../Forms/ResearchLinkages/ResearchLinkageForm';
 import Liasenfeilds from '../Forms/Liasen/Liasenfeilds';
 import Linkfield from '../Forms/ResearchLinkages/Linkfeild';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function ResearchLinkTab() {
   const { open: openModal } = useModal("ResearchLinkageFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [research_linkageData, setresearch_linkageData] = useState([]);
+  const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
 
 
   useEffect(() => {
@@ -37,7 +39,11 @@ export default function ResearchLinkTab() {
 const handleDeleteProject = async (id) => {
   try {
     await axios.delete(`/api/Research_projects/delete_research_link?id=${id}`);
-    console.log('Project deleted successfully');
+    setShowDeleteSuccessDialog(true);
+      console.log('Project deleted successfully');
+      setTimeout(() => {
+        setShowDeleteSuccessDialog(false);
+      }, 3000);
   } catch (error) {
     console.error('Error deleting project:', error);
   }
@@ -48,7 +54,7 @@ const handleDeleteProject = async (id) => {
       
       <div className='flex justify-end items-center gap-x-8 text-2xl m-4'>
         <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-        <RiDeleteBin6Line className='text-red-600' />
+      
       </div>
 
       {isFormVisible && (
@@ -57,6 +63,16 @@ const handleDeleteProject = async (id) => {
        {research_linkageData.map((data, index) => (
         <Linkfield key={index} data={data} onDelete={handleDeleteProject} />
       ))}
+
+
+{
+          showDeleteSuccessDialog &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessDialog(false)
+            }}/>
+          )
+        }
     </div>
   );
 }

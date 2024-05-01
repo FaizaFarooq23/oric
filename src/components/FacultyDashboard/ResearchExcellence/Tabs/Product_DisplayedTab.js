@@ -6,12 +6,14 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Product_DisplayedForm from '../Forms/ResearchProducts/ProductDisplayedform';
 import Product_Displayedfield from '../Forms/ResearchProducts/ProductDisplayedFeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function Product_DisplayedTab() {
   const { open: openModal } = useModal("Product_DisplayedFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [Product_DisplayedData, setProduct_DisplayedData] = useState([]);
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
 
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const handleDeleteProject = async (id) => {
   try {
     await axios.delete(`/api/Research_products/delete_product_displayed?id=${id}`);
     console.log('Project deleted successfully');
+    setShowDeleteSuccessModal(true); 
   } catch (error) {
     console.error('Error deleting project:', error);
   }
@@ -59,6 +62,15 @@ const handleDeleteProject = async (id) => {
         
         </div>
       ))}
+    
+        {
+          showDeleteSuccessModal &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessModal(false)
+            }}/>
+          )
+        }
     </div>
   );
 }

@@ -128,7 +128,25 @@ function ResearchLinkageForm({ children }) {
       setStage(1);
     }
   };
-
+  function resetFormFields() {
+    setOpen(false);
+    setTypeofLinkage("Academic");
+    setFeildofStudy("");
+    setNameResearchGrant("");
+    setDateofAgreement("");
+    setNationaity("National");
+    setNameofHostInstitute("");
+    setMoUcopy("");
+    setAdressofHostInstitute("");
+    setCollaboratingAgency("");
+    setCollaboratingAgencyAddress("");
+    setFeatures("");
+    setScope("");
+    setStage(1);
+  }
+  
+  // Call resetFormFields() whenever you need to reset these form fields
+  
   const handleTypeofLinkage = (e) => {
     setTypeofLinkage(e.target.value);
   };
@@ -149,10 +167,7 @@ function ResearchLinkageForm({ children }) {
     try {
       if (
         !validateFormStage3()
-      ) {
-        alert("Please fill all the fields");
-        return;
-      }
+      ) 
 
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
@@ -180,6 +195,7 @@ function ResearchLinkageForm({ children }) {
 
       setOpen(false);
       console.log(res);
+      resetFormFields()
     } catch (error) {
       console.error("Error inserting information:", error);
     }

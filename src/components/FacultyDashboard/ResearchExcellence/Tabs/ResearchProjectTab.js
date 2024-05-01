@@ -4,10 +4,12 @@ import { useModal } from 'react-simple-modal-provider';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Researchprojectfeilds from '../Forms/ResearchProjects/Researchprojectfeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function ResearchProjectTab() {
   const { open: openModal } = useModal("ResearchProjectFormModal");
   const { data: session } = useSession();
+  const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
   const [research_projectData, setresearch_projectData] = useState([]);
   const [filterOption, setFilterOption] = useState('all'); // Default filter option is 'all'
   const [researchTypeOption, setResearchTypeOption] = useState('all'); // Default research type option is 'all'
@@ -33,7 +35,11 @@ export default function ResearchProjectTab() {
   const handleDeleteProject = async (project_id) => {
     try {
       await axios.delete(`/api/Research_projects/delete_research_project?projectId=${project_id}`);
+      setShowDeleteSuccessDialog(true);
       console.log('Project deleted successfully');
+      setTimeout(() => {
+        setShowDeleteSuccessDialog(false);
+      }, 3000);
     } catch (error) {
       console.error('Error deleting project:', error);
     }
@@ -92,9 +98,19 @@ export default function ResearchProjectTab() {
       {/* Render research projects based on the filtered data */}
       {research_projectData.filter(filterData).map((data, index) => (
         <div className="flex flex-col" key={index}>
-          <Researchprojectfeilds data={data} onDelete={handleDeleteProject} />
+          <Researchprojectfeilds data={data} onDelete={handleDeleteProject}
+           />
         </div>
+        
       ))}
+      {
+          showDeleteSuccessDialog &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessDialog(false)
+            }}/>
+          )
+        }
     </div>
   );
 }

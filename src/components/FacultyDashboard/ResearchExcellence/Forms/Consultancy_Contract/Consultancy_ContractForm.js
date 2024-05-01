@@ -34,6 +34,27 @@ function ConsultacyContract({ children }) {
   const handledelieverychange = (e) => {
     setdelievery(e.target.value);
   };
+  function resetFormFields() {
+    setOpen(false);
+    setTitle_of_Project("");
+    setNameofPi("");
+    setDateofExecution("");
+    setDesignation_of_Pi("");
+    setDepartment_of_Pi("");
+    setCompany_Address("");
+    setRemarks("");
+    setCompany_Name("");
+    setContractcopy("");
+    setContract_value("");
+    setStartdate("");
+    setEnddate("");
+    setconsultancy_services("Feasibility");
+    setORICpercent("");
+    setdelievery("");
+  }
+  
+  // Call resetFormFields() whenever you need to reset these form fields
+  
   const handleconsultancy_services = (e) => {
     setconsultancy_services(e.target.value);
   };
@@ -159,6 +180,7 @@ function ConsultacyContract({ children }) {
 
       setOpen(false);
       console.log(res);
+      resetFormFields()
     } catch (error) {
       console.error("Error inserting information:", error);
     }

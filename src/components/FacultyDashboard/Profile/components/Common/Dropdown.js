@@ -6,12 +6,20 @@ export default function Dropdown({
   value,
   handleOptionChange,
   dropdownOptions,
+  required
 }) {
   return (
-    <div className=" grid grid-cols-2  text-black ">
-      <label className="text-base font-medium">
+    <div className=" grid grid-cols-2  gap-x-6  text-black ">
+     {
+        required ?(
+        <label className="text-base font-medium">
         {label} <span className="text-red-500">*</span>
-      </label>
+      </label>):(
+      <label className="text-base font-medium">
+      {label}
+    </label>)
+      }
+   
       <select
         name={name}
         defaultValue={value}

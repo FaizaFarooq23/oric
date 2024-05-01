@@ -7,6 +7,7 @@ function SavedSuccessfullyModal({ isOpen, onClose }) {
     if (isOpen) {
       const timer = setTimeout(() => {
         onClose();
+        alert("closed")
       }, 3000);
 
       return () => clearTimeout(timer);

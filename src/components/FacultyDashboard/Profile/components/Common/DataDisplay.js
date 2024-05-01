@@ -28,10 +28,11 @@ export default function DataDisplay({data,heading, updateInfo , isEditable}) {
         }
 
       </div>
+      {data.map((item, index) => (
+  <EditableField key={index} label={item.label} data={data} updateInfo={updateInfo} isEditingValue={isEditingValue} editedValue={item.value} handleValueClick={handleValueClick} />
+))}
+</div>
 
-    {data.map((item, index) => (
-        <EditableField key={index} label={item.label} data={data} updateInfo={updateInfo} isEditingValue={isEditingValue} editedValue={item.value} handleValueClick={handleValueClick} />
-      ))}
-      </div>
+  
   );
 }

@@ -6,12 +6,14 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import CasestudyForm from '../Forms/CaseStudy/CasestudyForm';
 import Casestudyfeilds from '../Forms/CaseStudy/Casestudyfeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function CaseStudyTab() {
   const { open: openModal } = useModal("CaseStudyFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [policy_casestudyData, setpolicy_casestudyData] = useState([]);
+  const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
 
 
   useEffect(() => {
@@ -35,7 +37,11 @@ export default function CaseStudyTab() {
   const handleDeleteProject = async (id) => {
     try {
       await axios.delete(`/api/Research_projects/deletePolicycaseStudy?id=${id}`);
+      setShowDeleteSuccessDialog(true);
       console.log('Project deleted successfully');
+      setTimeout(() => {
+        setShowDeleteSuccessDialog(false);
+      }, 3000);
     } catch (error) {
       console.error('Error deleting project:', error);
     }
@@ -54,6 +60,17 @@ export default function CaseStudyTab() {
       {policy_casestudyData.map((data, index) => (
         <Casestudyfeilds key={index} data={data} onDelete={handleDeleteProject}/>
       ))}
+        {
+    showDeleteSuccessDialog &&
+    (
+      <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={()=>{
+        setShowDeleteSuccessDialog(false)
+      }}/>
+    )
+  }
     </div>
+    
   );
+
+
 }

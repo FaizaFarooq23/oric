@@ -6,12 +6,15 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Liasendeveloped from '../Forms/Liasen/Liasendeveloped';
 import Liasenfeilds from '../Forms/Liasen/Liasenfeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function LiasenTab() {
   const [liasenData, setLiasenData] = useState([]);
   const { open: openModal } = useModal("LiasendevelopedFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const { data: session } = useSession();
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
+
 
   useEffect(() => {
     const fetchLiasenData = async () => {
@@ -35,7 +38,7 @@ export default function LiasenTab() {
     try {
       await axios.delete(`/api/Research_projects/delete_liasen?Liasen_id=${Liasen_id}`);
       console.log('Project deleted successfully');
-    } catch (error) {
+      setShowDeleteSuccessModal(true);     } catch (error) {
       console.error('Error deleting project:', error);
     }
   };
@@ -49,6 +52,14 @@ export default function LiasenTab() {
         <Liasendeveloped />
       )}
       
+        {
+          showDeleteSuccessModal &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessModal(false)
+            }}/>
+          )
+        }
      
       {liasenData.map((data, index) => (
       <Liasenfeilds key={index} data={data} onDelete={handleDeleteProject} />

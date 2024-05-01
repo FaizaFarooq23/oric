@@ -118,7 +118,25 @@ function Product_DisplayedForm({children}) {
     }
   };
   
-
+  const resetFormFields = () => {
+    setOpen(false);
+    setName_of_lead("");
+    setDesignation_of_lead("");
+    setDepartment_of_lead("");
+    setTitle("");
+    setcategory("Product");
+    setStatus("");
+    setNationality("National");
+    setFeild_of_use("");
+    setName_of_Forum("");
+    setDetail_of_Forum("");
+    setFinancial_support("");
+    setBreif("");
+    setStage(1);
+  };
+  
+  // Call resetFormFields whenever you need to reset these form fields
+  
   // Define a function to handle moving to the previous stage
   const prevStage = () => {
     setStage(stage - 1);
@@ -169,11 +187,12 @@ function Product_DisplayedForm({children}) {
       const res = await axios.post(`/api/Research_products/Insert_product_displayed`, data);
 
       setOpen(false);
+      resetFormFields();
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
     }
-    alert("You clicked ");
+    
   };
 
   return (

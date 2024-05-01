@@ -5,6 +5,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import RadioButtonGroup from "@/components/FacultyDashboard/Profile/components/Common/Radiobutton";
+import SuccessModal from "../../components/UI/SuccessMessage";
 function Researchprojectform({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [TitleofResearch, setTitleofResearch] = useState("");
@@ -52,9 +53,12 @@ function Researchprojectform({ children }) {
   const [Date_of_review, setDate_of_review] = useState("");
   const [meetingdecision, setmeetingdecision] = useState("");
   const [meetingminutes, setmeetingminutes] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibilit
 
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
   };
@@ -126,6 +130,56 @@ function Researchprojectform({ children }) {
       setStage(1);
     }
   };
+  const handlestate=()=>{
+   setStage(1)
+      setOpen(false);
+      setTitleofResearch("");
+      setThematicArea("");
+      setNameResearchGrant("");
+      setcategory("HEC");
+      setStatus_of_proposal("Submitted");
+      setStatus_of_project("Ongoing");
+      setDateofContract("");
+      setDateofContractSigned("");
+      setDateofApproval("");
+      setDateofSubmission("");
+      setDateofCompletion("");
+      setStartDate("");
+      setEndDate("");
+      setNameofPi("");
+      setDesignationofPi("");
+      setDepartmentofPi("");
+      setNameofCoPi("");
+      setUniversityofCoPi("");
+      setDepartmentofCoPi("");
+      setDesignationofCoPi("");
+      setFundingRequested("");
+      setFundingRealesed("");
+      setFundingApproved("");
+      setfunding_nationality("National");
+      setFundingUtilized("");
+      setCollaboratingPartner("");
+      setCofundingPartner("");
+      setfundingagency("");
+      setRemarks("");
+      setdelivery("");
+      settypeofresearch("Solo Project");
+      setCounterparts("");
+      setSponceringAgencyName("");
+      setSponceringAgencyCountry("");
+      setSponceringAgencyAdress("");
+      setSubmissionEmailCopy("");
+      setAwardLetterCopy("");
+      setCompletionLetterCopy("");
+      setContractAgreementCopy("");
+      setORIC_overhead("");
+      setreviwedbyIRB("");
+      setDate_of_review("");
+      setmeetingdecision("");
+      setmeetingminutes("");
+      setShowSuccessModal(true); 
+     
+  }
   const { data: session } = useSession();
   useEffect(() => {
     console.log(session);
@@ -342,14 +396,10 @@ function Researchprojectform({ children }) {
     if (fundingRequested.trim() === "") {
       newErrors.fundingRequested = "Funding Requested is required";
       valid = false;
-    } else if (!numericalRegex.test(fundingRequested)) {
-      newErrors.fundingRequested =
-        "Funding Requested should contain only numerical values";
-      valid = false;
-    } else {
+    }  else {
       newErrors.fundingRequested = "";
     }
-  
+
     if (Status_of_proposal === "Approved" && fundingApproved.trim() === "") {
       newErrors.fundingApproved = "Funding Approved is required";
       valid = false;
@@ -360,22 +410,14 @@ function Researchprojectform({ children }) {
     if (fundingUtilized.trim() === "" && Status_of_project === "Completed") {
       newErrors.fundingUtilized = "Funding Utilized is required";
       valid = false;
-    } else if (!numericalRegex.test(fundingUtilized)) {
-      newErrors.fundingUtilized =
-        "Funding Utilized should contain only numerical values";
-      valid = false;
-    } else {
+    }  else {
       newErrors.fundingUtilized = "";
     }
   
     if (fundingRealesed.trim() === "" && Status_of_project === "Completed") {
       newErrors.fundingRealesed = "Funding Released is required";
       valid = false;
-    } else if (!numericalRegex.test(fundingRealesed)) {
-      newErrors.fundingRealesed =
-        "Funding Released should contain only numerical values";
-      valid = false;
-    } else {
+    }  else {
       newErrors.fundingRealesed = "";
     }
   
@@ -525,17 +567,20 @@ function Researchprojectform({ children }) {
         `/api/Research_projects/insert_research_project`,
         data
       );
-      setShowModal(true);
-
-      setOpen(false);
+    
       console.log(res);
+     
+      handlestate();
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 3000);
+    
+      
     } catch (error) {
       console.error("Error inserting information:", error);
     }
   };
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+
   return (
     <Modal
       id={"ResearchProjectFormModal"}
@@ -1149,7 +1194,13 @@ function Researchprojectform({ children }) {
                 </div>
               )}
 
-              <div className="flex flex-row ml-auto ">
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+              <button
+                  onClick={prevStage}
+                  className="bg-blue-900 text-white px-4 py-2 rounded-md "
+                >
+                  Previous
+                </button>
                 <button
                   onClick={nextStage}
                   className="bg-blue-900 text-white px-4 py-2  rounded-md"
@@ -1273,12 +1324,23 @@ function Researchprojectform({ children }) {
                   className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
                 >
                   Save
+
+
                 </button>
+
               </div>
+
             </div>
           </>
         )}
       </div>
+      {
+          showSuccessModal  &&
+          (
+            <SuccessModal isOpen={showSuccessModal} p={`Your Data has been saved Successfully`} onClose={handleCloseSuccessModal} />
+            
+          )
+        } 
     </Modal>
   );
 }

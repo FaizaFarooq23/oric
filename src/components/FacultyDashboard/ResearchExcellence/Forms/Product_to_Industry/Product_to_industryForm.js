@@ -104,6 +104,27 @@ function Product_to_IndustryForm({children}) {
     setErrors(newErrors);
     return valid;
   };
+  const resetInventionFormFields = () => {
+    setOpen(false);
+    setName_of_leadInventor("");
+    setDesignation_of_leadInventor("");
+    setDepartment_of_leadInventor("");
+    setTitle_of_Invention("");
+    setcategory("Product");
+    setRemarks("");
+    setDevelopment_status("idea");
+    setKeyAspects("");
+    setNationality("National");
+    setFeild_of_use("");
+    setName_of_Partner("");
+    setDetail_of_Partner("");
+    setFinancial_support("");
+    setPdProof("");
+    setStage(1);
+  };
+  
+  // Call resetInventionFormFields whenever you need to reset these form fields
+  
   // Define a function to handle moving to the next stage
   const nextStage = () => {
     switch (stage) {
@@ -174,11 +195,11 @@ function Product_to_IndustryForm({children}) {
       const res = await axios.post(`/api/Product_to_Industry/Insert_Product`, data);
 
       setOpen(false);
+      resetInventionFormFields()
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
     }
-    alert("You clicked ");
   };
 
   return (

@@ -17,53 +17,125 @@ export default function Register() {
   const [qualification, setQualification] = useState("");
   const [designation, setDesignation] = useState("");
   const [cnic, setCnic] = useState("");
+  const [errors, setErrors] = useState({});
+
   const router = useRouter();
   const [cnicError, setCnicError] = useState("");
-  const handleRegister = async () => {
-    
-    const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
-    const isValidCnic = cnicRegex.test(cnic);
-    if (!isValidCnic) {
-      setCnicError("Invalid CNIC format. Please enter in the format: xxxxx-xxxxxxx-x");
-      return; // Return early if CNIC format is invalid
-    }
-    try {
-      const response = await fetch("/api/register_faculty", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          phoneNumber,
-          confirmPassword,
-          username,
-          department,
-          dateOfBirth,
-          qualification,
-          designation,
-          cnic,
-        }),
-      });
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
 
-      if (response.ok) {
-        // Registration successful
-        console.log("Registration successful");
-        alert("Registration successful");
-        router.push("/");
-      } else {
-        // Handle registration error
-        const data = await response.json();
-        console.error("Registration failed:", data.error);
-      }
-    } catch (error) {
-      console.error("Error during registration:", error);
-      alert("Error during registration");
+    if (name.trim() === "") {
+      newErrors.name = "Name is required";
+      isValid = false;
     }
+
+    if (email.trim() === "") {
+      newErrors.email = "Email is required";
+      isValid = false;
+    }
+
+    if (password.trim() === "") {
+      newErrors.password = "Password is required";
+      isValid = false;
+    }
+
+    if (confirmPassword.trim() === "") {
+      newErrors.confirmPassword = "Confirm Password is required";
+      isValid = false;
+    }
+
+    if (phoneNumber.trim() === "") {
+      newErrors.phoneNumber = "Phone Number is required";
+      isValid = false;
+    }
+
+    if (username.trim() === "") {
+      newErrors.username = "Username is required";
+      isValid = false;
+    }
+
+    if (department.trim() === "") {
+      newErrors.department = "Department is required";
+      isValid = false;
+    }
+
+    if (dateOfBirth.trim() === "") {
+      newErrors.dateOfBirth = "Required";
+      isValid = false;
+    }
+
+    if (qualification.trim() === "") {
+      newErrors.qualification = "Required";
+      isValid = false;
+    }
+
+    if (designation.trim() === "") {
+      newErrors.designation = "Required";
+      isValid = false;
+    }
+
+    if (cnic.trim() === "") {
+      newErrors.cnic = "CNIC is required";
+      isValid = false;
+    } else {
+      const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
+      const isValidCnic = cnicRegex.test(cnic);
+      if (!isValidCnic) {
+        newErrors.cnic = "Invalid CNIC format.";
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
+  const handleRegister = async () => {
+    // const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
+    // const isValidCnic = cnicRegex.test(cnic);
+    // if (!isValidCnic) {
+    //   setCnicError("Invalid CNIC format.");
+    //   return; // Return early if CNIC format is invalid
+    // }
+    if (validateForm()) {
+      try {
+        const response = await fetch("/api/register_faculty", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            phoneNumber,
+            confirmPassword,
+            username,
+            department,
+            dateOfBirth,
+            qualification,
+            designation,
+            cnic,
+          }),
+        });
+
+        if (response.ok) {
+          // Registration successful
+          console.log("Registration successful");
+          alert("Registration successful");
+          router.push("/");
+        } else {
+          // Handle registration error
+          const data = await response.json();
+          console.error("Registration failed:", data.error);
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        alert("Error during registration");
+      }
+    }
+  };
 
   return (
     <div className="w-screen h-screen flex flex-col justify-between">
@@ -78,82 +150,138 @@ export default function Register() {
             className={`w-[600px] bg-white py-10 px-10 flex flex-col gap-y-4 rounded-xl`}
           >
             <div className=" flex gap-x-4 gap-y-5">
-              <FormInput
-                lable={"Name"}
-                value={name}
-                type={"text"}
-                setVal={setName}
-              />
-              <FormInput
-                lable={"Username"}
-                value={username}
-                type={"text"}
-                setVal={setUsername}
-              />
+              <div>
+                <FormInput
+                  label={"Name"}
+                  value={name}
+                  type={"text"}
+                  setVal={setName}
+                  required
+                />
+
+                {errors.name && (
+                  <span className="text-red-500">{errors.name}</span>
+                )}
+              </div>
+              <div>
+                <FormInput
+                  label={"Username"}
+                  value={username}
+                  type={"text"}
+                  setVal={setUsername}
+                />
+                {errors.username && (
+                  <span className="text-red-500">{errors.username}</span>
+                )}
+              </div>
             </div>
             <div className=" flex gap-x-4 gap-y-5">
-              <FormInput
-                lable={"Password"}
-                value={password}
-                type={"password"}
-                setVal={setPassword}
-              />
-              <FormInput
-                lable={"Confirm Password"}
-                value={confirmPassword}
-                type={"password"}
-                setVal={setConfirmPassword}
-              />
+              <div>
+                <FormInput
+                  label={"Password"}
+                  value={password}
+                  type={"password"}
+                  setVal={setPassword}
+                />
+                {errors.password && (
+                  <span className="text-red-500">{errors.password}</span>
+                )}
+              </div>
+              <div>
+                <FormInput
+                  label={"Confirm Password"}
+                  value={confirmPassword}
+                  type={"password"}
+                  setVal={setConfirmPassword}
+                />
+                {errors.confirmPassword && (
+                  <span className="text-red-500">{errors.confirmPassword}</span>
+                )}
+              </div>
             </div>
             <div className=" flex gap-x-4 gap-y-5">
-              <FormInput
-                lable={"Email"}
-                value={email}
-                type={"email"}
-                setVal={setEmail}
-              />
-              <FormInput
-                lable={"Date of Birth"}
-                value={dateOfBirth}
-                type={"date"}
-                setVal={setDateOfBirth}
-              />
+              <div>
+                <FormInput
+                  label={"Email"}
+                  value={email}
+                  type={"email"}
+                  setVal={setEmail}
+                />
+                {errors.email && (
+                  <span className="text-red-500">{errors.email}</span>
+                )}
+              </div>
+              <div>
+                <FormInput
+                  label={"Date of Birth"}
+                  value={dateOfBirth}
+                  type={"date"}
+                  setVal={setDateOfBirth}
+                />
+                {errors.dateOfBirth && (
+                  <span className="text-red-500">{errors.dateOfBirth}</span>
+                )}
+              </div>
             </div>
             <div className=" flex gap-x-4 gap-y-5">
-            <CnicInput
-            label={'CNIC'} 
-            value={cnic}
-            onChange={setCnic}
-            error={cnicError}
-          />
-              <PhoneInputComponent
-                label={"Phone Number"} // Pass the label as a prop
-                value={phoneNumber}
-                onChange={setPhoneNumber}
-                country={"pk"} // Specify the default country
-              />
+              <div>
+                <CnicInput
+                  label={"CNIC"}
+                  value={cnic}
+                  onChange={setCnic}
+                  error={cnicError}
+                />
+                {errors.cnic && (
+                  <span className="text-red-500">{errors.cnic}</span>
+                )}
+              </div>
+              <div>
+                <PhoneInputComponent
+                  label={"Phone Number"} // Pass the label as a prop
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  country={"pk"} // Specify the default country
+                />
+                {errors.phoneNumber && (
+                  <span className="text-red-500">{errors.phoneNumber}</span>
+                )}
+              </div>
             </div>
             <div className=" flex gap-x-4 gap-y-5 ">
-              <FormInput
-                lable={"Department"}
-                value={department}
-                type={"text"}
-                setVal={setDepartment}
-              />
-              <FormInput
-                lable={"Qualification"}
-                value={qualification}
-                type={"text"}
-                setVal={setQualification}
-              />
-              <FormInput
-                lable={"Designation"}
-                value={designation}
-                type={"text"}
-                setVal={setDesignation}
-              />
+              <div>
+                <FormInput
+                  label={"Department"}
+                  value={department}
+                  type={"text"}
+                  setVal={setDepartment}
+                />
+                {errors.department && (
+                  <span className="text-red-500">{errors.department}</span>
+                )}
+              </div>
+              <div>
+                <FormInput
+                  label={"Qualification"}
+                  value={qualification}
+                  type={"text"}
+                  setVal={setQualification}
+                />
+                {errors.qualification && (
+                  <span className="text-red-500">{errors.qualification}</span>
+                )}
+              </div>
+              <div>
+                <FormInput
+                  label={"Designation"}
+                  value={designation}
+                  type={"text"}
+                  setVal={setDesignation}
+                />
+                {errors.designation && (
+                  <span className="text-red-500">{errors.designation}</span>
+                )}
+              </div>
             </div>
-
             <div className="w-full flex justify-center items-center mt-10">
               <button
                 onClick={handleRegister}

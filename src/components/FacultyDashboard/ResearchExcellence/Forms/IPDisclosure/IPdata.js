@@ -29,15 +29,15 @@ export default function IPdata({ isOpen, closeModal ,data}) {
             <span className="text-black text-base font-semibold border-b-2 ">Type of IP</span>
            <span className="text-black text-base font-semibold border-b-2 ">{data.Type}</span>
                </div> 
-               { data.type!=="IP disclosures" &&
+               { data.Type!=="IP disclosures" &&
                 <>
                  <div className="grid grid-cols-2 gap-x-10 "> 
             <span className="text-black text-base font-semibold border-b-2 ">Status of Patent</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.status_of_patent}</span>
+           <span className="text-black text-base font-semibold border-b-2 ">{data.Status_of_patent}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
             <span className="text-black text-base font-semibold border-b-2 ">Date of Filing</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_filing}</span>
+           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_filing.split("T")[0]}</span>
                </div>
                 </>
                }
@@ -62,7 +62,7 @@ export default function IPdata({ isOpen, closeModal ,data}) {
            </div>
            <div className="grid grid-cols-2 gap-x-10">
             <span className="text-black text-base font-semibold border-b-2">Date of Disclosure</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Date_of_disclosure}</span>
+           <span className="text-black text-base font-semibold border-b-2">{data.Date_of_disclosure.split("T")[0]}</span>
            </div>
            </>
             }

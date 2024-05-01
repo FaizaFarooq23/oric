@@ -6,13 +6,14 @@ import { useModal } from 'react-simple-modal-provider';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import EducationField from '../components/Common/EducationField';
+import SuccessModal from '../../ResearchExcellence/components/UI/SuccessMessage';
 
 export default function Education() {
   const { open: openModal } = useModal("EducationFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const [educationalData, setEducationalData] = useState([]); // [{},{}
   const {data: session} = useSession();
-
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   const fetchEducationalData = async () => {
     try{
@@ -39,50 +40,34 @@ export default function Education() {
     }
     // setEducationalData(data)
   }, [session]);
-
-  // const data = [
-  //   {
-  //     label: "Degree",
-  //     value: "BS",
-  //   },
-  //   {
-  //     label: "Field of Study",
-  //     value: "MBBS",
-  //   },
-  //   {
-  //     label: "Institute",
-  //     value: "NED University",
-  //   },
-  //   {
-  //     label: "Registration Number",
-  //     value: "1192983982398271",
-  //   },
-  //   {
-  //     label: "Cgpa",
-  //     value: "3.8",
-  //   },
-  //   {
-  //     label: "Graduation Year",
-  //     value: "2017",
-  //   },
-  // ];
+  const handleDeleteProject = async (education_id) => {
+    try {
+      await axios.delete(`/api/faculty/education/delete_education?education_id=${education_id}`);
+      console.log('Project deleted successfully');
+      setShowDeleteSuccessModal(true);     } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
 
   
-
-
-
   return (
     <div >
       <div className='flex justify-end items-center gap-x-8 text-2xl'>
         <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-        <RiDeleteBin6Line className='text-red-600' />
       </div>
-
       {isFormVisible && (
         <EducationFormModal />
       )}
+          {
+          showDeleteSuccessModal &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessModal(false)
+            }}/>
+          )
+        }
       {educationalData.map((data, index) => (
-      <EducationField key={index} data={data} />
+      <EducationField key={index} data={data} onDelete={handleDeleteProject}/>
       ))}
     </div>
   );

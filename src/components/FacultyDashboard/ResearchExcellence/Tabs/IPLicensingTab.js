@@ -6,13 +6,14 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import IPlicensingForm from '../Forms/IP_Licensing/IP_LicensingForm';
 import IPLicensingfeild from '../Forms/IP_Licensing/IP_Licensingfeilds';
+import SuccessModal from '../components/UI/SuccessMessage';
 
 export default function IPLicensingTab() {
   const { open: openModal } = useModal("IPLicensingModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [IPLicensingData, setIPLicensingData] = useState([]);
-
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   useEffect(() => {
     const fetchIPLicensingdata = async () => {
@@ -37,6 +38,7 @@ const handleDeleteProject = async (id) => {
   try {
     await axios.delete(`/api/IPLicensing/Delete_IPLicensing?id=${id}`);
     console.log('Project deleted successfully');
+      setShowDeleteSuccessModal(true); // Show SuccessModal after successful deletion
   } catch (error) {
     console.error('Error deleting project:', error);
   }
@@ -47,7 +49,6 @@ const handleDeleteProject = async (id) => {
       
       <div className='flex justify-end items-center gap-x-8 text-2xl m-4'>
         <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-        {/* <RiDeleteBin6Line className='text-red-600' onClick={handleDeleteProject} /> */}
       </div>
 
       {isFormVisible && (
@@ -59,6 +60,9 @@ const handleDeleteProject = async (id) => {
         
         </div>
       ))}
+        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
+          setShowDeleteSuccessModal(false)
+        }} />}
     </div>
   );
 }

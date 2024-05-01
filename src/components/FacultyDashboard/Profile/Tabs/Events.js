@@ -6,13 +6,13 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import CivilEventsModal from "../components/Events/Events";
 import EventFields from "../components/Events/EventFields";
-
+import SuccessModal from "../../ResearchExcellence/components/UI/SuccessMessage";
 export default function Event() {
   const { open: openModal } = useModal("CivilEventsModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const [eventData, seteventData] = useState([]); // [{},{}
   const { data: session } = useSession();
-
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false); // State to control SuccessModal visibility
   const fetcheventData = async () => {
     try {
       const res = await axios.get(`/api/faculty/Events/fetch`, {
@@ -36,19 +36,34 @@ export default function Event() {
     }
     // setEducationalData(data)
   }, [session]);
+  const handleDeleteProject = async (id) => {
+    try {
+      await axios.delete(`/api/faculty/Events/Delete_event?id=${id}`);
+      console.log('Project deleted successfully');
+      setShowDeleteSuccessModal(true);     } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
 
   return (
     <div>
       {" "}
       <div className="flex justify-end items-center gap-x-8 text-2xl">
         <FiPlusCircle className="text-blue-900" onClick={openModal} />
-        <RiDeleteBin6Line className="text-red-600" />
       </div>
       {isFormVisible && <CivilEventsModal />}
-      {/* <ModalField data={eventData} /> */}
+      {
+          showDeleteSuccessModal &&
+          (
+            <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data has been deleted `} onClose={()=>{
+              setShowDeleteSuccessModal(false)
+            }}/>
+          )
+        }
+      
       {eventData.length > 0 &&
         eventData.map((event, index) => (
-          <EventFields key={index} data={event} />
+          <EventFields key={index} data={event} onDelete={handleDeleteProject} />
         ))}
     </div>
   );
