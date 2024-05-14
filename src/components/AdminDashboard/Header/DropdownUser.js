@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
 import { BsPerson } from "react-icons/bs";
 import { TbSettings } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
+import { UserContext } from "@/context/UserContext/GlobalProvider";
 
 const DropdownUser = () => {
+  const {user} = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
@@ -53,9 +55,14 @@ const DropdownUser = () => {
         <div className="flex items-center justify-center gap-x-2">
           <span className="h-12 w-12 rounded-full">
             <img
-              src={"/images/profile.png"}
+              src={`uploads/${user.email}.png`}
               className="rounded-full"
               alt="User"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/images/profile.png";
+
+              }}
             />
           </span>
 

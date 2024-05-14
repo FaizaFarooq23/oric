@@ -39,7 +39,6 @@ export default function ProfileHeader({
               src={profilePhoto}
               className="rounded-full border-2 border-white h-28 w-28 cursor-pointer"
               alt="profile"
-              onClick={handleProfilePhotoUpload}
             />
             <input
               id="profilePhotoInput"

@@ -99,7 +99,7 @@ export default function Grid({ data }) {
 
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current.api.getSelectedRows();
-    const result = selectedRows.length === 1 ? selectedRows[0].project_Id : "";
+    const result = selectedRows.length === 1 ? selectedRows[0].project_id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].title : "";
     router.push(`/project/${result}/${name}`);
   }, []);

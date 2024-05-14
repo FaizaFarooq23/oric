@@ -9,8 +9,10 @@ export default function Index() {
   const [projectData, setProjectData] = useState(null);
 
   const getData = async (project_id) => {
-    const res = await fetch(`/api/stats/reports?project_id=${project_id}`);
+    const res = await fetch(`/api/stats/report_by_id?project_id=${project_id}`);
+    console.log(res);
     const data = await res.json();
+
     return data;
   };
 

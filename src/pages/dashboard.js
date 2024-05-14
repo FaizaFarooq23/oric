@@ -13,7 +13,6 @@ export default function Dashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log("Calling page")
 
   useEffect(() => {
     const fetchData = async () => {
