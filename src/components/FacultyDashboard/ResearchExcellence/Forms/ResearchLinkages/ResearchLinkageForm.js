@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import SuccessModal from "../../components/UI/SuccessMessage";
 
 function ResearchLinkageForm({ children }) {
   const [isOpen, setOpen] = useModalState();
@@ -23,9 +24,12 @@ function ResearchLinkageForm({ children }) {
   const [stage, setStage] = useState(1);
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
+
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
+  
 
     if (FeildofStudy.trim() === "") {
       newErrors.FeildofStudy = "Feild of Study is required";
@@ -196,12 +200,14 @@ function ResearchLinkageForm({ children }) {
       setOpen(false);
       console.log(res);
       resetFormFields()
+      setshowSuccessSuccessModal(true)
     } catch (error) {
       console.error("Error inserting information:", error);
     }
   };
 
   return (
+    <>
     <Modal
       id={"ResearchLinkageFormModal"}
       consumer={children}
@@ -213,7 +219,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
+        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 ">
           Research Linkage Details
         </h1>
       </div>
@@ -282,7 +288,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
+        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 ">
           Host Institue Details
         </h1>
       </div>
@@ -311,7 +317,7 @@ function ResearchLinkageForm({ children }) {
     )}
 </div>
       <div>
-        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
+        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 ">
           Collaborating Agency Details
         </h1>
       </div>
@@ -362,7 +368,7 @@ function ResearchLinkageForm({ children }) {
   <>
     <div className="flex flex-col gap-y-3">
       <div>
-        <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 ">
+        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 ">
           Additional Details
         </h1>
       </div>
@@ -428,6 +434,16 @@ function ResearchLinkageForm({ children }) {
 )}
 </div>
     </Modal>
+    {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
+    </>
   );
 }
 

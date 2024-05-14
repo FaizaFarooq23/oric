@@ -25,7 +25,7 @@ export default function Event() {
 
       seteventData(res.data);
     } catch (error) {
-      console.error("Error fetching personal information:", error);
+      console.error("Error fetching  information:", error);
     }
   };
 

@@ -61,9 +61,17 @@ export default function LiasenTab() {
           )
         }
      
-      {liasenData.map((data, index) => (
-      <Liasenfeilds key={index} data={data} onDelete={handleDeleteProject} />
-      ))}
+     {liasenData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        liasenData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Liasenfeilds data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
     </div>
   );
 }

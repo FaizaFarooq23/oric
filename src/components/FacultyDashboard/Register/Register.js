@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import axios from 'axios';
 import FormInput from "../../Common/FormInput";
 import { useRouter } from "next/router";
 import PhoneInputComponent from "../../Common/PhoneNumberInput";
@@ -21,84 +21,112 @@ export default function Register() {
 
   const router = useRouter();
   const [cnicError, setCnicError] = useState("");
-  const validateForm = () => {
+  const validateForm = async () => {
     const newErrors = {};
     let isValid = true;
-
+  
     if (name.trim() === "") {
       newErrors.name = "Name is required";
       isValid = false;
+    }else {
+      const nameExists = await checkFieldExists(name, "name");
+      if (nameExists) {
+        newErrors.name = "Name already exists";
+        isValid = false;
+      }
     }
-
+  
     if (email.trim() === "") {
       newErrors.email = "Email is required";
       isValid = false;
+    } else {
+      const emailExists = await checkFieldExists(email, "email");
+      if (emailExists) {
+        newErrors.email = "Email already exists";
+        isValid = false;
+      }
     }
-
+  
     if (password.trim() === "") {
       newErrors.password = "Password is required";
       isValid = false;
     }
-
+  
     if (confirmPassword.trim() === "") {
       newErrors.confirmPassword = "Confirm Password is required";
       isValid = false;
     }
-
+  
     if (phoneNumber.trim() === "") {
       newErrors.phoneNumber = "Phone Number is required";
       isValid = false;
     }
-
+  
     if (username.trim() === "") {
       newErrors.username = "Username is required";
       isValid = false;
+    } else {
+      const usernameExists = await checkFieldExists(username, "username");
+      if (usernameExists) {
+        newErrors.username = "Username already exists";
+        isValid = false;
+      }
     }
-
+  
     if (department.trim() === "") {
-      newErrors.department = "Department is required";
+      newErrors.department = "Required";
       isValid = false;
     }
-
+  
     if (dateOfBirth.trim() === "") {
       newErrors.dateOfBirth = "Required";
       isValid = false;
     }
-
+  
     if (qualification.trim() === "") {
       newErrors.qualification = "Required";
       isValid = false;
     }
-
+  
     if (designation.trim() === "") {
-      newErrors.designation = "Required";
+      newErrors.designation ="Required";
       isValid = false;
     }
-
+  
     if (cnic.trim() === "") {
       newErrors.cnic = "CNIC is required";
       isValid = false;
     } else {
-      const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
+      const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/;
       const isValidCnic = cnicRegex.test(cnic);
       if (!isValidCnic) {
         newErrors.cnic = "Invalid CNIC format.";
         isValid = false;
       }
+      const cnicExists = await checkFieldExists(cnic, "cnic");
+      if (cnicExists) {
+        newErrors.cnic = "cnic already exists";
+        isValid = false;
+      }
     }
-
+  
     setErrors(newErrors);
     return isValid;
   };
-
+  
+  const checkFieldExists = async (value, field) => {
+    try {
+      const response = await axios.get('/api/faculty/get_faculty', {
+        params: { [field]: value },
+      });
+      return response.status === 200;
+    } catch (error) {
+      console.error('Error checking field existence:', error);
+      return false;
+    }
+  };
   const handleRegister = async () => {
-    // const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/; // Regular expression for CNIC format
-    // const isValidCnic = cnicRegex.test(cnic);
-    // if (!isValidCnic) {
-    //   setCnicError("Invalid CNIC format.");
-    //   return; // Return early if CNIC format is invalid
-    // }
-    if (validateForm()) {
+    if (await validateForm()) {
       try {
         const response = await fetch("/api/register_faculty", {
           method: "POST",
@@ -119,7 +147,7 @@ export default function Register() {
             cnic,
           }),
         });
-
+  
         if (response.ok) {
           // Registration successful
           console.log("Registration successful");
@@ -128,7 +156,8 @@ export default function Register() {
         } else {
           // Handle registration error
           const data = await response.json();
-          console.error("Registration failed:", data.error);
+          console.error("Registration failed:", data.error || "Unknown error");
+          alert(`Registration failed: ${data.error || "Unknown error"}`);
         }
       } catch (error) {
         console.error("Error during registration:", error);
@@ -136,11 +165,12 @@ export default function Register() {
       }
     }
   };
+  
 
   return (
     <div className="w-screen h-screen flex flex-col justify-between">
       <div className=" flex flex-col items-center">
-        <div className="flex justify-between items-center px-12 ">
+        <div className="flex justify-between items-center px-10 ">
           <div className="flex justify-center ">
             <img src="images/white-logo.png" alt="logo" className="h-24" />
           </div>
@@ -282,7 +312,7 @@ export default function Register() {
                 )}
               </div>
             </div>
-            <div className="w-full flex justify-center items-center mt-10">
+            <div className="w-full flex justify-center items-center mt-4">
               <button
                 onClick={handleRegister}
                 className="flex w-[60%] justify-center border border-transparent bg-mustard-yellow py-2 px-4 text-sm font-medium text-blue-900 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

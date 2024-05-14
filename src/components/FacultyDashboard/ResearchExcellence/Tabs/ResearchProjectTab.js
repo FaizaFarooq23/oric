@@ -94,15 +94,19 @@ export default function ResearchProjectTab() {
         <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
       </div>
       </div>
-    
-      {/* Render research projects based on the filtered data */}
-      {research_projectData.filter(filterData).map((data, index) => (
-        <div className="flex flex-col" key={index}>
-          <Researchprojectfeilds data={data} onDelete={handleDeleteProject}
-           />
+      {research_projectData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No research project data exists at the moment.
         </div>
-        
-      ))}
+      ) : (
+        research_projectData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Researchprojectfeilds data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
+
+  
       {
           showDeleteSuccessDialog &&
           (

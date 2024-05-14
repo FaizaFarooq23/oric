@@ -57,9 +57,17 @@ export default function CaseStudyTab() {
         <CasestudyForm/>
       )}
 
-      {policy_casestudyData.map((data, index) => (
-        <Casestudyfeilds key={index} data={data} onDelete={handleDeleteProject}/>
-      ))}
+{policy_casestudyData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        policy_casestudyData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Casestudyfeilds data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
         {
     showDeleteSuccessDialog &&
     (

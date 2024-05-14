@@ -19,7 +19,8 @@ function CasestudyForm({ children }) {
   const [Casestudycopy, setCasestudycopy] = useState("");
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
-  const [showModal, setShowModal] = useState(false); //
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+
   const handleAdvocacyToolschange = (e) => {
     setAdvocacyTools(e.target.value);
   };
@@ -129,7 +130,8 @@ function CasestudyForm({ children }) {
         Issue_verification: issueverification,
       });
 resetAdvocacyFormFields()
-
+setOpen(false)
+setshowSuccessSuccessModal(true)
    
       console.log(res);
     } catch (error) {
@@ -286,12 +288,18 @@ setOpen(false)
       
           </div>
         </div>
-        {showModal && <SuccessModal isOpen={showModal} onClose={()=>{
-          setShowModal(false)
-        }} />}
+      
       </div>
     </Modal>
-     
+    {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
       </>
   );
 }

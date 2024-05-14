@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 export default function AwardsFields({ data ,onDelete}) {
-  console.log(data);
   return (
     <div className={`flex flex-col bg-white shadow-lg rounded-md  m-4 `}>
             <div className="flex justify-end items-center mr-6 mt-4">

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import SuccessModal from "../../components/UI/SuccessMessage";
 function IPlicensingForm({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [errors, setErrors] = useState({});
@@ -31,12 +32,11 @@ function IPlicensingForm({ children }) {
   const [Negotiationcopy, setNegotiationcopy] = useState("");
   const [AgreementCopy, setAgreementCopy] = useState("");
   const [stage, setStage] = useState(1);
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+
 
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
-  };
-  const handleStatus_of_NegotiationsChange = (e) => {
-    setStatus_of_Negotiations(e.target.value);
   };
   const handleStatus_of_Licensee = (e) => {
     setStatus_of_Licensee(e.target.value);
@@ -279,6 +279,7 @@ function IPlicensingForm({ children }) {
       setOpen(false);
     resetFormFields()
       console.log(res);
+      setshowSuccessSuccessModal(true)
     } catch (error) {
       console.error("Error inserting information:", error);
     }
@@ -286,6 +287,7 @@ function IPlicensingForm({ children }) {
   };
 
   return (
+    <>
     <Modal
       id={"IPLicensingModal"}
       consumer={children}
@@ -296,7 +298,7 @@ function IPlicensingForm({ children }) {
         {stage === 1 && (
           <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
             <div>
-              <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
                 IP Licensing Information
               </h1>
             </div>
@@ -635,6 +637,17 @@ function IPlicensingForm({ children }) {
         )}
       </div>
     </Modal>
+
+    {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
+    </>
   );
 }
 

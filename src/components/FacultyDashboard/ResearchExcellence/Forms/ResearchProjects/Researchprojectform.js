@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
-import RadioButtonGroup from "@/components/FacultyDashboard/Profile/components/Common/Radiobutton";
 import SuccessModal from "../../components/UI/SuccessMessage";
+import RadioButtonGroup from "@/components/FacultyDashboard/Profile/components/Common/Radiobutton";
 function Researchprojectform({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [TitleofResearch, setTitleofResearch] = useState("");
@@ -54,7 +54,7 @@ function Researchprojectform({ children }) {
   const [meetingdecision, setmeetingdecision] = useState("");
   const [meetingminutes, setmeetingminutes] = useState("");
   const [errors, setErrors] = useState({});
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibilit
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
@@ -571,9 +571,8 @@ function Researchprojectform({ children }) {
       console.log(res);
      
       handlestate();
-      setTimeout(() => {
-        setShowSuccessModal(false);
-      }, 3000);
+      setOpen(false)
+      setshowSuccessSuccessModal(true)
     
       
     } catch (error) {
@@ -582,6 +581,7 @@ function Researchprojectform({ children }) {
   };
 
   return (
+    <>
     <Modal
       id={"ResearchProjectFormModal"}
       consumer={children}
@@ -1342,6 +1342,16 @@ function Researchprojectform({ children }) {
           )
         } 
     </Modal>
+    {
+      showSuccessModal &&
+      (
+    
+        <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+          setshowSuccessSuccessModal(false)
+        }}/>
+      )
+    }
+    </>
   );
 }
 
