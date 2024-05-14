@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Product_to_Industryfield from '../Forms/ResearchProducts/ProductDisplayedFeilds';
 import Product_to_IndustryForm from '../Forms/Product_to_Industry/Product_to_industryForm';
-import Product_to_IndustryFeillds from '../Forms/Product_to_Industry/Product_to_IndustryFeild';
+import Product_to_IndustryFeilds from '../Forms/Product_to_Industry/Product_to_IndustryFeild';
 import SuccessModal from '../components/UI/SuccessMessage';
 export default function Product_to_IndustryTab() {
   const { open: openModal } = useModal("Product_to_IndustryFormModal");
@@ -55,12 +55,17 @@ const handleDeleteProject = async (id) => {
       {isFormVisible && (
     <Product_to_IndustryForm/>
       )}
-      {Product_to_IndustryData.map((data, index) => (
-        <div className= "flex flex-col "key={index}>
-          <Product_to_IndustryFeillds data={data} onDelete={handleDeleteProject} />
-        
+     {Product_to_IndustryData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
         </div>
-      ))}
+      ) : (
+        Product_to_IndustryData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Product_to_IndustryFeilds data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
         {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
           setShowDeleteSuccessModal(false)
         }} />}

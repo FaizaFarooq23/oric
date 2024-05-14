@@ -54,12 +54,17 @@ const handleDeleteProject = async (id) => {
       {isFormVisible && (
     <IPlicensingForm/>
       )}
-      {IPLicensingData.map((data, index) => (
-        <div className= "flex flex-col "key={index}>
-          <IPLicensingfeild data={data} onDelete={handleDeleteProject} />
-        
+          {IPLicensingData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
         </div>
-      ))}
+      ) : (
+        IPLicensingData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <IPLicensingfeild data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
         {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
           setShowDeleteSuccessModal(false)
         }} />}

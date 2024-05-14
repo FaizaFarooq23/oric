@@ -9,17 +9,7 @@ const Slideshow = () => {
     
     // Add more image paths as needed
   ];
-  const goToPreviousSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToNextSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+ 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -34,11 +24,11 @@ const Slideshow = () => {
 
   return (
     <div>
-    <div className="flex transition-transform duration-500 ease-in-out h-90 w-full rounded-lg  ">
+    <div className="flex transition-transform duration-500 ease-in-out h-100 w-full rounded-lg  ">
       <img
         src={images[currentImageIndex]}
         alt={`Slide ${currentImageIndex + 1}`}
-        className="slideshow-image h-2/4 w-screen"
+        className="slideshow-image h-96 w-full"
        
       />
     

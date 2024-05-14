@@ -1,13 +1,11 @@
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import React, { useState, useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Label } from "recharts";
+import SuccessModal from "../../components/UI/SuccessMessage";
 import { FaTimes, FaEdit } from 'react-icons/fa'; 
-
 import axios from "axios";
 import Modal, { useModalState } from "react-simple-modal-provider";
-// import Modal, { useModalState } from "react-simple-modal-provider";
+import { signIn, signOut, useSession } from "next-auth/react";
 function ConsultacyContract({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [Title_of_Project, setTitle_of_Project] = useState("");
@@ -28,6 +26,7 @@ function ConsultacyContract({ children }) {
   const [delievery, setdelievery] = useState("");
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handleRemarkschange = (e) => {
     setRemarks(e.target.value);
   };
@@ -187,6 +186,7 @@ function ConsultacyContract({ children }) {
   };
 
   return (
+    <>
     <Modal
       id={"ConsultancyContractFormModal"}
       consumer={children}
@@ -385,6 +385,16 @@ setOpen(false)
         </div>
       </div>
     </Modal>
+      {
+        showSuccessModal &&
+        (
+      
+          <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+            setshowSuccessSuccessModal(false)
+          }}/>
+        )
+      }
+      </>
   );
 }
 

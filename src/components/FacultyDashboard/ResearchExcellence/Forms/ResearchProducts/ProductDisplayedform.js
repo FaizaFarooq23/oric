@@ -1,8 +1,7 @@
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import React, { useState, useEffect } from "react";
-import { Label } from "recharts";
-import axios from "axios";
+import SuccessModal from "../../components/UI/SuccessMessage";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 function Product_DisplayedForm({children}) {
@@ -20,6 +19,7 @@ function Product_DisplayedForm({children}) {
   const [Name_of_Forum, setName_of_Forum] = useState("");
   const [Detail_of_Forum, setDetail_of_Forum] = useState("");
   const [Financial_support, setFinancial_support] = useState("");
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const [Breif, setBreif] = useState("");
   const [stage, setStage] = useState(1);
   const [errors, setErrors] = useState({});
@@ -188,6 +188,7 @@ function Product_DisplayedForm({children}) {
 
       setOpen(false);
       resetFormFields();
+      setshowSuccessSuccessModal(true)
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
@@ -196,6 +197,7 @@ function Product_DisplayedForm({children}) {
   };
 
   return (
+    <>
     <Modal
       id={"Product_DisplayedFormModal"}
       consumer={children}
@@ -417,7 +419,18 @@ function Product_DisplayedForm({children}) {
       )}
     </div>
      </Modal>
+         {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          } 
+            </>
   );
+
 }
 
 export default Product_DisplayedForm;

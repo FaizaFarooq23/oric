@@ -56,13 +56,17 @@ const handleDeleteProject = async (id) => {
       {isFormVisible && (
     <Product_DisplayedForm/>
       )}
-      {Product_DisplayedData.map((data, index) => (
-        <div className= "flex flex-col "key={index}>
-          <Product_Displayedfield data={data} onDelete={handleDeleteProject} />
-        
+         {Product_DisplayedData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
         </div>
-      ))}
-    
+      ) : (
+        Product_DisplayedData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Product_Displayedfield data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
         {
           showDeleteSuccessModal &&
           (

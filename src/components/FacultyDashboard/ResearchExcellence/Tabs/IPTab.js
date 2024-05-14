@@ -63,11 +63,17 @@ export default function IPTab() {
           setShowDeleteSuccessModal(false)
         }} />}
 
-      {IPandPatentData.map((data, index) => (
-        <div className= "flex flex-col " key={index}>
-          <IPfield data={data} onDelete={handleDeleteProject} />
+{IPandPatentData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
         </div>
-      ))}
+      ) : (
+        IPandPatentData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <IPfield data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
     </div>
   );
 }

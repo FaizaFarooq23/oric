@@ -5,13 +5,10 @@ import { Label } from "recharts";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
-import SavedSuccessfullyModal from "@/components/FacultyDashboard/Profile/components/Common/SuccessMessage";
 import SuccessModal from "../../components/UI/SuccessMessage";
 function IPandPatentForm({ children }) {
   const [errors, setErrors] = useState({});
-  const [isDataSaved, setIsDataSaved] = useState(true);
-  const [showModal, setShowModal] = useState(true); // Set showModal to true by default
-
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const [isOpen, setOpen] = useModalState();
   const [Name_of_leadInventor, setName_of_leadInventor] = useState("");
   const [Designation_of_leadInventor, setDesignation_of_leadInventor] =
@@ -100,7 +97,7 @@ function IPandPatentForm({ children }) {
     } else {
       newErrors.TitleofInvention = "";
     }
-    if (Date_of_disclosure.trim() === "" && type==="IP disclosure") {
+    if (Date_of_disclosure.trim() === "" && type==="IP disclosures") {
       newErrors.Date_of_disclosure = "Date of Disclosure is required";
       valid = false;
     } else {
@@ -225,16 +222,8 @@ function IPandPatentForm({ children }) {
 
       setOpen(false);
       console.log(res);
-      setShowModal(true);
-      <SuccessModal isOpen={showModal}>
-      <div className="flex flex-row -z-40">
-        <div>
-        <h1 className="text-lg m-4 text-center font-semibold">
-            Select type of information you want to provide
-          </h1>
-        </div>
-      </div>
-    </SuccessModal>
+    setshowSuccessSuccessModal(true)
+     
 
     } catch (error) {
       console.error("Error inserting information:", error);
@@ -430,7 +419,7 @@ function IPandPatentForm({ children }) {
           <>
             <div className="grid gap-y-8 grid-col w-960 m-auto max-h-screen overflow-y-scroll bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
               <div>
-                <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 border-black">
+                <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
                   Details of Patent Department or Patent Authority
                 </h1>
               </div>
@@ -588,6 +577,16 @@ function IPandPatentForm({ children }) {
         )}
       </div>
     </Modal>
+    {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
+          
         </>
   );
 }

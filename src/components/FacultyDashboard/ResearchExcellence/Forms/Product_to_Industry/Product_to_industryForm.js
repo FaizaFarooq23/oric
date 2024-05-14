@@ -5,6 +5,7 @@ import { Label } from "recharts";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import SuccessModal from "../../components/UI/SuccessMessage";
 function Product_to_IndustryForm({children}) {
   const [errors, setErrors] = useState({});
   const [isOpen, setOpen] = useModalState();
@@ -25,9 +26,7 @@ function Product_to_IndustryForm({children}) {
   const [Financial_support, setFinancial_support] = useState("");
   const [PdProof, setPdProof] = useState("");
   const [stage, setStage] = useState(1);
-  const Dialog = ({ isOpen, onClose, heading, message }) => {
-    if (!isOpen) return null;
-  };
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
   };
@@ -196,6 +195,7 @@ function Product_to_IndustryForm({children}) {
 
       setOpen(false);
       resetInventionFormFields()
+      setshowSuccessSuccessModal(true)
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
@@ -203,6 +203,7 @@ function Product_to_IndustryForm({children}) {
   };
 
   return (
+    <>
     <Modal
     id={"Product_to_IndustryFormModal"}
     consumer={children}
@@ -213,7 +214,7 @@ function Product_to_IndustryForm({children}) {
       {stage === 1 && (
         <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
           <div>
-            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+            <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
              Enter Infromation of  Research products / process / prototype gone into prefeasibility / industrial scale testing or prototype development
             </h1>
           </div>
@@ -353,7 +354,7 @@ function Product_to_IndustryForm({children}) {
         <>
           <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
             <div>
-              <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 border-black">
+              <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
                 Details of Partner
               </h1>
             </div>
@@ -400,7 +401,7 @@ function Product_to_IndustryForm({children}) {
       {stage === 4 && (
         <>
           <div className="grid gap-y-8 grid-col bg-white max-h-screen overflow-y-scroll shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+            <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
               Additional Details
             </h1>
             <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
@@ -464,6 +465,17 @@ function Product_to_IndustryForm({children}) {
       )}
     </div>
     </Modal>
+    {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
+    </>
+
   );
 }
 

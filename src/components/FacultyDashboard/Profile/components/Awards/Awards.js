@@ -25,15 +25,44 @@ export default function AwardsModal({ children }) {
   const handleRelevantCertificateChange = (option) => {
     setRelevant_Certificate(option);
   };
-  const validateFormStage1 = () => {
+   
+  const checkExistingAward = async () => {
+    try {
+      // Check if an award with the same title already exists for the user
+      const existingAwardsResponse = await axios.get(`/api/faculty/Awards/getAwards`, {
+        params: {
+          username: session.user.username,
+          title: title,
+        },
+      });
+  
+      const existingAwards = existingAwardsResponse.data;
+  
+      return existingAwards.some(Awards => Awards.Title_of_award === title);
+    } catch (error) {
+      console.error("Error checking existing award:", error);
+      return false;
+    }
+  };
+  
+  
+  const validateFormStage1 =async () => {
     let valid = true;
     const newErrors = {};
 
     if (title.trim() === "") {
-      newErrors.title= "Title  is required";
+      newErrors.title = "Title is required";
       valid = false;
     } else {
-      newErrors.title= "";
+      // Check if an award with the same title already exists for the user
+      const isExistingAward = await checkExistingAward();
+  
+      if (isExistingAward) {
+        newErrors.title = "An award with this title already exists for you";
+        valid = false;
+      } else {
+        newErrors.title = "";
+      }
     }
     if (organization_name.trim() === "") {
       newErrors.organization_name= "Organiation is required";
@@ -150,10 +179,10 @@ export default function AwardsModal({ children }) {
     }
   };
  // Define a function to handle moving to the next stage
- const nextStage = () => {
+ const nextStage =async () => {
   switch (stage) {
     case 1:
-      if (validateFormStage1()) {
+      if (await validateFormStage1()) {
         setStage(stage + 1);
       }
       break;

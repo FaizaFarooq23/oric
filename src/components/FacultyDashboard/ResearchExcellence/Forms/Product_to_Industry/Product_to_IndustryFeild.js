@@ -3,7 +3,7 @@ import React ,{useState} from "react";
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import Product_to_Industrydata from "./Product_to_industryData";
 
-export default function Product_to_IndustryFeillds({data ,onDelete}) {
+export default function Product_to_IndustryFeilds({data ,onDelete}) {
   const [showMore, setShowMore] = useState(false);
   const [isformVisible, setisformVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

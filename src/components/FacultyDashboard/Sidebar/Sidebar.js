@@ -5,8 +5,8 @@ import {
   IoLogOutOutline,
   IoPersonOutline,
   IoPerson,
-  IoSettingsOutline,
-  IoSettings,
+  IoDocumentTextOutline,
+  IoDocumentText,
 } from "react-icons/io5";
 import { useRouter } from "next/router";
 import {
@@ -89,12 +89,12 @@ export default function Sidebar() {
             />
           )}
           {router.pathname !== "/settings" ? (
-            <IoSettingsOutline className="h-6 w-6 text-white cursor-pointer"
+            <IoDocumentTextOutline className="h-6 w-6 text-white cursor-pointer"
             onClick={handleSettingsClick}
 
             />
           ) : (
-            <IoSettings
+            <IoDocumentText
               className="h-6 w-6 text-white cursor-pointer"
             />
           )}

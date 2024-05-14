@@ -4,12 +4,13 @@ import { Label } from 'recharts';
 import Modal, { useModalState } from "react-simple-modal-provider";
 import { signIn, signOut, useSession } from 'next-auth/react';
 import axios from "axios";
-import SuccessModal from '../../components/UI/SuccessMessage';
+import SuccessModal from "../../components/UI/SuccessMessage";
 import 'react-toastify/dist/ReactToastify.css';
 function Liasendeveloped({ children }) {
     const [isOpen, setOpen] = useModalState();
     const {data: session} = useSession();
-  const[showModal,setShowModal]=useState()
+    const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+
   
     useEffect(() => {
       console.log(session)
@@ -36,12 +37,7 @@ function Liasendeveloped({ children }) {
           });
     
           setOpen(false);
-
-          setShowModal(true)
-          setTimeout(() => {
-            setShowModal(false);
-        }, 3000);
-
+setshowSuccessSuccessModal(true)
 
           setLiasendeveloped("");
             setDateofExecution("");
@@ -52,6 +48,7 @@ function Liasendeveloped({ children }) {
       }
 
     return (
+      <>
         <Modal
         id={"LiasendevelopedFormModal"}
         consumer={children}
@@ -83,11 +80,19 @@ function Liasendeveloped({ children }) {
             </div>
           
               </div> 
-              <SuccessModal isOpen={showModal}>
-               
-            </SuccessModal>
         
         </Modal>
+        {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
+        </>
+
     )
 }
 

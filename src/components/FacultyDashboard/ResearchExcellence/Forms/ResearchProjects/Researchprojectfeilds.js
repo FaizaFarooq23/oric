@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { FaTimes, FaEdit } from 'react-icons/fa'; 
-
+import { FaTimes, } from "react-icons/fa";
 import { FaPencil, FaCheck } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Researchprojectdata from "./Researchprojectdata";
@@ -10,7 +9,6 @@ import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dr
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import SuccessModal from "../../components/UI/SuccessMessage";
 export default function Researchprojectfeilds({ data, onDelete }) {
-  const [isformVisible, setisformVisible] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editingproject, setEditingproject] = useState(false);
   const [project_id, setProjectId] = useState(null);
@@ -53,28 +51,26 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       setStatus_of_proposal(data.Status_of_project);
     }
   }, [data]);
-const resetinfofeilds=()=>{
-            setStatus_of_proposal("Submitted");
-            setStatus_of_project("Ongoing");
-            setORIC_overhead("");
-            setDateofApproval("");
-            setFundingApproved("");
-            setFundingRealesed("");
-            setFundingUtilized("");
-            setfundingagency("");
-            setDateofCompletion("");
+  const resetinfofeilds = () => {
+    setStatus_of_proposal("Submitted");
+    setStatus_of_project("Ongoing");
+    setORIC_overhead("");
+    setDateofApproval("");
+    setFundingApproved("");
+    setFundingRealesed("");
+    setFundingUtilized("");
+    setfundingagency("");
+    setDateofCompletion("");
+  };
 
-};
-
-const resetprojectfeilds=()=>{
-  setStatus_of_project("Ongoing");
- setdelivery("")
-  setFundingRealesed("");
-  setFundingUtilized("");
-  setfundingagency("");
-  setDateofCompletion("");
-
-};
+  const resetprojectfeilds = () => {
+    setStatus_of_project("Ongoing");
+    setdelivery("");
+    setFundingRealesed("");
+    setFundingUtilized("");
+    setfundingagency("");
+    setDateofCompletion("");
+  };
   const updateinfo = async () => {
     if (project_id) {
       try {
@@ -94,7 +90,7 @@ const resetprojectfeilds=()=>{
         );
         console.log(res);
         setEditing(false);
-        resetinfofeilds()
+        resetinfofeilds();
         setEditingproject(false);
         setShowSuccessModal(true);
       } catch (error) {
@@ -102,7 +98,7 @@ const resetprojectfeilds=()=>{
       }
     }
   };
-  
+
   const updateprojectinfo = async () => {
     if (project_id) {
       try {
@@ -118,8 +114,8 @@ const resetprojectfeilds=()=>{
           }
         );
         console.log(res);
-      setShowSuccessModal(true)
-      resetprojectfeilds()
+        setShowSuccessModal(true);
+        resetprojectfeilds();
         setEditingproject(false);
       } catch (error) {
         console.error("Error updating information:", error);
@@ -140,7 +136,7 @@ const resetprojectfeilds=()=>{
       <div className={`flex  flex-row  justify-between px-10 py-8  `}>
         <div className={`flex flex-col w-52  gap-y-4 m-3  gap-x-8`}>
           <div className=" flex items-start justify-start ">
-            {" "}
+           
             <span className="text-gray-500  font-medium">Title</span>
           </div>
           <div className="flex items-end justify-start ">
@@ -149,7 +145,7 @@ const resetprojectfeilds=()=>{
         </div>
         <div className={`flex flex-col w-48 gap-y-4 m-3 gap-x-8`}>
           <div className=" flex items-start justify-start w-40">
-            {" "}
+           
             <span className="text-gray-500  font-medium">Thematic Area</span>
           </div>
           <div className="flex items-end justify-start ">
@@ -170,15 +166,19 @@ const resetprojectfeilds=()=>{
                         Update Information
                       </h1>
                       <div className="flex justify-end items-end gap-x-6">
-                      <span>
+                        <span>
                           <FaCheck
                             className="text-base text-green-500  h-4 w-4 cursor-pointer"
                             onClick={updateinfo}
                           />
                         </span>
-        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={()=>{setEditing(false)}} />
-      
-      </div>
+                        <FaTimes
+                          className="text-red-500 text-xl  cursor-pointer"
+                          onClick={() => {
+                            setEditing(false);
+                          }}
+                        />
+                      </div>
                     </div>
 
                     <div className="flex flex-row ">
@@ -189,7 +189,7 @@ const resetprojectfeilds=()=>{
                           value={Status_of_proposal}
                           handleOptionChange={handleStatus_of_proposalChange}
                         />
-                        
+
                         {data.type_of_research === "Solo Project" &&
                           data.category === "HEC" &&
                           Status_of_proposal === "Approved" && (
@@ -254,7 +254,6 @@ const resetprojectfeilds=()=>{
                               type={"date"}
                               required
                             />
-                            
                           </>
                         )}
                         {data.typeofresearch !== "Contract Research" &&
@@ -269,31 +268,27 @@ const resetprojectfeilds=()=>{
                             </div>
                           )}
                       </div>
-                      
-                    
                     </div>
-                    {  Status_of_project==="Completed" &&
-  <>
-                      
-  <label
-    htmlFor="textarea"
-    className="text-base font-medium text-black"
-  >
-    Write key project deliverables
-    <span className="text-red-500">*</span>
-  </label>
-  <textarea
-    className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-    rows="5"
-    cols="50"
-    id="Textarea"
-    value={delivery}
-    required
-    onChange={handledeliverychange}
-  />
-
-</>
-                      }
+                    {Status_of_project === "Completed" && (
+                      <>
+                        <label
+                          htmlFor="textarea"
+                          className="text-base font-medium text-black"
+                        >
+                          Write key project deliverables
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                          className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                          rows="5"
+                          cols="50"
+                          id="Textarea"
+                          value={delivery}
+                          required
+                          onChange={handledeliverychange}
+                        />
+                      </>
+                    )}
                   </div>
                 </Modal>
               ) : (
@@ -318,9 +313,15 @@ const resetprojectfeilds=()=>{
                 />
               )}
             </span>
-            {showSuccessModal && <SuccessModal isOpen={showSuccessModal} p={`Your Data Has Been Updated`} onClose={()=>{
-          setShowSuccessModal(false)
-        }} />}
+            {showSuccessModal && (
+              <SuccessModal
+                isOpen={showSuccessModal}
+                p={`Your Data Has Been Updated`}
+                onClose={() => {
+                  setShowSuccessModal(false);
+                }}
+              />
+            )}
           </div>
           <div className="flex justify-start ">
             <span className="text-black ">{data.Status_of_proposal} </span>
@@ -328,7 +329,7 @@ const resetprojectfeilds=()=>{
         </div>
         <div className={`flex flex-col w-48 gap-y-4 m-3   gap-x-8`}>
           <div className=" flex items-start justify-start w-48">
-            {" "}
+           
             <span className="text-gray-500  font-medium">
               Name of Research Grant
             </span>
@@ -340,7 +341,7 @@ const resetprojectfeilds=()=>{
 
         <div className={`flex flex-col gap-y-4  w-48 m-3 gap-x-8`}>
           <div className=" flex items-start justify-start">
-            {" "}
+           
             <span className="text-gray-500  font-medium">Type of Research</span>
           </div>
 
@@ -356,23 +357,27 @@ const resetprojectfeilds=()=>{
                   isOpen={editingproject}
                   onRequestClose={() => setEditingproject(false)}
                   contentLabel="Edit Project Status"
-                  className={`flex   my-10 w-4/5 b-2-red   mx-auto  bg-white shadow-lg rounded-md p-4`}
+                  className={`flex my-10 w-4/5  mx-auto   bg-white shadow-lg rounded-md p-4`}
                 >
                   <div className="flex px-10 py-4  flex-col">
-                  <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
+                    <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
                       <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
                         Update Information
                       </h1>
                       <div className="flex justify-end items-end gap-x-6">
-                      <span>
+                        <span>
                           <FaCheck
                             className="text-base text-green-500  h-4 w-4 cursor-pointer"
-                            onClick={updateinfo}
+                            onClick={updateprojectinfo}
                           />
                         </span>
-        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={()=>{setEditing(false)}} />
-      
-      </div>
+                        <FaTimes
+                          className="text-red-500 text-xl  cursor-pointer"
+                          onClick={() => {
+                            setEditingproject(false);
+                          }}
+                        />
+                      </div>
                     </div>
 
                     <div className="flex ">
@@ -384,12 +389,6 @@ const resetprojectfeilds=()=>{
                           handleOptionChange={handleStatus_of_projectChange}
                           required
                         />
-                        <span>
-                          <FaCheck
-                            className="text-base text-green-500  h-4 w-4 cursor-pointer"
-                            onClick={updateprojectinfo}
-                          />
-                        </span>
                         {Status_of_project === "Completed" && (
                           <>
                             <InputField
@@ -411,7 +410,6 @@ const resetprojectfeilds=()=>{
                               type={"date"}
                               required
                             />
-                            
                           </>
                         )}
                         {data.typeofresearch !== "Contract Research" &&
@@ -426,30 +424,27 @@ const resetprojectfeilds=()=>{
                             </div>
                           )}
                       </div>
-                     
                     </div>
-                    {Status_of_project==="Completed" &&
-  <>
-                      
-  <label
-    htmlFor="textarea"
-    className="text-base mt-2 font-medium text-black"
-  >
-    Write key project deliverables
-    <span className="text-red-500">*</span>
-  </label>
-  <textarea
-    className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-    rows="5"
-    cols="50"
-    id="Textarea"
-    value={delivery}
-    required
-    onChange={handledeliverychange}
-  />
-
-</>
-                      }
+                    {Status_of_project === "Completed" && (
+                      <>
+                        <label
+                          htmlFor="textarea"
+                          className="text-base mt-2 font-medium text-black"
+                        >
+                          Write key project deliverables
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                          className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                          rows="5"
+                          cols="50"
+                          id="Textarea"
+                          value={delivery}
+                          required
+                          onChange={handledeliverychange}
+                        />
+                      </>
+                    )}
                   </div>
                 </Modal>
               ) : (
@@ -475,9 +470,15 @@ const resetprojectfeilds=()=>{
                 />
               )}
             </span>
-            {showSuccessModal && <SuccessModal isOpen={showSuccessModal} p={`Your Data Has Been Updated`} onClose={()=>{
-          setShowSuccessModal(false)
-        }} />}
+            {showSuccessModal && (
+              <SuccessModal
+                isOpen={showSuccessModal}
+                p={`Your Data Has Been Updated`}
+                onClose={() => {
+                  setShowSuccessModal(false);
+                }}
+              />
+            )}
           </div>
           <div className="flex justify-start ">
             <span className="text-black ">{data.Status_of_project} </span>

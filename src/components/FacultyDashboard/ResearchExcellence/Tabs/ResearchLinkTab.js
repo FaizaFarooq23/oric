@@ -5,7 +5,6 @@ import { useModal } from 'react-simple-modal-provider';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import ResearchLinkageForm from '../Forms/ResearchLinkages/ResearchLinkageForm';
-import Liasenfeilds from '../Forms/Liasen/Liasenfeilds';
 import Linkfield from '../Forms/ResearchLinkages/Linkfeild';
 import SuccessModal from '../components/UI/SuccessMessage';
 
@@ -60,9 +59,18 @@ const handleDeleteProject = async (id) => {
       {isFormVisible && (
     <ResearchLinkageForm/>
       )}
-       {research_linkageData.map((data, index) => (
-        <Linkfield key={index} data={data} onDelete={handleDeleteProject} />
-      ))}
+       {research_linkageData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        research_linkageData.map((data, index) => (
+          <div className="flex flex-col" key={index}>
+            <Linkfield data={data} onDelete={handleDeleteProject} />
+          </div>
+        ))
+      )}
+
 
 
 {
