@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     let funding = 0;
     let research_in_a_fiscal_year = 0;
     let popular_category = null;
+    let popular_categories = {};
     let top_departments = {};
 
     const month_researches = [
@@ -45,6 +46,14 @@ export default async function handler(req, res) {
             research_in_a_fiscal_year++;
         }
 
+        // Check for popular category
+        let category = projects[i].category;
+        if (popular_categories[category]) {
+            popular_categories[category]++;
+        } else {
+            popular_categories[category] = 1;
+        }
+        
         // Check for top 5 popular departments
         let department = projects[i].Department_of_Pi;
 
@@ -76,6 +85,17 @@ export default async function handler(req, res) {
         }
     }
     }
+
+    // Get the popular category
+    let max = 0;
+    for (let key in popular_categories) {
+        if (popular_categories[key] > max) {
+            max = popular_categories[key];
+            popular_category = key;
+        }
+    }
+
+    
 
 
     res.status(200).json({ ongoing_projects, complete_projects,funding,research_in_a_fiscal_year ,popular_category,top_departments, month_researches});

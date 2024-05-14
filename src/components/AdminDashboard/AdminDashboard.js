@@ -7,11 +7,12 @@ import { FaResearchgate } from "react-icons/fa6";
 import { MdOutlineQueryStats } from "react-icons/md";
 import MonthlyChart from "./Chart/Chart";
 import StatusChart from "./Chart/StatusChart";
-const statsData = [
+const statsCardData = [
   {
     icon: <FaResearchgate />,
     total: 86,
     description: "Ongoing Researches ",
+    key: "ongoing_researches",
     color: "#004b93",
   },
 
@@ -19,29 +20,40 @@ const statsData = [
     icon: <CiMoneyCheck1 />,
     total: 30,
     description: "Funding",
+    key: "funding",
     color: "#c9002b",
   },
   {
     icon: <IoCalendarOutline />,
     total: 400,
     description: "Yearly Researches",
+    key: "yearly_researches",
     color: "#219ebc",
   },
   {
     icon: <MdOutlineQueryStats />,
     total: 120,
     description: "Popular Category",
+    key: "popular_category",
     color: "#FFC42A",
   },
 ];
 export default function AdminDashboard() {
   const [data, setData] = useState();
   const [monthly_researches, setMonthlyResearches] = useState();
-
+  const [statsData, setStatsData] = useState();
   const fetch_monthly_researches = async () => {
     const res = await fetch("/api/stats/research_stats");
     const data = await res.json();
     setMonthlyResearches(data.month_researches);
+    const my_stats_data = {
+      ongoing_researches: data.ongoing_projects,
+      funding: data.funding,
+      yearly_researches: data.research_in_a_fiscal_year,
+      popular_category: data.popular_category,
+    }
+    console.log("My Stats", my_stats_data);
+    setStatsData(my_stats_data);
   };
 
   const getData = async () => {
@@ -68,12 +80,14 @@ export default function AdminDashboard() {
       <AdminLayout>
         <div className="flex flex-col w-full px-6 gap-y-8 py-6 ">
           <div className="flex items-center justify-between gap-x-4  w-full">
-            {statsData.map((item, index) => (
+            {statsCardData.map((item, index) => (
               <StatCards
+                stats_data={statsData}
                 icon={item.icon}
                 total={item.total}
                 description={item.description}
                 color={item.color}
+                item_key={item.key}
                 key={index}
               />
             ))}
