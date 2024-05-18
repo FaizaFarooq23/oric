@@ -31,7 +31,7 @@ export default function Dashboard() {
         console.error("Error fetching personal information:", error);
       }
     };
-    if (session && session.user.username !== "admin@email.com") {
+    if (session && session.user.email !== "admin@email.com") {
       fetchData();
     }
   }, [session]);
