@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     let ongoing_projects = 0;
     let complete_projects = 0;
     let funding = 0;
+    let maxFunding = 0;
     let research_in_a_fiscal_year = 0;
     let popular_category = null;
     let popular_categories = {};
@@ -85,6 +86,8 @@ export default async function handler(req, res) {
         }
     }
     }
+
+
 
     // Get the popular category
     let max = 0;

@@ -42,6 +42,7 @@ model Admin {
     email String @unique @db.VarChar(255)
     username String @unique @db.VarChar(255)
     password String @db.VarChar(255)
+    designation String @db.VarChar(255)
     created_at DateTime @default(now())
     updated_at DateTime @default(now())
 }
@@ -58,7 +59,7 @@ model AccessLogs {
 model Research_Project {
   username String @db.VarChar(255)
   project_id Int @id @default(autoincrement())
-  title String @db.VarChar(255)
+  title String @db.VarChar(255) @unique
   Thematic_Area String @db.VarChar(255)
   Name_of_Research_Grant String @db.VarChar(255)
   category String? @db.VarChar(255)

@@ -18,7 +18,7 @@ export default function PersonalInfo() {
   const { user } = useContext(UserContext)
 
   useEffect(() => {
-    if (user.username === "admin") {
+    if (user.username === "admin@email.com") {
       return;
     }
     console.log(user)

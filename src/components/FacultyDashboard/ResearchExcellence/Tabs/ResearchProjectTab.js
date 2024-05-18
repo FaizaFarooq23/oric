@@ -61,7 +61,7 @@ export default function ResearchProjectTab() {
     <div>
       <div className='grid grid-cols-2'>
       {/* Dropdown for filter options */}
-      <div className="flex m-4 ">
+      <div className="flex py-6 ">
         <div className="mr-4 ">
           <select
             value={filterOption}

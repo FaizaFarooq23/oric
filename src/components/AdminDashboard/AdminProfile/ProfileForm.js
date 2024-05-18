@@ -22,8 +22,8 @@ export default function ProfileForm({ setFormData, formData}) {
     <div className='w-11/12'>
       <form onSubmit={handleSubmit}>
         <div className="mb-5 flex flex-col gap-5 sm:flex-row">
-          <div className="w-full sm:w-1/2">
-            <label className="mb-3 block text-sm font-medium text-black" htmlFor="fullName">
+          <div className=" ">
+            <label className="mb-3 text-left block text-sm font-medium text-black" htmlFor="fullName">
               Full Name
             </label>
             <div className="relative flex items-center">
@@ -42,7 +42,7 @@ export default function ProfileForm({ setFormData, formData}) {
             </div>
           </div>
 
-          <div className="w-full sm:w-1/2">
+          <div className="text-left">
             <label className="mb-3 block text-sm font-medium text-black">
               Designation
             </label>
@@ -56,17 +56,17 @@ export default function ProfileForm({ setFormData, formData}) {
             />
           </div>
         </div>
-
-        <div className="mb-5">
-          <label className="mb-3 block text-sm font-medium text-black" htmlFor="emailAddress">
+        <div className="flex  gap-x-8 items-center mb-5">
+        <div className="">
+          <label className="mb-3 text-left block text-sm font-medium text-black" htmlFor="emailAddress">
             Email Address
           </label>
-          <div className="relative">
+          <div className="flex items-start relative">
             <span className="absolute text-xl left-4 top-4">
               <FaRegEnvelope />
             </span>
             <input
-              className="w-full rounded placeholder:text-gray-400 border border-stroke bg-gray py-3 pl-11 pr-4 text-black focus:border-blue-900 focus-visible:outline-none"
+              className="rounded placeholder:text-gray-400 border border-stroke bg-gray py-3 pl-11 pr-4 text-black focus:border-blue-900 focus-visible:outline-none"
               type="email"
               name="emailAddress"
               id="emailAddress"
@@ -77,13 +77,13 @@ export default function ProfileForm({ setFormData, formData}) {
           </div>
         </div>
 
-        <div className="flex w-full justify-between gap-x-8 items-center mb-5">
-          <div className='w-full'>
+   
+          <div className='text-left'>
             <label className="mb-3 block text-sm font-medium text-black" htmlFor="Password">
               Password
             </label>
             <input
-              className="w-full placeholder:text-gray-400 rounded border border-stroke bg-gray px-4 py-3 text-black focus:border-blue-900 focus-visible:outline-none"
+              className=" placeholder:text-gray-400 rounded border border-stroke bg-gray px-4 py-3 text-black focus:border-blue-900 focus-visible:outline-none"
               type="password"
               name="password"
               id="Password"
@@ -92,12 +92,12 @@ export default function ProfileForm({ setFormData, formData}) {
               onChange={handleChange}
             />
           </div>
-          <div className='w-full'>
-            <label className="mb-3 block text-sm font-medium text-black" htmlFor="ConfirmPassword">
+          <div className=''>
+            <label className="mb-3 text-left block text-sm font-medium text-black" htmlFor="ConfirmPassword">
               Confirm Password
             </label>
             <input
-              className="w-full placeholder:text-gray-400 rounded border border-stroke bg-gray px-4 py-3 text-black focus:border-blue-900 focus-visible:outline-none"
+              className=" placeholder:text-gray-400 rounded border border-stroke bg-gray px-4 py-3 text-black focus:border-blue-900 focus-visible:outline-none"
               type="password"
               name="confirmPassword"
               id="ConfirmPassword"

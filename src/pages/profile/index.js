@@ -11,7 +11,7 @@ export default function Index() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (user && user.username === 'admin') {
+    if (user && user.username === 'admin@email.com') {
       setIsAdmin(true);
     }
   }, [user]);
@@ -75,13 +75,14 @@ export default function Index() {
       {!isAdmin ? (
         <Baselayout>
           {user &&
-            <Profile profilePhoto={profilePhoto} coverPhoto={coverPhoto} handleProfilePhotoUpload={handleProfilePhotoUpload} handleCoverPhotoUpload={handleCoverPhotoUpload}
-              username={user.name}
-              designation={user.designation}
-              email={user.email}
-              contactNumber={user.contact_number}
-              nationality={user.department}
-            />
+            // <Profile profilePhoto={profilePhoto} coverPhoto={coverPhoto} handleProfilePhotoUpload={handleProfilePhotoUpload} handleCoverPhotoUpload={handleCoverPhotoUpload}
+            //   username={user.name}
+            //   designation={user.designation}
+            //   email={user.email}
+            //   contactNumber={user.contact_number}
+            //   nationality={user.department}
+            // />
+            <div>Hello</div>
           }
         </Baselayout>
       ) : (
