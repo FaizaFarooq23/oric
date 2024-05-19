@@ -77,10 +77,6 @@ export default function PersonalInfo() {
   }, [user]);
 
 
-
-
-
-
   // Update the contact info of the user
   useEffect(() => {
     const updateContactInfo = async () => {
@@ -104,6 +100,8 @@ export default function PersonalInfo() {
       updateContactInfo();
     }
   }, [contactInfo]);
+
+  
 
   return (
     <div className="">

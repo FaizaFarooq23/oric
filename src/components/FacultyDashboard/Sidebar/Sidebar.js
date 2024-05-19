@@ -37,7 +37,6 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     logoutUser();
-
     signOut({ callbackUrl: "http://localhost:3000/" });
   };
 

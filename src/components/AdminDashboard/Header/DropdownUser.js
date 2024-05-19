@@ -5,6 +5,7 @@ import { BsPerson } from "react-icons/bs";
 import { TbSettings } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 import { UserContext } from "@/context/UserContext/GlobalProvider";
+import { signOut } from "next-auth/react";
 
 const DropdownUser = () => {
   const [userEmail, setUserEmail] = useState(null);
@@ -44,6 +45,12 @@ const DropdownUser = () => {
       setUserEmail(user.email);
     }
   }, [user]);
+
+ const {logoutUser} = useContext(UserContext)
+  const handleLogout = () => {
+    logoutUser();
+    signOut({ callbackUrl: "http://localhost:3000/" });
+  };
 
   return (
     <div className="">
@@ -98,22 +105,12 @@ const DropdownUser = () => {
               Profile
             </Link>
           </li>
-          <li className="flex items-center">
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base"
-            >
-              <TbSettings className="text-xl" />
-              Account Settings
-            </Link>
-          </li>
         </ul>
-        <button className="flex items-center gap-3 px-3 py-4 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base">
+        <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-4 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base">
           <BiLogOut className="text-xl" />
           Log Out
         </button>
       </div>
-      {/* <!-- Dropdown End --> */}
     </div>
   );
 };
