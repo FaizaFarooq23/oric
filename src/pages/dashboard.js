@@ -14,24 +14,26 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`/api/faculty/get_faculty`, {
+        params: {
+          username: session.user.username,
+        }, 
+      });
+      console.log(res);
+      updateUser(res.data.faculty);
+      setIsAdmin(false);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching personal information:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`/api/faculty/get_faculty`, {
-          params: {
-            username: session.user.username,
-          }, 
-        });
-        console.log(username)
-        console.log(res);
-        updateUser(res.data.faculty);
-        setIsAdmin(false);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching personal information:", error);
-      }
-    };
+    
     if (session && session.user.email !== "admin@email.com") {
+      console.log(session.user)
       fetchData();
     }
   }, [session]);
