@@ -7,6 +7,7 @@ import axios from "axios";
 import CivilEventsModal from "../components/Events/Events";
 import EventFields from "../components/Events/EventFields";
 import SuccessModal from "../../ResearchExcellence/components/UI/SuccessMessage";
+import { deleteFile } from "../../ResearchExcellence/Utility/Deleteimage";
 export default function Event() {
   const { open: openModal } = useModal("CivilEventsModal");
   const [isFormVisible, setFormVisibility] = useState(false);
@@ -36,8 +37,16 @@ export default function Event() {
     }
     // setEducationalData(data)
   }, [session]);
-  const handleDeleteProject = async (id) => {
+  const handleDeleteProject = async (id,filename) => {
     try {
+      await deleteFile(
+        session.user.username,
+        "civil_engagement_events", // or any other table name relevant to your project
+          filename, // The filename you want to delete
+        `/api/Imagesfeilds/filedelete`
+      );
+      alert("Project and associated file deleted successfully");
+    
       await axios.delete(`/api/faculty/Events/Delete_event?id=${id}`);
       console.log('Project deleted successfully');
       setShowDeleteSuccessModal(true);     } catch (error) {

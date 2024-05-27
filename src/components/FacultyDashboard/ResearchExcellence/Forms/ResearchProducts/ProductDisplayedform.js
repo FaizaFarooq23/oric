@@ -4,6 +4,10 @@ import React, { useState, useEffect } from "react";
 import SuccessModal from "../../components/UI/SuccessMessage";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
+import axios from "axios";
+import useFieldCheck from "../../Utility/CheckExsistingFeilds";
+
+import { uploadFile } from "../../Utility/Saveimagefiles";
 function Product_DisplayedForm({children}) {
   const [isOpen, setOpen] = useModalState();
   const [Name_of_lead, setName_of_lead] = useState("");
@@ -23,9 +27,17 @@ function Product_DisplayedForm({children}) {
   const [Breif, setBreif] = useState("");
   const [stage, setStage] = useState(1);
   const [errors, setErrors] = useState({});
-  const Dialog = ({ isOpen, onClose, heading, message }) => {
-    if (!isOpen) return null;
-  };
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+  const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
+    session?.user?.username,
+    'Title',
+    Title,
+  `/api/Research_products/get_product_displayed`
+    
+  );
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
   };
@@ -41,6 +53,9 @@ function Product_DisplayedForm({children}) {
 
     if (Title.trim() === "") {
       newErrors.Title= "Title of Invention is required";
+      valid = false;
+    } else if (isExistingProject) {
+      newErrors.Title = "A Project with this title already exists for you";
       valid = false;
     } else {
       newErrors.Title= "";
@@ -94,6 +109,20 @@ function Product_DisplayedForm({children}) {
     setErrors(newErrors);
     return valid;
   };
+  const validateFormStage4 = () => {
+    let valid = true;
+    const newErrors = {};
+
+    if (!Breif) {
+      newErrors.Breif = "Breif copy is required";
+      valid = false;
+    } else {
+      newErrors.Breif = "";
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
   // Define a function to handle moving to the next stage
   const nextStage = () => {
     switch (stage) {
@@ -121,6 +150,7 @@ function Product_DisplayedForm({children}) {
   const resetFormFields = () => {
     setOpen(false);
     setName_of_lead("");
+    setBreif(null);
     setDesignation_of_lead("");
     setDepartment_of_lead("");
     setTitle("");
@@ -144,15 +174,11 @@ function Product_DisplayedForm({children}) {
       setStage(1);
     }
   };
-  const { data: session } = useSession();
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
+  
   const handleSubmit = async () => {
     try {
       // Validate required fields
-      if (!validateFormStage3 ) {
+      if (!validateFormStage4 ) {
         alert("Please fill all the required fields");
         return;
       }
@@ -163,7 +189,24 @@ function Product_DisplayedForm({children}) {
         signOut();
         return;
       }
-
+      try {
+        if (Breif) {
+          await uploadFile(
+            Breif,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${Title}_BreifCopy`,
+            "product_displayed"
+          );
+        }
+        else{
+          alert("Please upload Breif copy")
+        }
+  
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error")
+    }
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -208,7 +251,7 @@ function Product_DisplayedForm({children}) {
       {stage === 1 && (
         <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
           <div>
-            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+            <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
              Enter Infromation of  Product Displayed or Represented At National or Internation level
             </h1>
           </div>
@@ -332,7 +375,7 @@ function Product_DisplayedForm({children}) {
         <>
           <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
             <div>
-              <h1 className="text-black font-serif font-bold text-xl  py-2 m-2 border-black">
+              <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
                 Details of Forum Where Product is Displayed /Registered or Performed
               </h1>
             </div>
@@ -382,20 +425,37 @@ function Product_DisplayedForm({children}) {
       {stage === 4 && (
         <>
           <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-            <h1 className="text-black font-serif font-bold text-xl py-2 m-2 border-black">
+            <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
               Additional Details
             </h1>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-            <InputField
-                label={"Breif"}
-                value={Breif}
-                setVal={setBreif}
-                type={"file"}
-              />
+            <div className="grid grid-cols-2 gap-x-3   text-black">
+        <label className="text-base font-medium">
+      Breif Copy</label>
+      <input
+    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+    type="file"
+    defaultValue={Breif}
+    onChange={(e) => {
+      console.log("File selected:", e.target.files[0]);
+      setBreif(e.target.files[0]);
+    }}
+    required
+  />
+  {errors.Breif && (
+                <span className="text-red-500">{errors.Breif}</span>
+              )}
+ 
+    </div>
               <InputField
                 label={"Financial Support"}
                 value={Financial_support}
                 setVal={setFinancial_support}
+              />
+              <InputField
+                label={"Feild of Use"}
+                value={Feild_of_use}
+                setVal={setFeild_of_use}
               />
              
             </div>

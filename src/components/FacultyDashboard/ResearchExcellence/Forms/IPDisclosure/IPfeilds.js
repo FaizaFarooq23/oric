@@ -6,7 +6,11 @@ import { FaPencil, FaCheck } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import IPdata from "./IPdata";
+import { uploadFile } from "../../Utility/Saveimagefiles";
+import SuccessModal from "../../components/UI/SuccessMessage";
+import { signIn, signOut, useSession } from "next-auth/react";
 export default function IPfield({data ,onDelete}) {
+  const [GrantingCopy, setGrantingCopy] = useState("");
   const [showMore, setShowMore] = useState(false);
   const [isformVisible, setisformVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +18,8 @@ export default function IPfield({data ,onDelete}) {
   const [Status_of_patent, setStatus_of_patent] = useState("Filed");
   const [id, setProjectId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
-
+  const { data: session } = useSession();
+ 
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -31,11 +36,36 @@ export default function IPfield({data ,onDelete}) {
       setProjectId(data.id);
       setStatus_of_patent(data.Status_of_patent)
     }
-  }, [data]);
+    if(session){
+      console.log(session)
+    }
+  }, [data,session]);
 const resetfeilds=()=>{
   setStatus_of_patent("")
 }
-  const updateinfo = async () => {
+const UploadFile = async () => {
+  if (Status_of_patent ==="Granted") {
+    try {
+      if (GrantingCopy) {
+        await uploadFile(
+          GrantingCopy,
+          session.user.username,
+          `/api/Imagesfeilds/fileupload`,
+          `${data.Title_of_Invention}_ Grantingcopy`,
+          "ipandpatent"
+        );
+      } else {
+        alert("Please upload Filing Copy");
+      }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error");
+    }
+  } 
+  
+  };
+const updateinfo = async () => {
+    await UploadFile();
     if (id) {
       try {
         const res = await axios.post(`/api/IPandPatent/update_ipdisclosures?id=${id}`, {
@@ -50,14 +80,27 @@ const resetfeilds=()=>{
       }
     }
   };
+  const getFilenamesToDelete = (data) => {
+    let filenames = [];
+    if ((Status_of_patent === "Granted") && (`${data.Type}`!=="IP disclosures")) {
+      filenames.push(`${data.Title_of_Invention}_Grantingcopy.png`);
+    }
+    if (data.Status_of_patent ==="Granted"||data.Status_of_patent==="Filed") {
+      filenames.push(`${data.Title_of_Invention}_Filingcopy.png`);
+    }
+    
+    return filenames;
+  };
+  
+  
   // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
   return (
-    <div className="flex flex-col bg-white shadow-lg m-4 h-48 rounded-md   ">
+    <div className="flex flex-col bg-white shadow-lg m-4 h-48 rounded-md">
        <div className="flex justify-end items-center mr-6 mt-2">
-          <button onClick={() => onDelete(data.id)}>
+          <button onClick={() => onDelete(data.id,getFilenamesToDelete(data))}>
             <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
           </button>
         </div>
@@ -104,10 +147,20 @@ Update Information
 </h1>
 
   <span> 
-    <FaCheck
-      className="text-base text-green-500  h-4 w-4 cursor-pointer"
-      onClick={updateinfo}
-    />
+  <div className="flex justify-end items-end gap-x-6">
+                        <span>
+                          <FaCheck
+                            className="text-base text-green-500  h-4 w-4 cursor-pointer"
+                            onClick={updateinfo}
+                          />
+                        </span>
+                        <FaTimes
+                          className="text-red-500 text-xl  cursor-pointer"
+                          onClick={() => {
+                            setEditing(false);
+                          }}
+                        />
+                      </div>
   </span>        
 
                   </div>
@@ -121,8 +174,25 @@ Update Information
                     value={Status_of_patent}
                     handleOptionChange={handleStatus_of_patentChange}
                   />
-                    
-
+                  {
+                    ((Status_of_patent === "Granted") && (`${data.Type}`!=="IP disclosures") && (
+                      <div className="grid grid-cols-2 gap-x-3   text-black">
+                        <label className="text-base font-medium">
+                          Granting Copy <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                          type="file"
+                          defaultValue={GrantingCopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setGrantingCopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+                       
+                      </div>
+                    ))}
                   </div>
 
                     </div>
@@ -141,12 +211,7 @@ Update Information
                   </div>
                 </>
               )}
-              {editing && (
-                <FaCheck
-                  className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
-                  onClick={updateinfo}
-                />
-              )}
+            
             </span>
           </div>
           <div className="flex justify-start ">

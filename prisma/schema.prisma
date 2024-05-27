@@ -223,7 +223,7 @@ model IPandPatent {
   Name_of_patentdept String @db.VarChar(255)
   Detail_of_patentdept String? @db.VarChar(255)
   Financial_support String? @db.VarChar(255)
-  Date_of_disclosure DateTime @db.DateTime(6)
+  Date_of_disclosure DateTime? @db.DateTime(6)
   Previous_disclosure String? @db.VarChar(255)
   Date_of_filing String? @db.VarChar(255)
   Nationality String @db.VarChar(255)

@@ -11,8 +11,8 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
   >
     <div >
     <div className="flex justify-end items-end gap-x-6">
-        {/* Edit icon */}
-        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+     
+      
         {/* Cross icon */}
         <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
       </div>
@@ -22,22 +22,22 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
            
            <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
             <div className="grid grid-cols-2 gap-x-10 w-full"> 
-            <span className="text-black text-base font-semibold border-b-2 ]">Title of Invention</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Title_of_Invention}</span>
+            <span className="text-black text-base font-semibold  ]">Title of Invention</span>
+           <span className="text-black text-base font-semibold  ">{data.Title_of_Invention}</span>
                </div> 
              
               
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Category</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Category}</span>
+            <span className="text-black text-base font-semibold  ">Category</span>
+           <span className="text-black text-base font-semibold  ">{data.Category}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Nationaity</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Nationality}</span>
+            <span className="text-black text-base font-semibold  ">Nationaity</span>
+           <span className="text-black text-base font-semibold  ">{data.Nationality}</span>
                </div>
              <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Development Status</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Development_Status}</span>
+            <span className="text-black text-base font-semibold ">Development Status</span>
+           <span className="text-black text-base font-semibold ">{data.Development_Status}</span>
             </div>
     
           </div>
@@ -45,28 +45,28 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Lead  </span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Name_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Name of Lead  </span>
+           <span className="text-black text-base font-semibold ">{data.Name_of_leadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Department of Lead  </span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Department_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Department of Lead  </span>
+           <span className="text-black text-base font-semibold ">{data.Department_of_leadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Designation of Lead </span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Designation_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Designation of Lead </span>
+           <span className="text-black text-base font-semibold ">{data.Designation_of_leadInventor}</span>
            </div>
           </div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Details of Collaborating Indusustry Partner</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Partner</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Name_of_partner}</span>
+            <span className="text-black text-base font-semibold ">Name of Partner</span>
+           <span className="text-black text-base font-semibold ">{data.Name_of_partner}</span>
            </div>
           </div>
           <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Details of Partner</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Details of Partner</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.Detail_of_partner}
             </p>
@@ -75,28 +75,28 @@ export default function Product_to_Industrydata({ isOpen, closeModal ,data}) {
            <h1 className='text-blue-900 font-serif font-bold text-xl mt-6  py-2 border-black'>Additional Details</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Feilds of Use</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Feild_of_use}</span>
+            <span className="text-black text-base font-semibold ">Feilds of Use</span>
+           <span className="text-black text-base font-semibold ">{data.Feild_of_use}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Pd Proof</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">Pd Proof</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Financial Support</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Financial_support}</span>
+            <span className="text-black text-base font-semibold ">Financial Support</span>
+           <span className="text-black text-base font-semibold ">{data.Financial_support}</span>
            </div>
            <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Key Aspects</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Key Aspects</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.KeyAspects}
             </p>
             </span>
            </div>
            <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Remarks</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Remarks</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.Remarks}
             </p>

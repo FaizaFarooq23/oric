@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Researchprojectfeilds from '../Forms/ResearchProjects/Researchprojectfeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
-
+import { deleteFile ,deleteFiles } from '../Utility/Deleteimage';
 export default function ResearchProjectTab() {
   const { open: openModal } = useModal("ResearchProjectFormModal");
   const { data: session } = useSession();
@@ -32,8 +32,14 @@ export default function ResearchProjectTab() {
 
     fetchResearch_ProjectData();
   }, [session]);
-  const handleDeleteProject = async (project_id) => {
+  const handleDeleteProject = async (project_id, filenames) => {
     try {
+      const username = session.user.username;
+      console.log(filenames);
+      await deleteFiles(username, "research_project", filenames, `/api/Imagesfeilds/multiplefilesdelete`);
+  
+
+      // Proceed with deleting the project once all files are deleted
       await axios.delete(`/api/Research_projects/delete_research_project?projectId=${project_id}`);
       setShowDeleteSuccessDialog(true);
       console.log('Project deleted successfully');
@@ -44,6 +50,8 @@ export default function ResearchProjectTab() {
       console.error('Error deleting project:', error);
     }
   };
+  
+  
   // Filter function based on the selected options
   const filterData = (data) => {
     const statusFilter =

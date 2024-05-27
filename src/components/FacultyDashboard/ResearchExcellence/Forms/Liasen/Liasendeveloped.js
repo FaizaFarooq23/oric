@@ -61,12 +61,14 @@ setshowSuccessSuccessModal(true)
                     label={"Liasen Developed with"}
                     value={Liasendeveloped}
                     setVal={setLiasendeveloped}
+                    required
                 />
                 <InputField
                     label={"Date of Execution"}
                     value={DateofExecution}
                     setVal={setDateofExecution}
                     type={"date"}
+                    required
                 />
 
     

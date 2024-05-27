@@ -6,6 +6,8 @@ import { FaTimes, FaEdit } from 'react-icons/fa';
 import axios from "axios";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { uploadFile } from "../../Utility/Saveimagefiles";
+import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 function ConsultacyContract({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [Title_of_Project, setTitle_of_Project] = useState("");
@@ -26,7 +28,7 @@ function ConsultacyContract({ children }) {
   const [delievery, setdelievery] = useState("");
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
-  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const [showSuccessModal, setshowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handleRemarkschange = (e) => {
     setRemarks(e.target.value);
   };
@@ -52,7 +54,14 @@ function ConsultacyContract({ children }) {
     setdelievery("");
   }
   
-  // Call resetFormFields() whenever you need to reset these form fields
+ 
+  const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
+    session?.user?.username,
+    'Title',
+    Title_of_Project,
+    '/api/Research_projects/get_Consultancy_services'
+  );
+
   
   const handleconsultancy_services = (e) => {
     setconsultancy_services(e.target.value);
@@ -60,16 +69,22 @@ function ConsultacyContract({ children }) {
   useEffect(() => {
     console.log(session);
   }, [session]);
-  const validateForm = () => {
+  const validateForm = async () => {
     let valid = true;
     const newErrors = {};
 
     if (Title_of_Project.trim() === "") {
       newErrors.Title_of_Project = "Title of Project is required";
       valid = false;
-    } else {
-      newErrors.Title_of_Project = "";
     }
+    else if (isExistingProject) {
+      newErrors.Title_of_Project = "A Project with this title already exists for you";
+      valid = false;
+    } else {
+      newErrors.Title_of_Project= "";
+    }
+
+
     if (NameofPi.trim() === "") {
       newErrors.NameofPi = "Name of Pi is required";
       valid = false;
@@ -131,7 +146,12 @@ function ConsultacyContract({ children }) {
     } else {
       newErrors.delievery = "";
     }
-
+    if (!Contractcopy) {
+      newErrors.Contractcopy = "Contract copy are required";
+      valid = false;
+    } else {
+      newErrors.Contractcopy = "";
+    }
     if (Contract_value.trim() === "") {
       newErrors.Contract_value = "Contract Value is required";
       valid = false;
@@ -146,16 +166,26 @@ function ConsultacyContract({ children }) {
     return valid;
   };
   const handleSubmit = async () => {
+    const isValid = await validateForm();
+    if (isValid && (Contractcopy)) {
     try {
-      if (!validateForm()) {
-        alert("Please fill all the fields");
-        return;
-      }
       if (session.user.username === "") {
         alert("Please login to continue");
         signOut();
         return;
       }
+      try {
+        if (Contractcopy) {
+          await uploadFile(Contractcopy, session.user.username, `/api/Imagesfeilds/fileupload`,`${Title_of_Project}_Contractcopy`,"consultancy_contract");
+        }
+        else{
+          alert("Please upload Contact Copy")
+        }
+  
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error")
+    }
       const res = await axios.post(
         `/api/Research_projects/insert_consultancy_contract`,
         {
@@ -180,11 +210,17 @@ function ConsultacyContract({ children }) {
       setOpen(false);
       console.log(res);
       resetFormFields()
-    } catch (error) {
+      setshowSuccessModal(true)
+    }
+     catch (error) {
       console.error("Error inserting information:", error);
     }
-  };
-
+  }
+    
+  else{
+    alert("Please fill all the feilds");
+  }
+  }
   return (
     <>
     <Modal
@@ -324,12 +360,26 @@ setOpen(false)
               value={ORICpercent}
               setVal={setORICpercent}
             />
-            <InputField
-              label={"Contract Copy"}
-              value={Contractcopy}
-              setVal={setContractcopy}
-              type={"file"}
-            />
+              <div className="grid grid-cols-2 gap-x-3   text-black">
+        <label className="text-base font-medium">
+        Contract Copy <span className="text-red-500">*</span>
+      </label>
+      <input
+    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+    type="file"
+    defaultValue={Contractcopy}
+    onChange={(e) => {
+      console.log("File selected:", e.target.files[0]);
+      setContractcopy(e.target.files[0]);
+     
+    }}
+    required
+  />
+  {errors.Contractcopy && (
+                <span className="text-red-500">{errors.Contractcopy}</span>
+              )}
+ 
+    </div>
           </div>
           <div className="flex flex-col gap-x-10 ">
             <Dropdown
@@ -388,9 +438,8 @@ setOpen(false)
       {
         showSuccessModal &&
         (
-      
           <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
-            setshowSuccessSuccessModal(false)
+            setshowSuccessModal(false)
           }}/>
         )
       }

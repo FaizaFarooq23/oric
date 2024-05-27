@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import Product_DisplayedForm from '../Forms/ResearchProducts/ProductDisplayedform';
 import Product_Displayedfield from '../Forms/ResearchProducts/ProductDisplayedFeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
-
+import { deleteFile ,deleteFiles } from '../Utility/Deleteimage';
 export default function Product_DisplayedTab() {
   const { open: openModal } = useModal("Product_DisplayedFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
@@ -35,8 +35,15 @@ export default function Product_DisplayedTab() {
     fetchProduct_Displayeddata();
   }, [session]);
  
-const handleDeleteProject = async (id) => {
+const handleDeleteProject = async (id,filename) => {
   try {
+    await deleteFile(
+      session.user.username,
+        "product_displayed", // or any other table name relevant to your project
+        filename, // The filename you want to delete
+      `/api/Imagesfeilds/filedelete`
+    );
+
     await axios.delete(`/api/Research_products/delete_product_displayed?id=${id}`);
     console.log('Project deleted successfully');
     setShowDeleteSuccessModal(true); 

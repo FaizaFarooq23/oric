@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useModal } from 'react-simple-modal-provider';
 import { useSession } from 'next-auth/react';
 import axios from 'axios'
+import { deleteFile } from '../../ResearchExcellence/Utility/Deleteimage';
 import AwardsModal from '../components/Awards/Awards';
 import AwardsFields from '../components/Awards/Awardsfeild';
 import SuccessModal from '../../ResearchExcellence/components/UI/SuccessMessage';
@@ -41,8 +42,15 @@ export default function Awards() {
         }
         , [session]);
 
-        const handleDeleteProject = async (id) => {
+        const handleDeleteProject = async (id,filename) => {
             try {
+              await deleteFile(
+                session.user.username,
+                  "awards", // or any other table name relevant to your project
+                  filename, // The filename you want to delete
+                `/api/Imagesfeilds/filedelete`
+              );
+              alert("Project and associated file deleted successfully");
               await axios.delete(`/api/faculty/Awards/DeleteAwards?id=${id}`);
               console.log('Project deleted successfully');
               setShowDeleteSuccessModal(true);     } catch (error) {

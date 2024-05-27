@@ -7,15 +7,13 @@ import { useSession } from 'next-auth/react';
 import ResearchLinkageForm from '../Forms/ResearchLinkages/ResearchLinkageForm';
 import Linkfield from '../Forms/ResearchLinkages/Linkfeild';
 import SuccessModal from '../components/UI/SuccessMessage';
-
+import { deleteFile } from '../Utility/Deleteimage';
 export default function ResearchLinkTab() {
   const { open: openModal } = useModal("ResearchLinkageFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const {data: session} = useSession();
   const [research_linkageData, setresearch_linkageData] = useState([]);
   const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
-
-
   useEffect(() => {
     const fetchResearch_LinkageData = async () => {
       try {
@@ -35,8 +33,14 @@ export default function ResearchLinkTab() {
     fetchResearch_LinkageData();
   }, [session]);
    
-const handleDeleteProject = async (id) => {
+const handleDeleteProject = async (id,filename) => {
   try {
+    await deleteFile(
+      session.user.username,
+        "research_linkage", // or any other table name relevant to your project
+        filename, // The filename you want to delete
+      `/api/Imagesfeilds/filedelete`
+    )
     await axios.delete(`/api/Research_projects/delete_research_link?id=${id}`);
     setShowDeleteSuccessDialog(true);
       console.log('Project deleted successfully');

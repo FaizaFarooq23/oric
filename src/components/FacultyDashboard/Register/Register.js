@@ -28,24 +28,26 @@ export default function Register() {
     if (name.trim() === "") {
       newErrors.name = "Name is required";
       isValid = false;
-    }else {
-      const nameExists = await checkFieldExists(name, "name");
-      if (nameExists) {
-        newErrors.name = "Name already exists";
-        isValid = false;
-      }
     }
+    // else {
+    //   const nameExists = await checkFieldExists(name, "name");
+    //   if (nameExists) {
+    //     newErrors.name = "Name already exists";
+    //     isValid = false;
+    //   }
+    // }
   
     if (email.trim() === "") {
       newErrors.email = "Email is required";
       isValid = false;
-    } else {
-      const emailExists = await checkFieldExists(email, "email");
-      if (emailExists) {
-        newErrors.email = "Email already exists";
-        isValid = false;
-      }
-    }
+    } 
+    // else {
+    //   const emailExists = await checkFieldExists(email, "email");
+    //   if (emailExists) {
+    //     newErrors.email = "Email already exists";
+    //     isValid = false;
+    //   }
+    // }
   
     if (password.trim() === "") {
       newErrors.password = "Password is required";
@@ -65,13 +67,15 @@ export default function Register() {
     if (username.trim() === "") {
       newErrors.username = "Username is required";
       isValid = false;
-    } else {
-      const usernameExists = await checkFieldExists(username, "username");
-      if (usernameExists) {
-        newErrors.username = "Username already exists";
-        isValid = false;
-      }
     }
+    // } else {
+    //   // const usernameExists = await checkFieldExists(username, "username");
+    //   // if (usernameExists) {
+    //   //   newErrors.username = "Username already exists";
+    //   //   isValid = false;
+    //   // }
+    //   isValid = ;
+    // }
   
     if (department.trim() === "") {
       newErrors.department = "Required";
@@ -103,28 +107,28 @@ export default function Register() {
         newErrors.cnic = "Invalid CNIC format.";
         isValid = false;
       }
-      const cnicExists = await checkFieldExists(cnic, "cnic");
-      if (cnicExists) {
-        newErrors.cnic = "cnic already exists";
-        isValid = false;
-      }
+      // const cnicExists = await checkFieldExists(cnic, "cnic");
+      // if (cnicExists) {
+      //   newErrors.cnic = "cnic already exists";
+      //   isValid = false;
+      // }
     }
   
     setErrors(newErrors);
     return isValid;
   };
   
-  const checkFieldExists = async (value, field) => {
-    try {
-      const response = await axios.get('/api/faculty/get_faculty', {
-        params: { [field]: value },
-      });
-      return response.status === 200;
-    } catch (error) {
-      console.error('Error checking field existence:', error);
-      return false;
-    }
-  };
+  // const checkFieldExists = async (value, field) => {
+  //   try {
+  //     const response = await axios.get('/api/faculty/get_faculty', {
+  //       params: { [field]: value },
+  //     });
+  //     return response.status === 200;
+  //   } catch (error) {
+  //     console.error('Error checking field existence:', error);
+  //     return false;
+  //   }
+  // };
   const handleRegister = async () => {
     if (await validateForm()) {
       try {

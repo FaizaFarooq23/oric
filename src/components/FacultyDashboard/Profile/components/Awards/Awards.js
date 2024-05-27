@@ -4,6 +4,7 @@ import Modal, { useModalState } from "react-simple-modal-provider";
 import InputField from "../Common/InputField";
 import RadioButtonGroup from "../Common/Radiobutton";
 import axios from "axios";
+import { uploadFile } from "@/components/FacultyDashboard/ResearchExcellence/Utility/Saveimagefiles";
 import SuccessModal from "@/components/FacultyDashboard/ResearchExcellence/components/UI/SuccessMessage";
 export default function AwardsModal({ children }) {
   const [isOpen, setOpen] = useModalState();
@@ -20,6 +21,7 @@ export default function AwardsModal({ children }) {
   const [stage, setStage] = useState(1);
   const [errors, setErrors] = useState({});
   const { data: session } = useSession();
+
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   const handleRelevantCertificateChange = (option) => {
@@ -39,6 +41,7 @@ export default function AwardsModal({ children }) {
       const existingAwards = existingAwardsResponse.data;
   
       return existingAwards.some(Awards => Awards.Title_of_award === title);
+      
     } catch (error) {
       console.error("Error checking existing award:", error);
       return false;
@@ -119,6 +122,14 @@ export default function AwardsModal({ children }) {
     } else {
       newErrors.details = "";
     }
+    
+    if (!copy_of_Mou) {
+      newErrors.copy_of_Mou = "Copy of MoU is required";
+      valid = false;
+    } else {
+      newErrors.copy_of_Mou = "";
+    }
+  
   
     setErrors(newErrors);
     return valid;
@@ -148,7 +159,7 @@ export default function AwardsModal({ children }) {
   }, [session]);
   const handleSubmit = async () => {
     try {
-      if (title==="") {
+      if (!validateFormStage3) {
         alert("Please fill all the fields");
         return;
       }
@@ -156,6 +167,22 @@ export default function AwardsModal({ children }) {
         alert("Please login to continue");
         signOut();
         return;
+      }
+      try {
+        if (copy_of_Mou) {
+          await uploadFile(
+            copy_of_Mou,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${title}_MoUcopy`,
+            "awards"
+          );
+        } else {
+          alert("Please upload MoU Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
       }
       const res = await axios.post(`/api/faculty/Awards/insertAwards`, {
         username: session.user.username,
@@ -353,12 +380,26 @@ export default function AwardsModal({ children }) {
                 </h1>
               </div>
               <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
-                <InputField
-                  label={"Mou Copy"}
-                  value={copy_of_Mou}
-                  setVal={setcopy_of_Mou}
-                  type={"file.pdf"}
-                />
+              <div className="grid grid-cols-2 gap-x-3   text-black">
+                      <label className="text-base font-medium">
+                       Copy of MoU <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                        type="file"
+                        defaultValue={copy_of_Mou}
+                        onChange={(e) => {
+                          console.log("File selected:", e.target.files[0]);
+                          setcopy_of_Mou(e.target.files[0]);
+                        }}
+                        required
+                      />
+                      {errors.copy_of_Mou && (
+                        <span className="text-red-500">
+                          {errors.copy_of_Mou}
+                        </span>
+                      )}
+                    </div>
               </div>
               <label
                 htmlFor="textarea"

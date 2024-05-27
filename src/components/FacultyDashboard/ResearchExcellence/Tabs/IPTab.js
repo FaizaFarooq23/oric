@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import IPandPatentForm from '../Forms/IPDisclosure/IPform';
 import IPfield from '../Forms/IPDisclosure/IPfeilds';
 import SuccessModal from '../components/UI/SuccessMessage'; // Import SuccessModal component
+import { deleteFile ,deleteFiles } from '../Utility/Deleteimage';
 
 export default function IPTab() {
   const { open: openModal } = useModal("IPandPatentFormModal");
@@ -34,8 +35,11 @@ export default function IPTab() {
     fetchIPandPatentdata();
   }, [session]);
  
-  const handleDeleteProject = async (id) => {
+  const handleDeleteProject = async (id,filenames) => {
     try {
+      const username = session.user.username;
+      console.log(filenames);
+      await deleteFiles(username, "ipandpatent", filenames, `/api/Imagesfeilds/multiplefilesdelete`);
       await axios.delete(`/api/IPandPatent/delete_ipandpatent?id=${id}`);
       console.log('Project deleted successfully');
       setShowDeleteSuccessModal(true); // Show SuccessModal after successful deletion
@@ -59,7 +63,7 @@ export default function IPTab() {
       )}
       
       {/* Render SuccessModal if showDeleteSuccessModal is true */}
-      {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
+      {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Deleted`} onClose={()=>{
           setShowDeleteSuccessModal(false)
         }} />}
 

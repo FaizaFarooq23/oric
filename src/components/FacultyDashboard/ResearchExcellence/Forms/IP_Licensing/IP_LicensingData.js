@@ -11,8 +11,8 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
   >
     <div >
     <div className="flex justify-end items-end gap-x-6">
-        {/* Edit icon */}
-        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+     
+      
         {/* Cross icon */}
         <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
       </div>
@@ -22,42 +22,42 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
            
            <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
             <div className="grid grid-cols-2 gap-x-10 w-full"> 
-            <span className="text-black text-base font-semibold border-b-2 ]">Title of Invention</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Title}</span>
+            <span className="text-black text-base font-semibold  ]">Title of Invention</span>
+           <span className="text-black text-base font-semibold  ">{data.Title}</span>
                </div> 
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Status of Licensee</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Status_of_Licensee}</span>
+            <span className="text-black text-base font-semibold  ">Status of Licensee</span>
+           <span className="text-black text-base font-semibold  ">{data.Status_of_Licensee}</span>
                </div> 
                { data.Status_of_Licensee==="Signed" ?(
                 <>
                  <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Type of Licensee</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Licensee_Type}</span>
+            <span className="text-black text-base font-semibold  ">Type of Licensee</span>
+           <span className="text-black text-base font-semibold  ">{data.Licensee_Type}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Date of Agreement</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_Agreement.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold  ">Date of Agreement</span>
+           <span className="text-black text-base font-semibold  ">{data.Date_of_Agreement.split("T")[0]}</span>
                </div>
                 </>):(<>
                     <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Status of Negotiation</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Status_of_Negotiations}</span>
+            <span className="text-black text-base font-semibold  ">Status of Negotiation</span>
+           <span className="text-black text-base font-semibold  ">{data.Status_of_Negotiations}</span>
                </div> 
                 </>)
                }
               
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Category</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Category}</span>
+            <span className="text-black text-base font-semibold  ">Category</span>
+           <span className="text-black text-base font-semibold  ">{data.Category}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Nationaity</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Nationality}</span>
+            <span className="text-black text-base font-semibold  ">Nationaity</span>
+           <span className="text-black text-base font-semibold  ">{data.Nationality}</span>
                </div>
              <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Development Status</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Development_Status}</span>
+            <span className="text-black text-base font-semibold ">Development Status</span>
+           <span className="text-black text-base font-semibold ">{data.Development_Status}</span>
             </div>
           
          
@@ -66,58 +66,58 @@ export default function IPLicensingdata({ isOpen, closeModal ,data}) {
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Name_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Name of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Name_of_leadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Department of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Department_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Department of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Department_of_leadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Designation of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Designation_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Designation of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Designation_of_leadInventor}</span>
            </div>
           </div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Details of Licensee</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Licensee</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Licensee_Name}</span>
+            <span className="text-black text-base font-semibold ">Name of Licensee</span>
+           <span className="text-black text-base font-semibold ">{data.Licensee_Name}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Organization of Licensee</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Licensee_Organization}</span>
+            <span className="text-black text-base font-semibold ">Organization of Licensee</span>
+           <span className="text-black text-base font-semibold ">{data.Licensee_Organization}</span>
            </div>
           </div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Duration of Agreement</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Start Date</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.start_Date.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold ">Start Date</span>
+           <span className="text-black text-base font-semibold ">{data.start_Date.split("T")[0]}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">End Date</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.end_Date.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold ">End Date</span>
+           <span className="text-black text-base font-semibold ">{data.end_Date.split("T")[0]}</span>
            </div>
           </div>
            <h1 className='text-blue-900 font-serif font-bold text-xl mt-6  py-2 border-black'>Additional Details</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Negotiation Copy</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">Negotiation Copy</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Contract Copy</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">Contract Copy</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Feild of Use</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Feild_of_use}</span>
+            <span className="text-black text-base font-semibold ">Feild of Use</span>
+           <span className="text-black text-base font-semibold ">{data.Feild_of_use}</span>
            </div>
           </div>
           <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Key Aspects</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Key Aspects</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.KeyAspects}
             </p>
