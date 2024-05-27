@@ -48,7 +48,7 @@ export default function AdminDashboard() {
     setMonthlyResearches(data.month_researches);
     const my_stats_data = {
       ongoing_researches: data.ongoing_projects,
-      funding: data.maxFunding,
+      funding: data.funding,
       yearly_researches: data.research_in_a_fiscal_year,
       popular_category: data.popular_category,
     }
