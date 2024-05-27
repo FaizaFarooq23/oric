@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/AdminDashboard/AdminLayout/AdminLayout";
-import Grid from "@/components/AdminDashboard/Grid/Grid";
+
+import ResearchTabs from "@/components/Reports/Tabs";
 import React, { useEffect, useState } from "react";
 
 export default function index() {
@@ -20,7 +21,7 @@ export default function index() {
   return (
     <AdminLayout>
       <div className="flex flex-col py-8 gap-y-6">
-        <div className="w-[90vw]">{data && <Grid data={data} />}</div>
+        <div className="w-[90vw]">{data && <ResearchTabs data={data}/>}</div>
       </div>
     </AdminLayout>
   );

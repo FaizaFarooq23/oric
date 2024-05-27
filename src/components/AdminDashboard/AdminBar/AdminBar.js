@@ -13,12 +13,12 @@ icon: <TbApps />,
 url:" /dashboard"
 },
 {
+  icon: <TbReport  />,
+  url:" /reports",
+  },  
+{
 icon: <FaResearchgate />,
 url:" "
-},
-{
-icon: <TbReport  />,
-url:" /reports",
 },
 
 

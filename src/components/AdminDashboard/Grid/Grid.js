@@ -108,11 +108,11 @@ export default function Grid({ data }) {
 
   // Container: Defines the grid's theme & dimensions.
   return (
-    <div className="flex flex-col gap-y-8">
+    <div className="flex flex-col gap-y-8 ">
       <div className="flex items-center justify-between ">
         <div className=" text-blue-900 font-bold text-2xl">
           {" "}
-          Research Report
+          
         </div>
         <button
           className="bg-blue-900 hover:bg-gradient-to-r from-blue-900 to-[#3e92cc]  cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg "
