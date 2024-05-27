@@ -5,6 +5,8 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import SuccessModal from "../../components/UI/SuccessMessage";
+import { uploadFile } from "../../Utility/Saveimagefiles";
+import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 import RadioButtonGroup from "@/components/FacultyDashboard/Profile/components/Common/Radiobutton";
 function Researchprojectform({ children }) {
   const [isOpen, setOpen] = useModalState();
@@ -51,11 +53,15 @@ function Researchprojectform({ children }) {
   const [stage, setStage] = useState(1);
   const [reviwedbyIRB, setreviwedbyIRB] = useState("");
   const [Date_of_review, setDate_of_review] = useState("");
-  const [meetingdecision, setmeetingdecision] = useState("");
+  const [meetingdecision, setmeetingdecision] = useState("Approved");
   const [meetingminutes, setmeetingminutes] = useState("");
   const [errors, setErrors] = useState({});
-  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
-
+  const [showSuccessModal, setshowSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+ 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
   };
@@ -87,10 +93,10 @@ function Researchprojectform({ children }) {
     setmeetingdecision(e.target.value);
   };
   // Define a function to handle moving to the next stage
-  const nextStage = () => {
+  const nextStage = async () => {
     switch (stage) {
       case 1:
-        if (validateFormStage1()) {
+        if (await validateFormStage1()) {
           setStage(stage + 1);
         }
         break;
@@ -114,13 +120,15 @@ function Researchprojectform({ children }) {
           setStage(stage + 1);
         }
         break;
-      case 6:
-        setStage(stage + 1);
-
+        case 6:
+        if (validateFormStage6()) {
+          setStage(stage + 1);
+        }
         break;
       default:
         setStage(stage + 1);
     }
+    
   };
 
   // Define a function to handle moving to the previous stage
@@ -130,69 +138,74 @@ function Researchprojectform({ children }) {
       setStage(1);
     }
   };
-  const handlestate=()=>{
-   setStage(1)
-      setOpen(false);
-      setTitleofResearch("");
-      setThematicArea("");
-      setNameResearchGrant("");
-      setcategory("HEC");
-      setStatus_of_proposal("Submitted");
-      setStatus_of_project("Ongoing");
-      setDateofContract("");
-      setDateofContractSigned("");
-      setDateofApproval("");
-      setDateofSubmission("");
-      setDateofCompletion("");
-      setStartDate("");
-      setEndDate("");
-      setNameofPi("");
-      setDesignationofPi("");
-      setDepartmentofPi("");
-      setNameofCoPi("");
-      setUniversityofCoPi("");
-      setDepartmentofCoPi("");
-      setDesignationofCoPi("");
-      setFundingRequested("");
-      setFundingRealesed("");
-      setFundingApproved("");
-      setfunding_nationality("National");
-      setFundingUtilized("");
-      setCollaboratingPartner("");
-      setCofundingPartner("");
-      setfundingagency("");
-      setRemarks("");
-      setdelivery("");
-      settypeofresearch("Solo Project");
-      setCounterparts("");
-      setSponceringAgencyName("");
-      setSponceringAgencyCountry("");
-      setSponceringAgencyAdress("");
-      setSubmissionEmailCopy("");
-      setAwardLetterCopy("");
-      setCompletionLetterCopy("");
-      setContractAgreementCopy("");
-      setORIC_overhead("");
-      setreviwedbyIRB("");
-      setDate_of_review("");
-      setmeetingdecision("");
-      setmeetingminutes("");
-      setShowSuccessModal(true); 
-     
-  }
-  const { data: session } = useSession();
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-  const validateFormStage1 = () => {
+  const handlestate = () => {
+    setStage(1);
+    setOpen(false);
+    setTitleofResearch("");
+    setThematicArea("");
+    setNameResearchGrant("");
+    setcategory("HEC");
+    setStatus_of_proposal("Submitted");
+    setStatus_of_project("Ongoing");
+    setDateofContract("");
+    setDateofContractSigned("");
+    setDateofApproval("");
+    setDateofSubmission("");
+    setDateofCompletion("");
+    setStartDate("");
+    setEndDate("");
+    setNameofPi("");
+    setDesignationofPi("");
+    setDepartmentofPi("");
+    setNameofCoPi("");
+    setUniversityofCoPi("");
+    setDepartmentofCoPi("");
+    setDesignationofCoPi("");
+    setFundingRequested("");
+    setFundingRealesed("");
+    setFundingApproved("");
+    setfunding_nationality("National");
+    setFundingUtilized("");
+    setCollaboratingPartner("");
+    setCofundingPartner("");
+    setfundingagency("");
+    setRemarks("");
+    setdelivery("");
+    settypeofresearch("Solo Project");
+    setCounterparts("");
+    setSponceringAgencyName("");
+    setSponceringAgencyCountry("");
+    setSponceringAgencyAdress("");
+    setSubmissionEmailCopy("");
+    setAwardLetterCopy("");
+    setCompletionLetterCopy("");
+    setContractAgreementCopy("");
+    setORIC_overhead("");
+    setreviwedbyIRB("");
+    setDate_of_review("");
+    setmeetingdecision("");
+    setmeetingminutes("");
+    showSuccessModal(true);
+  };
+  const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
+    session?.user?.username,
+    'title',
+    TitleofResearch,
+    '/api/Research_projects/get_research_project'
+  );
+  
+  const validateFormStage1 = async () => {
     let valid = true;
     const newErrors = {};
 
     if (TitleofResearch.trim() === "") {
       newErrors.TitleofResearch = "Title of Research Proposal is required";
       valid = false;
+    } else if (isExistingProject) {
+      newErrors.TitleofResearch = "A Project with this title already exists for you";
+      valid = false;
     } else {
-      newErrors.TitleofResearch = "";
+      newErrors.TitleofResearch= "";
     }
     if (ThematicArea.trim() === "") {
       newErrors.ThematicArea = "Thematic Area is required";
@@ -227,6 +240,7 @@ function Researchprojectform({ children }) {
     setErrors(newErrors);
     return valid;
   };
+  
   const validateFormStage2 = () => {
     let valid = true;
     const newErrors = {};
@@ -378,10 +392,10 @@ function Researchprojectform({ children }) {
   const validateFormStage4 = () => {
     let valid = true;
     const newErrors = {};
-  
+
     // Regular expression to match only numerical values
     const numericalRegex = /^[0-9]+$/;
-  
+
     if (
       typeofresearch !== "Contract Research" &&
       Status_of_project === "Completed" &&
@@ -392,11 +406,11 @@ function Researchprojectform({ children }) {
     } else {
       newErrors.fundingagency = "";
     }
-  
+
     if (fundingRequested.trim() === "") {
       newErrors.fundingRequested = "Funding Requested is required";
       valid = false;
-    }  else {
+    } else {
       newErrors.fundingRequested = "";
     }
 
@@ -406,25 +420,25 @@ function Researchprojectform({ children }) {
     } else {
       newErrors.fundingApproved = "";
     }
-  
+
     if (fundingUtilized.trim() === "" && Status_of_project === "Completed") {
       newErrors.fundingUtilized = "Funding Utilized is required";
       valid = false;
-    }  else {
+    } else {
       newErrors.fundingUtilized = "";
     }
-  
+
     if (fundingRealesed.trim() === "" && Status_of_project === "Completed") {
       newErrors.fundingRealesed = "Funding Released is required";
       valid = false;
-    }  else {
+    } else {
       newErrors.fundingRealesed = "";
     }
-  
+
     setErrors(newErrors);
     return valid;
   };
-  
+
   const validateFormStage5 = () => {
     let valid = true;
     const newErrors = {};
@@ -452,12 +466,51 @@ function Researchprojectform({ children }) {
       } else {
         newErrors.meetingdecision = "";
       }
+      if (!meetingminutes) {
+        newErrors.meetingminutes = "Meeting minutes is required";
+        valid = false;
+      } else {
+        newErrors.meetingminutes = "";
+      }
     }
 
     setErrors(newErrors);
     return valid;
   };
+  const validateFormStage6 = () => {
+    let valid = true;
+    const newErrors = {};
+    if (!SubmissionEmailCopy) {
+      newErrors.SubmissionEmailCopy = "Email Copy is required";
+      valid = false;
+    } else {
+      newErrors.SubmissionEmailCopy = "";
+    }
 
+    if ((!AwardLetterCopy) && (Status_of_proposal!=="Submitted")) {
+      newErrors.AwardLetterCopy = "Award Letter is required";
+      valid = false;
+    } else {
+      newErrors.AwardLetterCopy = "";
+    }
+    if ((!CompletionLetterCopy)&& (Status_of_project==="Completed")) {
+      newErrors.CompletionLetterCopy = "Completion Letter is required";
+      valid = false;
+    } else {
+      newErrors.CompletionLetterCopy = "";
+    }
+    if (typeofresearch === "Contract Research") {
+      if (ContractAgreementCopy.trim() === "") {
+        newErrors.ContractAgreementCopy = "Contract Agreement is required";
+        valid = false;
+      } else {
+        newErrors.ContractAgreementCopy = "";
+      }
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
   const validateFormStage7 = () => {
     let valid = true;
     const newErrors = {};
@@ -493,6 +546,98 @@ function Researchprojectform({ children }) {
     setErrors(newErrors);
     return valid;
   };
+  const UploadFile = async () => {
+    if (Status_of_proposal === "Approved" || Status_of_project == "Completed") {
+      try {
+        if (AwardLetterCopy) {
+          await uploadFile(
+            AwardLetterCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofResearch}_AwardLetterCopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload Award Letter  Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } else if (Status_of_project == "Completed") {
+      try {
+        if (CompletionLetterCopy) {
+          await uploadFile(
+            CompletionLetterCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofResearch}_CompletionLetterCopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload Completion letter Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } else if (typeofresearch == "Contract Research") {
+      try {
+        if (ContractAgreementCopy) {
+          await uploadFile(
+            ContractAgreementCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofResearch}_ContractAgreementCopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload Contract Agreement Copy");
+        }
+      }
+       catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } 
+    else if (reviwedbyIRB == "Yes") {
+      try {
+        if (meetingminutes) {
+          await uploadFile(
+            meetingminutes,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofResearch}_meetingminutes`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload meeting minutes Copy");
+        }
+      }
+       catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } 
+    
+      try {
+        if (SubmissionEmailCopy) {
+          await uploadFile(
+            SubmissionEmailCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofResearch}_SubmissionEmailcopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload CaseStudy Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    
+  };
   const handleSubmit = async () => {
     try {
       // Validate required fields
@@ -507,7 +652,7 @@ function Researchprojectform({ children }) {
         signOut();
         return;
       }
-
+      await UploadFile();
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -551,10 +696,6 @@ function Researchprojectform({ children }) {
         Sponcering_Agency_Name: SponceringAgencyName,
         Sponcering_Agency_Country: Sponcering_Agency_Country,
         Sponcering_Agency_Address: SponceringAgencyAddress,
-        Submission_Email_Copy: SubmissionEmailCopy,
-        Award_Letter_Copy: AwardLetterCopy,
-        Completion_Letter_Copy: CompletionLetterCopy,
-        Contract_Agreement_Copy: ContractAgreementCopy,
         ORIC_Overhead: ORIC_overhead,
         Nationality: funding_nationality,
         reviwedbyIRB: reviwedbyIRB,
@@ -567,14 +708,12 @@ function Researchprojectform({ children }) {
         `/api/Research_projects/insert_research_project`,
         data
       );
-    
+
       console.log(res);
-     
+
       handlestate();
-      setOpen(false)
-      setshowSuccessSuccessModal(true)
-    
-      
+      setOpen(false);
+      setshowSuccessModal(true);
     } catch (error) {
       console.error("Error inserting information:", error);
     }
@@ -582,668 +721,542 @@ function Researchprojectform({ children }) {
 
   return (
     <>
-    <Modal
-      id={"ResearchProjectFormModal"}
-      consumer={children}
-      isOpen={isOpen}
-      setOpen={setOpen}
-    >
-      <div>
-        {stage === 1 && (
-          <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Research Project Information
-              </h1>
-            </div>
-            <div>
-              <InputField
-                label={"Title of Research Proposal"}
-                value={TitleofResearch}
-                setVal={setTitleofResearch}
-                required
-              />
-              {errors.TitleofResearch && (
-                <span className="text-red-500">{errors.TitleofResearch}</span>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+      <Modal
+        id={"ResearchProjectFormModal"}
+        consumer={children}
+        isOpen={isOpen}
+        setOpen={setOpen}
+      >
+        <div>
+          {stage === 1 && (
+            <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+              <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Research Project Information
+                </h1>
+              </div>
               <div>
                 <InputField
-                  label={"Thematic Area"}
-                  value={ThematicArea}
-                  setVal={setThematicArea}
+                  label={"Title of Research Proposal"}
+                  value={TitleofResearch}
+                  setVal={setTitleofResearch}
                   required
                 />
-                {errors.ThematicArea && (
-                  <span className="text-red-500">{errors.ThematicArea}</span>
+                {errors.TitleofResearch && (
+                  <span className="text-red-500">{errors.TitleofResearch}</span>
                 )}
               </div>
-              <Dropdown
-                label={"Type of Research"}
-                dropdownOptions={[
-                  "Solo Project",
-                  "Contract Research",
-                  "Joint Research",
-                ]}
-                value={typeofresearch}
-                handleOptionChange={handleTypeofresearchChange}
-                required
-              />
-              {typeofresearch === "Solo Project" &&
-                category === "HEC" &&
-                Status_of_proposal === "Approved" && (
-                  <div>
-                    <InputField
-                      label={"ORIC Overhead "}
-                      value={ORIC_overhead}
-                      setVal={setORIC_overhead}
-                      type={"text"}
-                      required
-                    />
-                    {errors.ORIC_overhead && (
-                      <span className="text-red-500">
-                        {errors.ORIC_Overhead}
-                      </span>
-                    )}
-                  </div>
-                )}
-              <div>
-                <InputField
-                  label={"Name of Research Grant"}
-                  value={NameResearchGrant}
-                  setVal={setNameResearchGrant}
-                  required
-                />
-                {errors.NameResearchGrant && (
-                  <span className="text-red-500">
-                    {errors.NameResearchGrant}
-                  </span>
-                )}
-              </div>
-
-              <Dropdown
-                label={"Status_of_proposal"}
-                dropdownOptions={["Submitted", "Approved"]}
-                value={Status_of_proposal}
-                handleOptionChange={handleStatus_of_proposalChange}
-                required
-              />
-              {typeofresearch === "Solo Project" && (
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                <div>
+                  <InputField
+                    label={"Thematic Area"}
+                    value={ThematicArea}
+                    setVal={setThematicArea}
+                    required
+                  />
+                  {errors.ThematicArea && (
+                    <span className="text-red-500">{errors.ThematicArea}</span>
+                  )}
+                </div>
                 <Dropdown
-                  label={"category"}
-                  dropdownOptions={["HEC", "Non-HEC"]}
-                  value={category}
-                  handleOptionChange={handlecategoryChange}
+                  label={"Type of Research"}
+                  dropdownOptions={[
+                    "Solo Project",
+                    "Contract Research",
+                    "Joint Research",
+                  ]}
+                  value={typeofresearch}
+                  handleOptionChange={handleTypeofresearchChange}
                   required
                 />
-              )}
-              {Status_of_proposal === "Approved" && (
-                <Dropdown
-                  label={"Status of project"}
-                  dropdownOptions={["Ongoing", "Delayed", "Completed"]}
-                  value={Status_of_project}
-                  handleOptionChange={handleProjectStatus}
-                  required
-                />
-              )}
-              <Dropdown
-                label={"Nationality"}
-                dropdownOptions={["National", "International"]}
-                value={funding_nationality}
-                handleOptionChange={handleagnecynationalitychange}
-                required
-              />
-            </div>
-            {typeofresearch === "Contract Research" && (
-              <div>
-                <InputField
-                  label={"Counterparts from industry(Adress with country)"}
-                  value={Counterparts}
-                  setVal={setCounterparts}
-                  type={"text"}
-                  required
-                />
-                {errors.Counterparts && (
-                  <span className="text-red-500">{errors.Counterparts}</span>
-                )}
-              </div>
-            )}
-            <div className="flex flex-row   ml-auto ">
-              <button
-                onClick={nextStage}
-                className="bg-blue-900 text-white px-4 py-2  w-40 rounded-md mt-4 w-1/4"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {stage === 2 && (
-          <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Chronological Details
-              </h1>
-            </div>
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-              {typeofresearch === "Contract Research" ? (
-                <>
-                  <div>
-                    <InputField
-                      label={"Date of Contract Signed"}
-                      value={DateofContractSigned}
-                      setVal={setDateofContractSigned}
-                      type={"date"}
-                      required
-                    />
-                    {errors.DateofContractSigned && (
-                      <span className="text-red-500">
-                        {errors.DateofContractSigned}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <InputField
-                      label={"Date of Contract"}
-                      value={DateofContract}
-                      setVal={setDateofContract}
-                      type={"date"}
-                      required
-                    />
-                    {errors.DateofContract && (
-                      <span className="text-red-500">
-                        {errors.DateofContract}
-                      </span>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <InputField
-                      label={"Date of Submission"}
-                      value={DateofSubmission}
-                      setVal={setDateofSubmission}
-                      type={"date"}
-                      required
-                    />
-                    {errors.DateofSubmission && (
-                      <span className="text-red-500">
-                        {errors.DateofSubmission}
-                      </span>
-                    )}
-                  </div>
-                  {Status_of_proposal === "Approved" && (
+                {typeofresearch === "Solo Project" &&
+                  category === "HEC" &&
+                  Status_of_proposal === "Approved" && (
                     <div>
                       <InputField
-                        label={"Date of Approval"}
-                        value={DateofApproval}
-                        setVal={setDateofApproval}
-                        type={"date"}
+                        label={"ORIC Overhead "}
+                        value={ORIC_overhead}
+                        setVal={setORIC_overhead}
+                        type={"text"}
                         required
                       />
-                      {errors.DateofApproval && (
+                      {errors.ORIC_overhead && (
                         <span className="text-red-500">
-                          {errors.DateofApproval}
+                          {errors.ORIC_Overhead}
                         </span>
                       )}
                     </div>
                   )}
-                </>
-              )}
-              <div>
-                <InputField
-                  label={"Start Date"}
-                  value={startDate}
-                  setVal={setStartDate}
-                  type={"date"}
-                  required
-                />
-                {errors.startDate && (
-                  <span className="text-red-500">{errors.startDate}</span>
-                )}
-              </div>
-              <div>
-                <InputField
-                  label={"End Date"}
-                  value={endDate}
-                  setVal={setEndDate}
-                  type={"date"}
-                  required
-                />
-                {errors.endDate && (
-                  <span className="text-red-500">{errors.endDate}</span>
-                )}
-              </div>
-              {Status_of_project === "Completed" && (
                 <div>
                   <InputField
-                    label={"Date of Completion"}
-                    value={DateofCompletion}
-                    setVal={setDateofCompletion}
-                    type={"date"}
+                    label={"Name of Research Grant"}
+                    value={NameResearchGrant}
+                    setVal={setNameResearchGrant}
                     required
                   />
-                  {errors.DateofCompletion && (
+                  {errors.NameResearchGrant && (
                     <span className="text-red-500">
-                      {errors.DateofCompletion}
+                      {errors.NameResearchGrant}
                     </span>
                   )}
                 </div>
-              )}
-            </div>
 
-            <div className="grid grid-cols-2 justify-between items-end ">
-              <button
-                onClick={prevStage}
-                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Previous
-              </button>
-              <button
-                onClick={nextStage}
-                className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {stage === 3 && (
-          <div className=" flex gap-y-8 flex-col h-900  bg-white shadow-lg rounded-md px-10 py-8 ">
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2  border-black">
-                Details of Pi
-              </h1>
-            </div>
-
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-              <div>
-                <InputField
-                  label={"Name of Pi"}
-                  value={Nameofpi}
-                  setVal={setNameofPi}
+                <Dropdown
+                  label={"Status_of_proposal"}
+                  dropdownOptions={["Submitted", "Approved"]}
+                  value={Status_of_proposal}
+                  handleOptionChange={handleStatus_of_proposalChange}
                   required
                 />
-                {errors.Nameofpi && (
-                  <span className="text-red-500">{errors.Nameofpi}</span>
-                )}
-              </div>
-              <div>
-                <InputField
-                  label={"Department of Pi"}
-                  value={DepartmentofPi}
-                  setVal={setDepartmentofPi}
-                  required
-                />
-                {errors.DepartmentofPi && (
-                  <span className="text-red-500">{errors.DepartmentofPi}</span>
-                )}
-              </div>
-              <div>
-                <InputField
-                  label={"Designation of Pi"}
-                  value={DesignationofPi}
-                  setVal={setDesignationofPi}
-                  required
-                />
-                {errors.DesignationofPi && (
-                  <span className="text-red-500">{errors.DesignationofPi}</span>
-                )}
-              </div>
-            </div>
-            {typeofresearch == "Joint Research" && (
-              <>
-                <div>
-                  <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">
-                    Details of CoPi
-                  </h1>
-                </div>
-                <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-                  <div>
-                    <InputField
-                      label={"Name of CoPi"}
-                      value={NameofCopi}
-                      setVal={setNameofCoPi}
-                      required
-                    />
-                    {errors.NameofCopi && (
-                      <span className="text-red-500">{errors.NameofCopi}</span>
-                    )}
-                  </div>
-                  <div>
-                    <InputField
-                      label={"Department of CoPi"}
-                      value={DepartmentofCoPi}
-                      setVal={setDepartmentofCoPi}
-                      required
-                    />
-                    {errors.DepartmentofCoPi && (
-                      <span className="text-red-500">
-                        {errors.DepartmentofCoPi}
-                      </span>
-                    )}
-                  </div>
-                  <InputField
-                    label={"Designation of CoPi"}
-                    value={DesignationofCoPi}
-                    setVal={setDesignationofCoPi}
-                    required
-                  />
-                  {errors.DesignationofCoPi && (
-                    <span className="text-red-500">
-                      {errors.DesignationofCoPi}
-                    </span>
-                  )}
-                  <InputField
-                    label={"University of CoPi"}
-                    value={UniversityofCoPi}
-                    setVal={setUniversityofCoPi}
-                    required
-                  />
-                </div>
-              </>
-            )}
-            {typeofresearch == "Contract Research" && (
-              <>
-                <div>
-                  <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                    Details of Sponcering Agency
-                  </h1>
-                </div>
-                <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-                  <div>
-                    <InputField
-                      label={"Sponcering Agency Name"}
-                      value={SponceringAgencyName}
-                      setVal={setSponceringAgencyName}
-                      required
-                    />
-                    {errors.SponceringAgencyName && (
-                      <span className="text-red-500">
-                        {errors.SponceringAgencyName}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <InputField
-                      label={"Sponcering Agency Country "}
-                      value={Sponcering_Agency_Country}
-                      setVal={setSponceringAgencyCountry}
-                      required
-                    />
-                    {errors.SponceringAgencyCountry && (
-                      <span className="text-red-500">
-                        {errors.SponceringAgencyCountry}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <InputField
-                      label={"Sponcering Agency Adress"}
-                      value={SponceringAgencyAddress}
-                      setVal={setSponceringAgencyAdress}
-                      required
-                    />
-                    {errors.SponceringAgencyAddress && (
-                      <span className="text-red-500">
-                        {errors.SponceringAgencyAddress}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-            <div className="grid grid-cols-2 justify-between items-end ">
-              <button
-                onClick={prevStage}
-                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Previous
-              </button>
-              <button
-                onClick={nextStage}
-                className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {stage === 4 && (
-          <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Details of Funding(PKR Million)
-              </h1>
-            </div>
-
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-              {typeofresearch !== "Contract Research" &&
-                Status_of_project === "Completed" && (
-                  <div>
-                    <InputField
-                      label={"Funding Agency/Body"}
-                      value={fundingagency}
-                      setVal={setfundingagency}
-                      required
-                    />
-                    {errors.fundingagency && (
-                      <span className="text-red-500">
-                        {errors.fundingagency}
-                      </span>
-                    )}
-                  </div>
-                )}
-              <div>
-                <InputField
-                  label={"Total Funding Requested"}
-                  value={fundingRequested}
-                  setVal={setFundingRequested}
-                  required
-                />
-                {errors.fundingRequested && (
-                  <span className="text-red-500">
-                    {errors.fundingRequested}
-                  </span>
-                )}
-              </div>
-              {Status_of_proposal === "Approved" && (
-                <div>
-                  <InputField
-                    label={"Total Funding Approved(PKR)"}
-                    value={fundingApproved}
-                    setVal={setFundingApproved}
-                    required
-                  />
-                  {errors.fundingApproved && (
-                    <span className="text-red-500">
-                      {errors.fundingApproved}
-                    </span>
-                  )}
-                </div>
-              )}
-              {Status_of_project == "Completed" && (
-                <>
-                  <div>
-                    <InputField
-                      label={"Total Funding Realesed(PKR)"}
-                      value={fundingRealesed}
-                      setVal={setFundingRealesed}
-                      required
-                    />
-                    {errors.fundingRealesed && (
-                      <span className="text-red-500">
-                        {errors.fundingRealesed}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <InputField
-                      label={"Total Funding Utilized(PKR)"}
-                      value={fundingUtilized}
-                      setVal={setFundingUtilized}
-                      required
-                    />
-                    {errors.fundingUtilized && (
-                      <span className="text-red-500">
-                        {errors.fundingUtilized}
-                      </span>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Details of Partners
-              </h1>
-            </div>
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-              <InputField
-                label={"Collaborating Partners(if any)"}
-                value={CollaboratingPartner}
-                setVal={setCollaboratingPartner}
-              />
-
-              <InputField
-                label={"Co-funding Partners(if any)"}
-                value={CofundingPartner}
-                setVal={setCofundingPartner}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-              <button
-                onClick={prevStage}
-                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Previous
-              </button>
-              <button
-                onClick={nextStage}
-                className=" ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {stage === 5 && (
-          <>
-            <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">
-                Details of Reviwed By IRB
-              </h1>
-              <div>
-              <RadioButtonGroup
-                label={"Reviewd BY IRB before Submission"}
-                options={["Yes", "No"]}
-                value={reviwedbyIRB}
-                handleChange={handleReveiwedBYIRBChange}
-                required
-              />
-              {errors.reviwedbyIRB && (
-                      <span className="text-red-500">
-                        {errors.reviwedbyIRB}
-                      </span>
-                    )}
-                    </div>
-              {reviwedbyIRB === "Yes" && (
-                <div className="grid grid-cols-2 gap-y-8 gap-x-16  ">
-                  <div>
-                  <InputField
-                    label={"Date of Review"}
-                    value={Date_of_review}
-                    setVal={setDate_of_review}
-                    type={"date"}
-                    required
-                  />
-                  {errors.Date_of_review && (
-                      <span className="text-red-500">
-                        {errors.Date_of_review}
-                      </span>
-                    )}
-                    </div>
-                    <div>
+                {typeofresearch === "Solo Project" && (
                   <Dropdown
-                    label={"Meeting Decision"}
-                    dropdownOptions={[
-                      "Approved",
-                      "Require Modification",
-                      "Deferred",
-                      "Disapproved",
-                    ]}
-                    value={meetingdecision}
-                    handleOptionChange={handlemeetingdecisionchange}
+                    label={"category"}
+                    dropdownOptions={["HEC", "Non-HEC"]}
+                    value={category}
+                    handleOptionChange={handlecategoryChange}
                     required
                   />
-                  {errors.meetingdecision && (
-                      <span className="text-red-500">
-                        {errors.meetingdecision}
-                      </span>
-                    )}
-                  </div>
-                  <InputField
-                    label={"Meeting Minutes"}
-                    value={meetingminutes}
-                    setVal={setmeetingminutes}
-                    type="file"
-                    
+                )}
+                {Status_of_proposal === "Approved" && (
+                  <Dropdown
+                    label={"Status of project"}
+                    dropdownOptions={["Ongoing", "Delayed", "Completed"]}
+                    value={Status_of_project}
+                    handleOptionChange={handleProjectStatus}
+                    required
                   />
+                )}
+                <Dropdown
+                  label={"Nationality"}
+                  dropdownOptions={["National", "International"]}
+                  value={funding_nationality}
+                  handleOptionChange={handleagnecynationalitychange}
+                  required
+                />
+              </div>
+              {typeofresearch === "Contract Research" && (
+                <div>
+                  <InputField
+                    label={"Counterparts from industry(Adress with country)"}
+                    value={Counterparts}
+                    setVal={setCounterparts}
+                    type={"text"}
+                    required
+                  />
+                  {errors.Counterparts && (
+                    <span className="text-red-500">{errors.Counterparts}</span>
+                  )}
                 </div>
               )}
-
-              <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-              <button
-                  onClick={prevStage}
-                  className="bg-blue-900 text-white px-4 py-2 rounded-md "
-                >
-                  Previous
-                </button>
+              <div className="flex flex-row   ml-auto ">
                 <button
                   onClick={nextStage}
-                  className="bg-blue-900 text-white px-4 py-2  rounded-md"
+                  className="bg-blue-900 text-white px-4 py-2  w-40 rounded-md mt-4 w-1/4"
                 >
                   Next
                 </button>
               </div>
             </div>
-          </>
-        )}
-        {stage === 6 && (
-          <>
-            <div className="flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ml-auto mr-auto w-5/6 ">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Additional Details
-              </h1>
-              <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-                <InputField
-                  label={"Proposal Submission Email Copy"}
-                  value={SubmissionEmailCopy}
-                  setVal={setSubmissionEmailCopy}
-                  type={"file"}
-                />
-                <InputField
-                  label={"Award Letter Copy"}
-                  value={AwardLetterCopy}
-                  setVal={setAwardLetterCopy}
-                  type={"file"}
-                />
-                <InputField
-                  label={"Completion Letter Copy"}
-                  value={CompletionLetterCopy}
-                  setVal={setCompletionLetterCopy}
-                  type={"file"}
-                />
-                {typeofresearch === "Contract Research" && (
-                  <InputField
-                    label={"Contract Agreement  Copy"}
-                    value={ContractAgreementCopy}
-                    setVal={setContractAgreementCopy}
-                    type={"file"}
-                  />
+          )}
+          {stage === 2 && (
+            <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+              <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Chronological Details
+                </h1>
+              </div>
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                {typeofresearch === "Contract Research" ? (
+                  <>
+                    <div>
+                      <InputField
+                        label={"Date of Contract Signed"}
+                        value={DateofContractSigned}
+                        setVal={setDateofContractSigned}
+                        type={"date"}
+                        required
+                      />
+                      {errors.DateofContractSigned && (
+                        <span className="text-red-500">
+                          {errors.DateofContractSigned}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Date of Contract"}
+                        value={DateofContract}
+                        setVal={setDateofContract}
+                        type={"date"}
+                        required
+                      />
+                      {errors.DateofContract && (
+                        <span className="text-red-500">
+                          {errors.DateofContract}
+                        </span>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <InputField
+                        label={"Date of Submission"}
+                        value={DateofSubmission}
+                        setVal={setDateofSubmission}
+                        type={"date"}
+                        required
+                      />
+                      {errors.DateofSubmission && (
+                        <span className="text-red-500">
+                          {errors.DateofSubmission}
+                        </span>
+                      )}
+                    </div>
+                    {Status_of_proposal === "Approved" && (
+                      <div>
+                        <InputField
+                          label={"Date of Approval"}
+                          value={DateofApproval}
+                          setVal={setDateofApproval}
+                          type={"date"}
+                          required
+                        />
+                        {errors.DateofApproval && (
+                          <span className="text-red-500">
+                            {errors.DateofApproval}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </>
                 )}
+                <div>
+                  <InputField
+                    label={"Start Date"}
+                    value={startDate}
+                    setVal={setStartDate}
+                    type={"date"}
+                    required
+                  />
+                  {errors.startDate && (
+                    <span className="text-red-500">{errors.startDate}</span>
+                  )}
+                </div>
+                <div>
+                  <InputField
+                    label={"End Date"}
+                    value={endDate}
+                    setVal={setEndDate}
+                    type={"date"}
+                    required
+                  />
+                  {errors.endDate && (
+                    <span className="text-red-500">{errors.endDate}</span>
+                  )}
+                </div>
+                {Status_of_project === "Completed" && (
+                  <div>
+                    <InputField
+                      label={"Date of Completion"}
+                      value={DateofCompletion}
+                      setVal={setDateofCompletion}
+                      type={"date"}
+                      required
+                    />
+                    {errors.DateofCompletion && (
+                      <span className="text-red-500">
+                        {errors.DateofCompletion}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 justify-between items-end ">
+                <button
+                  onClick={prevStage}
+                  className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={nextStage}
+                  className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+          {stage === 3 && (
+            <div className=" flex gap-y-8 flex-col h-900  bg-white shadow-lg rounded-md px-10 py-8 ">
+              <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2  border-black">
+                  Details of Pi
+                </h1>
+              </div>
+
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                <div>
+                  <InputField
+                    label={"Name of Pi"}
+                    value={Nameofpi}
+                    setVal={setNameofPi}
+                    required
+                  />
+                  {errors.Nameofpi && (
+                    <span className="text-red-500">{errors.Nameofpi}</span>
+                  )}
+                </div>
+                <div>
+                  <InputField
+                    label={"Department of Pi"}
+                    value={DepartmentofPi}
+                    setVal={setDepartmentofPi}
+                    required
+                  />
+                  {errors.DepartmentofPi && (
+                    <span className="text-red-500">
+                      {errors.DepartmentofPi}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <InputField
+                    label={"Designation of Pi"}
+                    value={DesignationofPi}
+                    setVal={setDesignationofPi}
+                    required
+                  />
+                  {errors.DesignationofPi && (
+                    <span className="text-red-500">
+                      {errors.DesignationofPi}
+                    </span>
+                  )}
+                </div>
+              </div>
+              {typeofresearch == "Joint Research" && (
+                <>
+                  <div>
+                    <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">
+                      Details of CoPi
+                    </h1>
+                  </div>
+                  <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                    <div>
+                      <InputField
+                        label={"Name of CoPi"}
+                        value={NameofCopi}
+                        setVal={setNameofCoPi}
+                        required
+                      />
+                      {errors.NameofCopi && (
+                        <span className="text-red-500">
+                          {errors.NameofCopi}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Department of CoPi"}
+                        value={DepartmentofCoPi}
+                        setVal={setDepartmentofCoPi}
+                        required
+                      />
+                      {errors.DepartmentofCoPi && (
+                        <span className="text-red-500">
+                          {errors.DepartmentofCoPi}
+                        </span>
+                      )}
+                    </div>
+                    <InputField
+                      label={"Designation of CoPi"}
+                      value={DesignationofCoPi}
+                      setVal={setDesignationofCoPi}
+                      required
+                    />
+                    {errors.DesignationofCoPi && (
+                      <span className="text-red-500">
+                        {errors.DesignationofCoPi}
+                      </span>
+                    )}
+                    <InputField
+                      label={"University of CoPi"}
+                      value={UniversityofCoPi}
+                      setVal={setUniversityofCoPi}
+                      required
+                    />
+                  </div>
+                </>
+              )}
+              {typeofresearch == "Contract Research" && (
+                <>
+                  <div>
+                    <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                      Details of Sponcering Agency
+                    </h1>
+                  </div>
+                  <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                    <div>
+                      <InputField
+                        label={"Sponcering Agency Name"}
+                        value={SponceringAgencyName}
+                        setVal={setSponceringAgencyName}
+                        required
+                      />
+                      {errors.SponceringAgencyName && (
+                        <span className="text-red-500">
+                          {errors.SponceringAgencyName}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Sponcering Agency Country "}
+                        value={Sponcering_Agency_Country}
+                        setVal={setSponceringAgencyCountry}
+                        required
+                      />
+                      {errors.SponceringAgencyCountry && (
+                        <span className="text-red-500">
+                          {errors.SponceringAgencyCountry}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Sponcering Agency Adress"}
+                        value={SponceringAgencyAddress}
+                        setVal={setSponceringAgencyAdress}
+                        required
+                      />
+                      {errors.SponceringAgencyAddress && (
+                        <span className="text-red-500">
+                          {errors.SponceringAgencyAddress}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+              <div className="grid grid-cols-2 justify-between items-end ">
+                <button
+                  onClick={prevStage}
+                  className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={nextStage}
+                  className="bg-blue-900 ml-auto text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+          {stage === 4 && (
+            <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+              <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Details of Funding(PKR Million)
+                </h1>
+              </div>
+
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                {typeofresearch !== "Contract Research" &&
+                  Status_of_project === "Completed" && (
+                    <div>
+                      <InputField
+                        label={"Funding Agency/Body"}
+                        value={fundingagency}
+                        setVal={setfundingagency}
+                        required
+                      />
+                      {errors.fundingagency && (
+                        <span className="text-red-500">
+                          {errors.fundingagency}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                <div>
+                  <InputField
+                    label={"Total Funding Requested"}
+                    value={fundingRequested}
+                    setVal={setFundingRequested}
+                    required
+                  />
+                  {errors.fundingRequested && (
+                    <span className="text-red-500">
+                      {errors.fundingRequested}
+                    </span>
+                  )}
+                </div>
+                {Status_of_proposal === "Approved" && (
+                  <div>
+                    <InputField
+                      label={"Total Funding Approved(PKR)"}
+                      value={fundingApproved}
+                      setVal={setFundingApproved}
+                      required
+                    />
+                    {errors.fundingApproved && (
+                      <span className="text-red-500">
+                        {errors.fundingApproved}
+                      </span>
+                    )}
+                  </div>
+                )}
+                {Status_of_project == "Completed" && (
+                  <>
+                    <div>
+                      <InputField
+                        label={"Total Funding Realesed(PKR)"}
+                        value={fundingRealesed}
+                        setVal={setFundingRealesed}
+                        required
+                      />
+                      {errors.fundingRealesed && (
+                        <span className="text-red-500">
+                          {errors.fundingRealesed}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Total Funding Utilized(PKR)"}
+                        value={fundingUtilized}
+                        setVal={setFundingUtilized}
+                        required
+                      />
+                      {errors.fundingUtilized && (
+                        <span className="text-red-500">
+                          {errors.fundingUtilized}
+                        </span>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Details of Partners
+                </h1>
+              </div>
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                <InputField
+                  label={"Collaborating Partners(if any)"}
+                  value={CollaboratingPartner}
+                  setVal={setCollaboratingPartner}
+                />
+
+                <InputField
+                  label={"Co-funding Partners(if any)"}
+                  value={CofundingPartner}
+                  setVal={setCofundingPartner}
+                />
               </div>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16">
                 <button
@@ -1254,103 +1267,313 @@ function Researchprojectform({ children }) {
                 </button>
                 <button
                   onClick={nextStage}
-                  className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                  className=" ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
                 >
                   Next
                 </button>
               </div>
             </div>
-          </>
-        )}
-        {stage === 7 && (
-          <>
-            <div className="grid gap-y-8 grid-col bg-white max-h-screen overflow-scroll shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Additional Details
-              </h1>
-
-              <>
-                <label
-                  htmlFor="textarea"
-                  className="text-base font-medium text-black"
-                >
-                  Write Remarks
-                </label>
-                <textarea
-                  className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-                  rows="5"
-                  cols="50"
-                  id="Textarea"
-                  value={Remarks}
-                  onChange={handleRemarkschange}
-                  required
-                />
-                {errors.Remarks && (
-                  <span className="text-red-500">{errors.Remarks}</span>
+          )}
+          {stage === 5 && (
+            <>
+              <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">
+                  Details of Reviwed By IRB
+                </h1>
+                <div>
+                  <RadioButtonGroup
+                    label={"Reviewd BY IRB before Submission"}
+                    options={["Yes", "No"]}
+                    value={reviwedbyIRB}
+                    handleChange={handleReveiwedBYIRBChange}
+                    required
+                  />
+                  {errors.reviwedbyIRB && (
+                    <span className="text-red-500">{errors.reviwedbyIRB}</span>
+                  )}
+                </div>
+                {reviwedbyIRB === "Yes" && (
+                  <div className="grid grid-cols-2 gap-y-8 gap-x-16  ">
+                    <div>
+                      <InputField
+                        label={"Date of Review"}
+                        value={Date_of_review}
+                        setVal={setDate_of_review}
+                        type={"date"}
+                        required
+                      />
+                      {errors.Date_of_review && (
+                        <span className="text-red-500">
+                          {errors.Date_of_review}
+                        </span>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-3   text-black">
+                    <label className="text-base font-medium">
+                      Meeting minutes
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                      type="file"
+                      defaultValue={meetingminutes}
+                      onChange={(e) => {
+                        console.log("File selected:", e.target.files[0]);
+                        setmeetingminutes(e.target.files[0]);
+                      }}
+                      required
+                    />
+                    {errors.meetingminutes && (
+                      <span className="text-red-500">
+                        {errors.meetingminutes}
+                      </span>
+                    )}
+                  </div>
+                    <div>
+                      <Dropdown
+                        label={"Meeting Decision"}
+                        dropdownOptions={[
+                          "Approved",
+                          "Require Modification",
+                          "Deferred",
+                          "Disapproved",
+                        ]}
+                        value={meetingdecision}
+                        handleOptionChange={handlemeetingdecisionchange}
+                        required
+                      />
+                      {errors.meetingdecision && (
+                        <span className="text-red-500">
+                          {errors.meetingdecision}
+                        </span>
+                      )}
+                    </div>
+                  
+                  </div>
                 )}
-              </>
-              {Status_of_project === "Completed" && (
+
+                <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+                  <button
+                    onClick={prevStage}
+                    className="bg-blue-900 text-white px-4 py-2 w-4/5 rounded-md "
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextStage}
+                    className="bg-blue-900 text-white px-4 py-2 w-4/5  rounded-md"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+          {stage === 6 && (
+            <>
+              <div className="flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ml-auto mr-auto w-5/6 ">
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Additional Details
+                </h1>
+                <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+                  <div className="grid grid-cols-2 gap-x-3   text-black">
+                    <label className="text-base font-medium">
+                      Proposal Submission Copy{" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                      type="file"
+                      defaultValue={SubmissionEmailCopy}
+                      onChange={(e) => {
+                        console.log("File selected:", e.target.files[0]);
+                        setSubmissionEmailCopy(e.target.files[0]);
+                      }}
+                      required
+                    />
+                    {errors.SubmissionEmailCopy && (
+                      <span className="text-red-500">
+                        {errors.SubmissionEmailCopy}
+                      </span>
+                    )}
+                  </div>
+
+                  {(Status_of_proposal === "Approved" ||
+                    Status_of_project === "Completed") && (
+                      <div className="grid grid-cols-2 gap-x-3   text-black">
+                        <label className="text-base font-medium">
+                          Award Letter Copy{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                          type="file"
+                          defaultValue={AwardLetterCopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setAwardLetterCopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+                        {errors.AwardLetterCopy && (
+                          <span className="text-red-500">
+                            {errors.AwardLetterCopy}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  {Status_of_project === "Completed" && (
+                    <div className="grid grid-cols-2 gap-x-3   text-black">
+                      <label className="text-base font-medium">
+                        Completion Letter Copy{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                        type="file"
+                        defaultValue={CompletionLetterCopy}
+                        onChange={(e) => {
+                          console.log("File selected:", e.target.files[0]);
+                          setCompletionLetterCopy(e.target.files[0]);
+                        }}
+                        required
+                      />
+                      {errors.CompletionLetterCopy && (
+                        <span className="text-red-500">
+                          {errors.CompletionLetterCopy}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {typeofresearch === "Contract Research" && (
+                    <>
+                      <div className="grid grid-cols-2 gap-x-3   text-black">
+                        <label className="text-base font-medium">
+                          Contract Agreement Copy{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                          type="file"
+                          defaultValue={ContractAgreementCopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setContractAgreementCopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+                        {errors.ContractAgreementCopy && (
+                          <span className="text-red-500">
+                            {errors.ContractAgreementCopy}
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+                  <button
+                    onClick={prevStage}
+                    className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextStage}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+          {stage === 7 && (
+            <>
+              <div className="grid gap-y-8 grid-col bg-white max-h-screen overflow-scroll shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                  Additional Details
+                </h1>
+
                 <>
                   <label
                     htmlFor="textarea"
                     className="text-base font-medium text-black"
                   >
-                    Write key project deliverables
-                    <span className="text-red-500">*</span>
+                    Write Remarks
                   </label>
                   <textarea
                     className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
                     rows="5"
                     cols="50"
                     id="Textarea"
-                    value={delivery}
+                    value={Remarks}
+                    onChange={handleRemarkschange}
                     required
-                    onChange={handledeliverychange}
                   />
-                  {errors.delivery && (
-                    <span className="text-red-500">{errors.delivery}</span>
+                  {errors.Remarks && (
+                    <span className="text-red-500">{errors.Remarks}</span>
                   )}
                 </>
-              )}
-              <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-                <button
-                  onClick={prevStage}
-                  className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4 "
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-                >
-                  Save
-
-
-                </button>
-
+                {Status_of_project === "Completed" && (
+                  <>
+                    <label
+                      htmlFor="textarea"
+                      className="text-base font-medium text-black"
+                    >
+                      Write key project deliverables
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                      rows="5"
+                      cols="50"
+                      id="Textarea"
+                      value={delivery}
+                      required
+                      onChange={handledeliverychange}
+                    />
+                    {errors.delivery && (
+                      <span className="text-red-500">{errors.delivery}</span>
+                    )}
+                  </>
+                )}
+                <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+                  <button
+                    onClick={prevStage}
+                    className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4 "
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
-
-            </div>
-          </>
+            </>
+          )}
+        </div>
+        {showSuccessModal && (
+          <SuccessModal
+            isOpen={showSuccessModal}
+            p={`Your Data has been saved Successfully`}
+            onClose={handleCloseSuccessModal}
+          />
         )}
-      </div>
-      {
-          showSuccessModal  &&
-          (
-            <SuccessModal isOpen={showSuccessModal} p={`Your Data has been saved Successfully`} onClose={handleCloseSuccessModal} />
-            
-          )
-        } 
-    </Modal>
-    {
-      showSuccessModal &&
-      (
-    
-        <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
-          setshowSuccessSuccessModal(false)
-        }}/>
-      )
-    }
+      </Modal>
+      {showSuccessModal && (
+        <SuccessModal
+          isOpen={showSuccessModal}
+          p={`Your Data has been Saved `}
+          onClose={() => {
+            setshowSuccessModal(false);
+          }}
+        />
+      )}
     </>
   );
 }

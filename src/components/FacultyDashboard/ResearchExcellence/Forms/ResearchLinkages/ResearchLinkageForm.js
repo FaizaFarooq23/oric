@@ -5,6 +5,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import SuccessModal from "../../components/UI/SuccessMessage";
+import { uploadFile } from "../../Utility/Saveimagefiles";
 
 function ResearchLinkageForm({ children }) {
   const [isOpen, setOpen] = useModalState();
@@ -14,7 +15,7 @@ function ResearchLinkageForm({ children }) {
   const [DateofAgreement, setDateofAgreement] = useState("");
   const [Nationaity, setNationaity] = useState("National");
   const [NameofHostInstitute, setNameofHostInstitute] = useState("");
-  const [MoUcopy, setMoUcopy] = useState("");
+  const [MoUcopy, setMoUcopy] = useState(null);
   const [AdressofHostInstitute, setAdressofHostInstitute] = useState("");
   const [CollaboratingAgency, setCollaboratingAgency] = useState("");
   const [CollaboratingAgencyAddress, setCollaboratingAgencyAddress] =
@@ -88,17 +89,18 @@ function ResearchLinkageForm({ children }) {
     let valid = true;
     const newErrors = {};
 
-    if (MoUcopy.trim() === "") {
-      newErrors.MoUcopy = "MoU copyis required";
-      valid = false;
-    } else {
-      newErrors.MoUcopy = "";
-    }
+    
     if (Features.trim() === "") {
       newErrors.Features = "Salient Features is required";
       valid = false;
     } else {
       newErrors.Features = "";
+    }
+    if (!MoUcopy) {
+      newErrors.MoUcopy = "MoU copy is required";
+      valid = false;
+    } else {
+      newErrors.MoUcopy = "";
     }
     if (Scope.trim() === "") {
       newErrors.Scope = "Scope of Collanoration  is required";
@@ -123,7 +125,10 @@ function ResearchLinkageForm({ children }) {
         break;
       default:
         stage + 1;
+
+   
     }
+   
   };
 
   const prevStage = () => {
@@ -148,6 +153,7 @@ function ResearchLinkageForm({ children }) {
     setScope("");
     setStage(1);
   }
+ 
   
   // Call resetFormFields() whenever you need to reset these form fields
   
@@ -168,39 +174,65 @@ function ResearchLinkageForm({ children }) {
   };
 
   const handleSubmit = async () => {
+  
     try {
       if (
-        !validateFormStage3()
-      ) 
-
-      if (!session || !session.user || !session.user.username) {
-        alert("Please log in to continue");
-        signOut();
-        return;
-      }
-
-      const res = await axios.post(
-        `/api/Research_projects/insert_Research_Linkage`,
-        {
-          username: session.user.username,
-          Type_of_Linkage: TypeofLinkage,
-          Feild_of_Study: FeildofStudy,
-          Nationality: Nationaity,
-          Name_of_Research_Grant: NameResearchGrant,
-          Date_of_Agreement: new Date(DateofAgreement),
-          Name_of_Host_Institute: NameofHostInstitute,
-          Address_of_Host_Institute: AdressofHostInstitute,
-          Collaborating_Agency: CollaboratingAgency,
-          Collaborating_Agency_Address: CollaboratingAgencyAddress,
-          Scope: Scope,
-          Features: Features,
+        validateFormStage3()
+      ){
+        if (!session || !session.user || !session.user.username) {
+          alert("Please log in to continue");
+          signOut();
+          return;
         }
-      );
+     
+       
+        const res = await axios.post(
+          `/api/Research_projects/insert_Research_Linkage`,
+          {
+            username: session.user.username,
+            Type_of_Linkage: TypeofLinkage,
+            Feild_of_Study: FeildofStudy,
+            Nationality: Nationaity,
+            Name_of_Research_Grant: NameResearchGrant,
+            Date_of_Agreement: new Date(DateofAgreement),
+            Name_of_Host_Institute: NameofHostInstitute,
+            Address_of_Host_Institute: AdressofHostInstitute,
+            Collaborating_Agency: CollaboratingAgency,
+            Collaborating_Agency_Address: CollaboratingAgencyAddress,
+            Scope: Scope,
+            Features: Features,
+          }
+        );
+        if (res.data && res.data.research_linkage) {
+          const { id } = res.data.research_linkage;
+        try {
+          if (MoUcopy) {
+            await uploadFile(MoUcopy, session.user.username, `/api/Imagesfeilds/fileupload`,`${id}_MoUcopy`,"research_linkage");
+          }
+          else{
+            alert("Please upload MoUcopy")
+          }
+        }
 
-      setOpen(false);
-      console.log(res);
-      resetFormFields()
-      setshowSuccessSuccessModal(true)
+      catch (error) {
+        console.error("Error saving image:", error);
+        alert("error")
+      }
+    }
+    else {
+      console.error("Invalid response structure:", res.data);
+      alert("Error occurred while creating policy case study");
+    }
+        setOpen(false);
+        console.log(res);
+        resetFormFields()
+        setshowSuccessSuccessModal(true)
+      } 
+else{
+
+  alert("Fill All The feilds")
+}
+     
     } catch (error) {
       console.error("Error inserting information:", error);
     }
@@ -214,7 +246,7 @@ function ResearchLinkageForm({ children }) {
       isOpen={isOpen}
       setOpen={setOpen}
     >
-   <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
+   <div className=" flex gap-y-8 flex-col bg-white shadow-lg  rounded-md px-10 py-8 ">
 {stage === 1 && (
   <>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
@@ -366,24 +398,39 @@ function ResearchLinkageForm({ children }) {
 
 {stage === 3 && (
   <>
-    <div className="flex flex-col gap-y-3">
+  
+    <div className="flex flex-col gap-y-3  my-4  mx-4 ">
       <div>
-        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 ">
+        <h1 className="text-blue-900 font-serif font-bold text-xl  py-2  ">
           Additional Details
         </h1>
       </div>
-      <InputField
-        label={"MoU Copy"}
-        value={MoUcopy}
-        setVal={setMoUcopy}
-        type={"file"}
-        required
-      />
+      <div className="grid grid-rows-2 gap-x-3  text-black">
+        <label className="text-base font-medium">
+        MoU Copy <span className="text-red-500">*</span>
+      </label>
+      <input
+    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+    type="file"
+    defaultValue={MoUcopy}
+    onChange={(e) => {
+      console.log("File selected:", e.target.files[0]);
+      setMoUcopy(e.target.files[0]);
+    
+    }}
+    required
+  />
+   {errors.MoUcopy && (
+      <span className="text-red-500">{errors.MoUcopy}</span>
+    )}
+ 
+    </div>
+    <div className="grid  gap-x-3  text-black" >
       <label
         For="textarea"
         className="text-base font-medium text-black"
       >
-        Write Scope of Collboration
+        Write Scope of Collboration<span className="text-red-500">*</span>
       </label>
       <textarea
         className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
@@ -397,11 +444,13 @@ function ResearchLinkageForm({ children }) {
         {errors.Scope && (
       <span className="text-red-500">{errors.Scope}</span>
     )}
+    </div>
+    <div className="grid  gap-x-3  text-black">
       <label
         For="textarea"
         className="text-base font-medium text-black"
       >
-        Write Salient Features of Linkage
+        Write Salient Features of Linkage<span className="text-red-500">*</span>
       </label>
       <textarea
         className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
@@ -416,16 +465,17 @@ function ResearchLinkageForm({ children }) {
       <span className="text-red-500">{errors.Features}</span>
     )}
     </div>
+    </div>
     <div className="grid grid-cols-2 gap-y-8 gap-x-16">
       <button
         onClick={prevStage}
-        className="bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-2/4"
+        className="bg-blue-900 text-white px-4 py-2 rounded-md mt-2 w-2/4"
       >
         Previous
       </button>
       <button
         onClick={handleSubmit}
-        className=" ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 w-1/4"
+        className=" ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-2 w-2/4"
       >
         Save
       </button>

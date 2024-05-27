@@ -5,6 +5,8 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import SuccessModal from "../../components/UI/SuccessMessage";
+import { uploadFile } from "../../Utility/Saveimagefiles";
+import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 function IPlicensingForm({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [errors, setErrors] = useState({});
@@ -34,7 +36,16 @@ function IPlicensingForm({ children }) {
   const [stage, setStage] = useState(1);
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
 
-
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+  const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
+    session?.user?.username,
+    'Title',
+    TitleofInvention,
+    `/api/IPLicensing/get_IPLicensing`
+  );
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
   };
@@ -64,8 +75,11 @@ function IPlicensingForm({ children }) {
     if (TitleofInvention.trim() === "") {
       newErrors.TitleofInvention = "Title of Invention is required";
       valid = false;
+    } else if (isExistingProject) {
+      newErrors.TitleofInvention = "A Project with this title already exists for you";
+      valid = false;
     } else {
-      newErrors.TitleofInvention = "";
+      newErrors.TitleofInvention= "";
     }
     if (Status_of_Licensee === "Negotiations Initiated") {
       if (Status_of_Negotiations.trim() === "") {
@@ -160,6 +174,24 @@ function IPlicensingForm({ children }) {
     setErrors(newErrors);
     return valid;
   };
+  const validateFormStage4 = () => {
+    let valid = true;
+    const newErrors = {};
+    if (!Negotiationcopy) {
+      newErrors.Negotiationcopy = "Negotiation Copy is required";
+      valid = false;
+    } else {
+      newErrors.Negotiationcopy = "";
+    }
+    if (!AgreementCopy && (Status_of_Licensee==="Signed")) {
+      newErrors.AgreementCopy = "Agreement Copy is required";
+      valid = false;
+    } else {
+      newErrors.AgreementCopy = "";
+    }
+    setErrors(newErrors);
+    return valid;
+  };
   const validateFormStage5 = () => {
     let valid = true;
     const newErrors = {};
@@ -190,6 +222,11 @@ function IPlicensingForm({ children }) {
           setStage(stage + 1);
         }
         break;
+        case 4:
+          if (validateFormStage4()) {
+            setStage(stage + 1);
+          }
+          break;
       default:
         setStage(stage + 1); // Update the state with setStage
         break;
@@ -202,10 +239,7 @@ function IPlicensingForm({ children }) {
       setStage(1);
     }
   };
-  const { data: session } = useSession();
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
+ 
   function resetFormFields() {
     setOpen(false);
     setName_of_leadInventor("");
@@ -225,12 +259,50 @@ function IPlicensingForm({ children }) {
     setLicensee_Name("");
     setLicensee_Organization("");
     setLicensee_Type("Exclusive");
-    setNegotiationcopy("");
-    setAgreementCopy("");
+    setNegotiationcopy(null);
+    setAgreementCopy(null)
     setStage(1);
   }
   
-  // Call resetFormFields() whenever you need to reset these form fields
+  const UploadFile = async () => {
+   
+      try {
+        if (Negotiationcopy) {
+          await uploadFile(
+            Negotiationcopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofInvention}_NegotationCopy`,
+            "ip_licensing"
+          );
+        } else {
+          alert("Please upload Negotiation Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    
+   if (Status_of_Licensee==="Signed") {
+      try {
+        if (AgreementCopy) {
+          await uploadFile(
+            AgreementCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${TitleofInvention}_LicenseAgreementCopy`,
+            "ip_licensing"
+          );
+        } else {
+          alert("Please upload Filing Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } 
+   
+  };
   
   const handleSubmit = async () => {
     try {
@@ -247,6 +319,7 @@ function IPlicensingForm({ children }) {
         return;
       }
 
+      await UploadFile()
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -283,7 +356,6 @@ function IPlicensingForm({ children }) {
     } catch (error) {
       console.error("Error inserting information:", error);
     }
-    alert("You clicked ");
   };
 
   return (
@@ -489,6 +561,7 @@ function IPlicensingForm({ children }) {
                     label={"Name of Licensee"}
                     value={Licensee_Name}
                     setVal={setLicensee_Name}
+                    required
                   />
                   {errors.Licensee_Name && (
                     <span className="text-red-500">{errors.Licensee_Name}</span>
@@ -499,6 +572,7 @@ function IPlicensingForm({ children }) {
                     label={"Organization"}
                     value={Licensee_Organization}
                     setVal={setLicensee_Organization}
+                    required
                   />
                   {errors.Licensee_Organization && (
                     <span className="text-red-500">
@@ -519,6 +593,7 @@ function IPlicensingForm({ children }) {
                     value={Start_Date}
                     setVal={setStart_Date}
                     type={"date"}
+                    required
                   />
                   {errors.Start_Date && (
                     <span className="text-red-500">{errors.Start_Date}</span>
@@ -530,6 +605,7 @@ function IPlicensingForm({ children }) {
                     value={End_Date}
                     setVal={setEnd_Date}
                     type={"date"}
+                    required
                   />
                   {errors.End_Date && (
                     <span className="text-red-500">{errors.End_Date}</span>
@@ -562,19 +638,57 @@ function IPlicensingForm({ children }) {
                 Additional Details
               </h1>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-                <InputField
-                  label={"Negotiation Copy"}
-                  value={Negotiationcopy}
-                  setVal={setNegotiationcopy}
-                  type={"file"}
-                />
-                <InputField
-                  label={"Agreement Copy"}
-                  value={AgreementCopy}
-                  setVal={setAgreementCopy}
-                  type={"file"}
-                />
-              </div>
+                {
+                  Status_of_Licensee==="Signed"&&
+                  <div className="grid grid-cols-2 gap-x-3   text-black">
+
+                  <label className="text-base font-medium">
+                    AgreementCopy <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                    type="file"
+                    defaultValue={AgreementCopy}
+                    onChange={(e) => {
+                      console.log("File selected:", e.target.files[0]);
+                      setAgreementCopy(e.target.files[0]);
+                    }}
+                    required
+                  />
+                  {errors.AgreementCopy && (
+                    <span className="text-red-500">
+                      {errors.AgreementCopy}
+                    </span>
+                  )}
+                </div>
+                }
+
+                
+
+               
+                      <div className="grid grid-cols-2 gap-x-3  text-black">
+                        <label className="text-base font-medium">
+                          Negotiation copy <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2  rounded-sm"
+                          type="file"
+                          defaultValue={Negotiationcopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setNegotiationcopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+                        {errors.Negotiationcopy && (
+                          <span className="text-red-500">
+                            {errors.Negotiationcopy}
+                          </span>
+                        )}
+                      </div>
+                    
+
+                </div>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16">
                 <button
                   onClick={prevStage}

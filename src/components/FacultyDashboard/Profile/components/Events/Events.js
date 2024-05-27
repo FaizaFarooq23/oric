@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import InputField from "../Common/InputField";
 import Dropdown from "../Common/Dropdown";
 import RadioButtonGroup from "../Common/Radiobutton";
+import { uploadFile } from "@/components/FacultyDashboard/ResearchExcellence/Utility/Saveimagefiles";
 import SuccessModal from "@/components/FacultyDashboard/ResearchExcellence/components/UI/SuccessMessage";
 export default function CivilEventsModal({ children }) {
   const [isOpen, setOpen] = useModalState();
@@ -39,30 +40,24 @@ export default function CivilEventsModal({ children }) {
   const handleRemarksChange = (e) => {
     setRemarks(e.target.value);
   };
-  const checkFieldExists = async (value, field) => {
+  const checkExistingEvent = async () => {
     try {
-      const response = await axios.get(`/api/faculty/Events/fetch?${field}=${encodeURIComponent(value)}`);
-      console.log(response.data);
-      if (response.status === 200) {
-        // If the response is successful (status code 200), extract data
-        const data = response.data;
-        return data && data.length > 0; // Return true if data exists
-      } else if (response.status === 404) {
-        // If the response status is 404 (Not Found), it means the event doesn't exist
-        return false;
-      } else {
-        // If the response status is neither 200 nor 404, log an error
-        console.error(`Error checking ${field}: ${response.statusText}`);
-        return false;
-      }
+      // Check if an award with the same title already exists for the user
+      const existingEventsResponse = await axios.get(`/api/faculty/Events/fetch`, {
+        params: {
+          username: session.user.username,
+          Title_of_Event: Title_of_Event,
+        },
+      });
+  
+      const existingEvents = existingEventsResponse.data;
+  
+      return existingEvents.some(Events => Events.Title_of_Event === Title_of_Event);
     } catch (error) {
-      // If an error occurs during the request, handle it
-      console.error(`Error checking ${field}:`, error);
+      console.error("Error checking existing Events:", error);
       return false;
     }
   };
-  
-  
   
 
   const validateFormStage1 = async () => {
@@ -73,14 +68,17 @@ export default function CivilEventsModal({ children }) {
       newErrors.Title_of_Event = "Title of Event is required";
       valid = false;
     } else {
-      const exists = await checkFieldExists(Title_of_Event, "Title_of_Event");
-      if (exists) {
-        newErrors.Title_of_Event = "Event Already exists";
+      // Check if an award with the same title already exists for the user
+      const isExistingEvents = await checkExistingEvent();
+  
+      if (isExistingEvents) {
+        newErrors.Title_of_Event = "An Events with this title already exists for you";
         valid = false;
       } else {
         newErrors.Title_of_Event = "";
       }
     }
+    
     if (Role.trim() === "") {
       newErrors.Role = "Role is required";
       valid = false;
@@ -159,7 +157,22 @@ export default function CivilEventsModal({ children }) {
     setErrors(newErrors);
     return valid;
   };
-
+  const validateFormStage3 = () => {
+    let valid = true;
+    const newErrors = {};
+  
+   
+    if (!Event_detail) {
+      newErrors.Event_detail = "Brief Event Report is required";
+      valid = false;
+    } else {
+      newErrors.Event_detail = "";
+    }
+  
+  
+    setErrors(newErrors);
+    return valid;
+  };
   const nextStage = async () => {
     switch (stage) {
       case 1:
@@ -172,6 +185,11 @@ export default function CivilEventsModal({ children }) {
           setStage(stage + 1);
         }
         break;
+        case 3:
+          if (validateFormStage3()) {
+            setStage(stage + 1);
+          }
+          break;
       default:
         setStage(stage + 1); // Update the state with setStage
         break;
@@ -209,6 +227,22 @@ export default function CivilEventsModal({ children }) {
     }
 
     try {
+      if (Event_detail) {
+        await uploadFile(
+          Event_detail,
+          session.user.username,
+          `/api/Imagesfeilds/fileupload`,
+          `${Title_of_Event}_Eventreport_bonchures`,
+          "civil_engagement_events"
+        );
+      } else {
+        alert("Please upload Event Report Copy");
+      }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error");
+    }
+    try {
       const res = await axios.post(`/api/faculty/Events/insert`, {
         username: session.user.username,
         Title_of_Event: Title_of_Event,
@@ -224,7 +258,6 @@ export default function CivilEventsModal({ children }) {
         Role: Role,
         Venue: Venue_of_event,
         Outcome_Material: outcomeMaterial,
-        event_detail: Event_detail,
       });
 
       setOpen(false);
@@ -466,12 +499,26 @@ export default function CivilEventsModal({ children }) {
                   value={Remarks}
                   onChange={handleRemarksChange}
                 />
-                <InputField
-                  label={"Event Details"}
-                  value={Event_detail}
-                  setVal={setEvent_detail}
-                  type={"file"}
-                />
+                <div className="grid grid-cols-2 gap-x-3   text-black">
+                      <label className="text-base font-medium">
+                      Brief Event Report/Bonchures  <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                        type="file"
+                        defaultValue={Event_detail}
+                        onChange={(e) => {
+                          console.log("File selected:", e.target.files[0]);
+                          setEvent_detail(e.target.files[0]);
+                        }}
+                        required
+                      />
+                      {errors.Event_detail && (
+                        <span className="text-red-500">
+                          {errors.Event_detail}
+                        </span>
+                      )}
+                    </div>
                 <div className="grid grid-cols-2 gap-y-8 gap-x-16">
                   <button
                     onClick={prevStage}

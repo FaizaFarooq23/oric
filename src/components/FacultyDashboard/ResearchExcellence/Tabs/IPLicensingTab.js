@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import IPlicensingForm from '../Forms/IP_Licensing/IP_LicensingForm';
 import IPLicensingfeild from '../Forms/IP_Licensing/IP_Licensingfeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
+import { deleteFile ,deleteFiles } from '../Utility/Deleteimage';
 
 export default function IPLicensingTab() {
   const { open: openModal } = useModal("IPLicensingModal");
@@ -34,15 +35,21 @@ export default function IPLicensingTab() {
     fetchIPLicensingdata();
   }, [session]);
  
-const handleDeleteProject = async (id) => {
-  try {
-    await axios.delete(`/api/IPLicensing/Delete_IPLicensing?id=${id}`);
-    console.log('Project deleted successfully');
-      setShowDeleteSuccessModal(true); // Show SuccessModal after successful deletion
-  } catch (error) {
-    console.error('Error deleting project:', error);
-  }
-};
+  const handleDeleteProject = async (id, filenames) => {
+    try {
+      const username = session.user.username;
+      console.log(filenames);
+      await deleteFiles(username, "ip_licensing", filenames, `/api/Imagesfeilds/multiplefilesdelete`);
+      await axios.delete(`/api/IPLicensing/Delete_IPLicensing?id=${id}`);
+      console.log('Project deleted successfully');
+      setShowDeleteSuccessModal(true);
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      // Optionally, handle the error to show an error message to the user
+    }
+  };
+  
+
 
   return (
     <div >
@@ -65,7 +72,7 @@ const handleDeleteProject = async (id) => {
           </div>
         ))
       )}
-        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
+        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Deleted`} onClose={()=>{
           setShowDeleteSuccessModal(false)
         }} />}
     </div>

@@ -18,49 +18,49 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
      
         <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Project Details</h1>
         <div className="grid grid-cols-2 gap-x-8 ">
-          <span className="text-black text-base gap-x-8 font-semibold  border-b-2">Title of Research Project</span>
-          <span className="text-black text-base font-semibold  border-b-2">{data.title}</span>
+          <span className="text-black text-base gap-x-8 font-semibold  ">Title of Research Project</span>
+          <span className="text-black text-base font-semibold  ">{data.title}</span>
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2">Thematic Area</span>
-            <span className="text-black text-base font-semibold  border-b-2">{data.Thematic_Area}</span>
+            <span className="text-black text-base font-semibold  ">Thematic Area</span>
+            <span className="text-black text-base font-semibold  ">{data.Thematic_Area}</span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2">Type of Research</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.type_of_research}</span>
+            <span className="text-black text-base font-semibold  ">Type of Research</span>
+            <span className="text-black text-base font-semibold ">{data.type_of_research}</span>
           </div>
           { data.type_of_research==="Solo Project" &&
             <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2">Category</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.category}</span>
+            <span className="text-black text-base font-semibold  ">Category</span>
+            <span className="text-black text-base font-semibold ">{data.category}</span>
       
           </div>
          
           }
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Name of Research Grant</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Name_of_Research_Grant}</span>
+            <span className="text-black text-base font-semibold ">Name of Research Grant</span>
+            <span className="text-black text-base font-semibold ">{data.Name_of_Research_Grant}</span>
           </div>
          
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2">Nationality</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Nationality}</span>
+            <span className="text-black text-base font-semibold  ">Nationality</span>
+            <span className="text-black text-base font-semibold ">{data.Nationality}</span>
           </div>
           
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2 ">Status of Proposal</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Status_of_proposal}</span>
+            <span className="text-black text-base font-semibold  ">Status of Proposal</span>
+            <span className="text-black text-base font-semibold ">{data.Status_of_proposal}</span>
           </div>
 
           {data.Status_of_project === "Completed"  &&
             <div className="grid grid-cols-2 gap-x-8">
-              <span className="text-black text-base font-semibold border-b-2">Date of Completion</span>
+              <span className="text-black text-base font-semibold ">Date of Completion</span>
               {
               data.Date_of_Completion !== "" ?(
-              <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Completion.split("T")[0]}</span>
+              <span className="text-black text-base font-semibold ">{data.Date_of_Completion.split("T")[0]}</span>
               ):(
-                <span className="text-black text-base font-semibold border-b-2">Nill</span>
+                <span className="text-black text-base font-semibold ">Nill</span>
 
               )
               }
@@ -70,32 +70,32 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
           }
 
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Start Date</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.start_Date.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold ">Start Date</span>
+            <span className="text-black text-base font-semibold ">{data.start_Date.split("T")[0]}</span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">End Date</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.end_Date.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold ">End Date</span>
+            <span className="text-black text-base font-semibold ">{data.end_Date.split("T")[0]}</span>
           </div>
           {data.type_of_research === "Contract" ? (
             <>
               <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold border-b-2">Date of contract signed</span>
-                <span className="text-black text-base font-semibold border-b-2">{data.Date_of_ContractSigned.split("T")[0]}</span>
+                <span className="text-black text-base font-semibold ">Date of contract signed</span>
+                <span className="text-black text-base font-semibold ">{data.Date_of_ContractSigned.split("T")[0]}</span>
               </div>
               <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold border-b-2">Date of contract</span>
-                <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Contract.split("T")[0]}</span>
+                <span className="text-black text-base font-semibold ">Date of contract</span>
+                <span className="text-black text-base font-semibold ">{data.Date_of_Contract.split("T")[0]}</span>
               </div>
               <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold border-b-2">Counter Parts from Industry</span>
-                <span className="text-black text-base font-semibold border-b-2">{data.Counterparts}</span>
+                <span className="text-black text-base font-semibold ">Counter Parts from Industry</span>
+                <span className="text-black text-base font-semibold ">{data.Counterparts}</span>
               </div>
             </>) : (
             <>
               <div className="grid grid-cols-2 gap-x-8 ">
-                <span className="text-black text-base font-semibold border-b-2">Date of Submission</span>
-                <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Submission.split("T")[0]}</span>
+                <span className="text-black text-base font-semibold ">Date of Submission</span>
+                <span className="text-black text-base font-semibold ">{data.Date_of_Submission.split("T")[0]}</span>
               </div>
 
               {
@@ -104,20 +104,20 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
                 {
                   data.Date_of_Approval!=="" &&
                   <div className="grid grid-cols-2 gap-x-8">
-                    <span className="text-black text-base font-semibold border-b-2">Date of Approval</span>
-                    <span className="text-black text-base font-semibold border-b-2">{data.Date_of_Approval.split("T")[0]}</span>
+                    <span className="text-black text-base font-semibold ">Date of Approval</span>
+                    <span className="text-black text-base font-semibold ">{data.Date_of_Approval.split("T")[0]}</span>
                   </div>
                 }
                   
                   { (data.type_of_research==="Solo Project" && data.category==="Non-HEC" ) &&
                      <div className="grid grid-cols-2 gap-x-8">
-                     <span className="text-black text-base font-semibold border-b-2">ORIC Overhead</span>
-                     <span className="text-black text-base font-semibold border-b-2">{data.ORIC_Overhead}</span>
+                     <span className="text-black text-base font-semibold ">ORIC Overhead</span>
+                     <span className="text-black text-base font-semibold ">{data.ORIC_Overhead}</span>
                    </div>
                   }
                   <div className="grid grid-cols-2 gap-x-8">
-                    <span className="text-black text-base font-semibold border-b-2">Status of Project</span>
-                    <span className="text-black text-base font-semibold border-b-2">{data.Status_of_project}</span>
+                    <span className="text-black text-base font-semibold ">Status of Project</span>
+                    <span className="text-black text-base font-semibold ">{data.Status_of_project}</span>
                   </div>
                 </>
 
@@ -135,16 +135,16 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Name of Pi</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Name_of_pi}</span>
+            <span className="text-black text-base font-semibold ">Name of Pi</span>
+            <span className="text-black text-base font-semibold ">{data.Name_of_pi}</span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Department of Pi</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Department_of_Pi} </span>
+            <span className="text-black text-base font-semibold ">Department of Pi</span>
+            <span className="text-black text-base font-semibold ">{data.Department_of_Pi} </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Designation of Pi</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Designation_of_Pi}</span>
+            <span className="text-black text-base font-semibold ">Designation of Pi</span>
+            <span className="text-black text-base font-semibold ">{data.Designation_of_Pi}</span>
           </div>
 
         </div>
@@ -157,16 +157,16 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Name of CoPi</span>
+            <span className="text-black text-base font-semibold ">Name of CoPi</span>
             <span className="text-black text-base font-semibold">{data.Name_of_CoPi} </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Department of CoPi</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Department_of_CoPi}</span>
+            <span className="text-black text-base font-semibold ">Department of CoPi</span>
+            <span className="text-black text-base font-semibold ">{data.Department_of_CoPi}</span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Designation of CoPi</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Designation_of_CoPi}</span>
+            <span className="text-black text-base font-semibold ">Designation of CoPi</span>
+            <span className="text-black text-base font-semibold ">{data.Designation_of_CoPi}</span>
           </div>
 
         </div>
@@ -180,16 +180,16 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
 </div>
 <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
   <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold border-b-2">Name of Sponcering Agency</span>
-    <span className="text-black text-base font-semibold border-b-2">{data.Name_of_Sponcering_Agency}</span>
+    <span className="text-black text-base font-semibold ">Name of Sponcering Agency</span>
+    <span className="text-black text-base font-semibold ">{data.Name_of_Sponcering_Agency}</span>
   </div>
   <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold border-b-2">Sponcering Agency Country</span>
+    <span className="text-black text-base font-semibold ">Sponcering Agency Country</span>
     <span className="text-black text-base font-semibold">{data.Sponcering_Agency_Country}</span>
   </div>
   <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold border-b-2">Sponcering Agency Address</span>
-    <span className="text-black text-base font-semibold border-b-2">{data.Sponcering_Agency_Address}</span>
+    <span className="text-black text-base font-semibold ">Sponcering Agency Address</span>
+    <span className="text-black text-base font-semibold ">{data.Sponcering_Agency_Address}</span>
   </div>
 
 </div>
@@ -201,19 +201,19 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Reviewed By IRB</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.reviwedbyIRB}</span>
+            <span className="text-black text-base font-semibold ">Reviewed By IRB</span>
+            <span className="text-black text-base font-semibold ">{data.reviwedbyIRB}</span>
           </div>
           {
             data.reviwedbyIRB==="Yes" &&
             <>
              <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Date of Review</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Date_of_review.split("T")[0]} </span>
+            <span className="text-black text-base font-semibold ">Date of Review</span>
+            <span className="text-black text-base font-semibold ">{data.Date_of_review.split("T")[0]} </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Meeting Decision</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.meetingdecision}</span>
+            <span className="text-black text-base font-semibold ">Meeting Decision</span>
+            <span className="text-black text-base font-semibold ">{data.meetingdecision}</span>
           </div>
             </>
            
@@ -227,24 +227,24 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
             data.type_of_research !== "Contract Research" &&
             data.Status_of_project === "Completed"  &&
             <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Funding Agency/Body</span>
+            <span className="text-black text-base font-semibold ">Funding Agency/Body</span>
             <span className="text-black text-base font-semibold">{data.funding_agency}</span>
           </div>
           }
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2 w-48">Total Funding Requested </span>
-            <span className="text-black text-base font-semibold border-b-2 w-48">{data.funding_requested}</span>
+            <span className="text-black text-base font-semibold  w-48">Total Funding Requested </span>
+            <span className="text-black text-base font-semibold  w-48">{data.funding_requested}</span>
           </div>
         {data.Status_of_proposal === "Approved" &&
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Total Funding Approved</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.funding_approved} </span>
+            <span className="text-black text-base font-semibold ">Total Funding Approved</span>
+            <span className="text-black text-base font-semibold ">{data.funding_approved} </span>
           </div>
 }
 {data.Status_of_proposal === "Completed" &&
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Total Funding Utilized</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.funding_utilized} </span>
+            <span className="text-black text-base font-semibold ">Total Funding Utilized</span>
+            <span className="text-black text-base font-semibold ">{data.funding_utilized} </span>
           </div>
 }
         </div>
@@ -254,47 +254,47 @@ export default function Researchprojectdata({ isOpen, closeModal, data }) {
         </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Collaborating Partner</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Collaborating_Partne} </span>
+            <span className="text-black text-base font-semibold ">Collaborating Partner</span>
+            <span className="text-black text-base font-semibold ">{data.Collaborating_Partne} </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Co-funding Partner</span>
-            <span className="text-black text-base font-semibold border-b-2">{data.Cofunding_Partner} </span>
+            <span className="text-black text-base font-semibold ">Co-funding Partner</span>
+            <span className="text-black text-base font-semibold ">{data.Cofunding_Partner} </span>
           </div>
         </div>
         <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Additional Details</h1>
         <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base gap-x-24 font-semibold border-b-2 w-60 ">Proposal Submission Email Copy</span>
-            <span className="text-black text-base font-semibold border-b-2">National </span>
+            <span className="text-black text-base gap-x-24 font-semibold  w-60 ">Proposal Submission Email Copy</span>
+            <span className="text-black text-base font-semibold ">National </span>
           </div>
         <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold border-b-2">Award Letter Copy</span>
-            <span className="text-black text-base font-semibold border-b-2">National </span>
+            <span className="text-black text-base font-semibold ">Award Letter Copy</span>
+            <span className="text-black text-base font-semibold ">National </span>
           </div>
           <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2" >Completion Letter Copy</span>
-            <span className="text-black text-base font-semibold  border-b-2">National </span>
+            <span className="text-black text-base font-semibold  " >Completion Letter Copy</span>
+            <span className="text-black text-base font-semibold  ">National </span>
           </div>
           {
             data.type_of_research=="Contract Research" &&
             <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  border-b-2">Contract Agreement Copy</span>
-            <span className="text-black text-base font-semibold  border-b-2">National </span>
+            <span className="text-black text-base font-semibold  ">Contract Agreement Copy</span>
+            <span className="text-black text-base font-semibold  ">National </span>
           </div>
           }
          
         </div>
         <div className="grid gap-y-8 gap-x-8">
-          <span className="text-black text-base w-40 font-semibold  border-b-2">Remarks:</span>
-          <span className="text-black text-base font-semibold  border-b-2">{data.Remarks} </span>
+          <span className="text-black text-base w-40 font-semibold  ">Remarks:</span>
+          <span className="text-black text-base font-semibold  ">{data.Remarks} </span>
         </div>
         {
           data.Status_of_project==="Completed" &&
           <div className="grid  gap-x-8">
-          <span className="text-black text-base w-56 font-semibold  border-b-2">Key Project deliverables</span>
-          <span className="text-black text-base font-semibold  border-b-2">{data.delivery} </span>
+          <span className="text-black text-base w-56 font-semibold  ">Key Project deliverables</span>
+          <span className="text-black text-base font-semibold  ">{data.delivery} </span>
         </div>
         }
       

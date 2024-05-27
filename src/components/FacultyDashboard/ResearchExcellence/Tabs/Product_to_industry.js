@@ -3,6 +3,7 @@ import { FiPlusCircle } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useModal } from 'react-simple-modal-provider';
 import axios from 'axios';
+import { deleteFile } from '../Utility/Deleteimage';
 import { useSession } from 'next-auth/react';
 import Product_to_Industryfield from '../Forms/ResearchProducts/ProductDisplayedFeilds';
 import Product_to_IndustryForm from '../Forms/Product_to_Industry/Product_to_industryForm';
@@ -34,8 +35,14 @@ export default function Product_to_IndustryTab() {
     fetchProduct_to_Industrydata();
   }, [session]);
  
-const handleDeleteProject = async (id) => {
+const handleDeleteProject = async (id,filename) => {
   try {
+    await deleteFile(
+      session.user.username,
+        "product_to_industry", // or any other table name relevant to your project
+        filename, // The filename you want to delete
+      `/api/Imagesfeilds/filedelete`
+    );
     await axios.delete(`/api/Product_to_Industry/delete_Product?id=${id}`);
     console.log('Project deleted successfully');
     setShowDeleteSuccessModal(true); // Show SuccessModal after successful deletion
@@ -66,7 +73,7 @@ const handleDeleteProject = async (id) => {
           </div>
         ))
       )}
-        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Saved`} onClose={()=>{
+        {showDeleteSuccessModal && <SuccessModal isOpen={showDeleteSuccessModal} p={`Your Data Has Been Deleted`} onClose={()=>{
           setShowDeleteSuccessModal(false)
         }} />}
 

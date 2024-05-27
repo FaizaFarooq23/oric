@@ -1,11 +1,11 @@
-
-import InputField from '@/components/FacultyDashboard/Profile/components/Common/InputField'
+import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import React, { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { FaTimes, FaEdit } from 'react-icons/fa'; 
+import { FaTimes, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import Modal, { useModalState } from "react-simple-modal-provider";
-import SuccessModal from '../../components/UI/SuccessMessage';
+import SuccessModal from "../../components/UI/SuccessMessage";
+import { uploadFile } from "../../Utility/Saveimagefiles";
 function CasestudyForm({ children }) {
   const [isOpen, setOpen] = useModalState();
   const [AreaAdvocated, setAreaAdvocated] = useState("");
@@ -40,13 +40,12 @@ function CasestudyForm({ children }) {
     setCoalitionPartners("");
     setBreif("");
     setissueverification("");
-    setCasestudycopy("");
+    setCasestudycopy(null);
     setErrors({});
-    setShowModal(true);
   };
-  
+
   // Call resetAdvocacyFormFields whenever you need to reset the advocacy form fields
-  
+
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -92,7 +91,12 @@ function CasestudyForm({ children }) {
     } else {
       newErrors.BackingResearchStatus = "";
     }
-
+    if (!Casestudycopy) {
+      newErrors.Casestudycopy = "Copy of Casestudy is required";
+      valid = false;
+    } else {
+      newErrors.Casestudycopy = "";
+    }
     if (Breif.trim() === "") {
       newErrors.Breif = "Brief is required";
       valid = false;
@@ -103,7 +107,7 @@ function CasestudyForm({ children }) {
     setErrors(newErrors);
     return valid;
   };
- 
+
   useEffect(() => {
     console.log(session);
   }, [session]);
@@ -118,6 +122,8 @@ function CasestudyForm({ children }) {
         signOut();
         return;
       }
+  
+      // Step 1: Insert the record and get the `id`
       const res = await axios.post(`/api/Research_projects/insert_casestudy`, {
         username: session.user.username,
         Name_of_Government_Body: NameGovernmentBody,
@@ -129,178 +135,223 @@ function CasestudyForm({ children }) {
         Breif_Details: Breif,
         Issue_verification: issueverification,
       });
-resetAdvocacyFormFields()
-setOpen(false)
-setshowSuccessSuccessModal(true)
-   
-      console.log(res);
+  
+      if (res.data && res.data.policy_casestudy) {
+        const { id } = res.data.policy_casestudy; // Get the inserted record's `id`
+  
+        // Step 2: Upload the file using the `id`
+        if (Casestudycopy) {
+          await uploadFile(
+            Casestudycopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${id}_policyorCasestudycopy`, // Use `id` instead of `NameGovernmentBody`
+            "policy_casestudy"
+          );
+        } else {
+          alert("Please upload CaseStudy Copy");
+        }
+  
+        resetAdvocacyFormFields();
+        setOpen(false);
+        setshowSuccessSuccessModal(true);
+  
+        console.log(res);
+      } else {
+        console.error("Invalid response structure:", res.data);
+        alert("Error occurred while creating policy case study");
+      }
     } catch (error) {
       console.error("Error inserting information:", error);
     }
   };
   
+
   return (
     <>
-    <Modal
-      id={"CaseStudyFormModal"}
-      consumer={children}
-      isOpen={isOpen}
-      setOpen={setOpen}
-    >
-      <div className="h-screen overflow-y-auto bg-white shadow-lg rounded-md mx-auto  my-2 px-10 w-4/5  ">
-      <div className="flex justify-end  mt-8 items-end gap-x-6">
-    
-    <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={()=>{
-setOpen(false)
-    } } />
-  </div>
-        <div className="py-2 m-2 flex flex-col gap-y-8   ">
-          <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-            <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
-                Enter Details About Policy Advocacy
-              </h1>
+      <Modal
+        id={"CaseStudyFormModal"}
+        consumer={children}
+        isOpen={isOpen}
+        setOpen={setOpen}
+      >
+        <div className="h-screen overflow-y-auto bg-white shadow-lg rounded-md mx-auto  my-2 px-10 w-4/5  ">
+          <div className="flex justify-end  mt-8 items-end gap-x-6">
+            <FaTimes
+              className="text-red-500 text-xl  cursor-pointer"
+              onClick={() => {
+                setOpen(false);
+              }}
+            />
+          </div>
+          <div className="py-2 m-2 flex flex-col gap-y-8   ">
+          <div>
+                <h1 className="text-blue-900 font-serif font-bold text-xl py-2  border-black">
+                  Enter Details About Policy Advocacy
+                </h1>
+              </div>
+              <div>
+                <InputField
+                  label={"Government Body"}
+                  value={NameGovernmentBody}
+                  setVal={setNameGovernmentBody}
+                  required
+                />
+                {errors.NameGovernmentBody && (
+                  <span className="text-red-500">
+                    {errors.NameGovernmentBody}
+                  </span>
+                )}
+              </div>
+            <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+              
+              <div>
+                <InputField
+                  label={"Area Advocated"}
+                  value={AreaAdvocated}
+                  setVal={setAreaAdvocated}
+                  required
+                />
+                {errors.AreaAdvocated && (
+                  <span className="text-red-500">{errors.AreaAdvocated}</span>
+                )}
+              </div>
+
+             
+              <div>
+                <InputField
+                  label={"Date of Presentation"}
+                  value={DateofPresentation}
+                  type={"date"}
+                  setVal={setDateofPresentation}
+                  required
+                />
+                {errors.DateofPresentation && (
+                  <span className="text-red-500">
+                    {errors.DateofPresentation}
+                  </span>
+                )}
+              </div>
+
+              <InputField
+                label={"Coalition Partners"}
+                value={CoalitionPartners}
+                setVal={setCoalitionPartners}
+              />
+              <div>
+                <InputField
+                  label={"Issue Verification"}
+                  value={issueverification}
+                  setVal={setissueverification}
+                  required
+                />
+                {errors.issueverification && (
+                  <span className="text-red-500">
+                    {errors.issueverification}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-x-3   text-black">
+                <label className="text-base font-medium">
+                  Casestudy Copy <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                  type="file"
+                  defaultValue={Casestudycopy}
+                  onChange={(e) => {
+                    console.log("File selected:", e.target.files[0]);
+                    setCasestudycopy(e.target.files[0]);
+                  }}
+                  required
+                />
+                {errors.Casestudycopy && (
+                  <span className="text-red-500">{errors.Casestudycopy}</span>
+                )}
+              </div>
             </div>
 
-            <br />
-            <div>
-              <InputField
-                label={"Area Advocated"}
-                value={AreaAdvocated}
-                setVal={setAreaAdvocated}
+            <div className="flex flex-col">
+              <label
+                For="Inputfeild"
+                className="text-base font-medium text-black"
+              >
+                Advocacy Tools<span className="text-red-500">*</span>
+              </label>
+              <input
+                className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                id="Inputfeild"
+                value={AdvocacyTools}
+                onChange={handleAdvocacyToolschange}
                 required
               />
-              {errors.AreaAdvocated && (
-                <span className="text-red-500">{errors.AreaAdvocated}</span>
+              {errors.AdvocacyTools && (
+                <span className="text-red-500">{errors.AdvocacyTools}</span>
               )}
             </div>
-        
-            <div>
-              <InputField
-                label={"Government Body"}
-                value={NameGovernmentBody}
-                setVal={setNameGovernmentBody}
+            <div className="flex flex-col">
+              <label
+                For="Inputfeild"
+                className="text-base font-medium text-black"
+              >
+                Backing Research Status<span className="text-red-500">*</span>
+              </label>
+              <input
+                className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                rows="3"
+                cols="50"
+                id="Inputfeild"
+                value={BackingResearchStatus}
+                onChange={handleBackingResearchStatuschange}
                 required
               />
-              {errors.NameGovernmentBody && (
+              {errors.BackingResearchStatus && (
                 <span className="text-red-500">
-                  {errors.NameGovernmentBody}
+                  {errors.BackingResearchStatus}
                 </span>
               )}
             </div>
-            <div>
-              <InputField
-                label={"Date of Presentation"}
-                value={DateofPresentation}
-                type={"date"}
-                setVal={setDateofPresentation}
+            <div className="flex flex-col">
+              <label
+                For="textarea"
+                className="text-base font-medium text-black"
+              >
+                Enter Breif Details<span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                rows="3"
+                cols="50"
+                id="Textarea"
+                value={Breif}
+                onChange={handleBreifchange}
                 required
               />
-              {errors.DateofPresentation && (
-                <span className="text-red-500">
-                  {errors.DateofPresentation}
-                </span>
+              {errors.Breif && (
+                <span className="text-red-500">{errors.Breif}</span>
               )}
             </div>
-
-            <InputField
-              label={"Coalition Partners"}
-              value={CoalitionPartners}
-              setVal={setCoalitionPartners}
-            />
-            <div>
-              <InputField
-                label={"Issue Verification"}
-                value={issueverification}
-                setVal={setissueverification}
-                required
-              />
-              {errors.issueverification && (
-                <span className="text-red-500">{errors.issueverification}</span>
-              )}
+            <div className="flex items-center justify-center w-full">
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-900 text-white px-4 py-2 rounded-md mt-2 w-1/4"
+              >
+                Save
+              </button>
             </div>
-            <InputField
-              label={"Case Study Breif Copy"}
-              value={Casestudycopy}
-              setVal={setCasestudycopy}
-              type={"file"}
-              required
-            />
-          </div>
-      
-          <div className="flex flex-col">
-            <label For="Inputfeild" className="text-base font-medium text-black">
-              Advocacy Tools<span className="text-red-500">*</span>
-            </label>
-            <input
-              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-      
-              id="Inputfeild"
-              value={AdvocacyTools}
-              onChange={handleAdvocacyToolschange}
-              required
-            />
-            {errors.AdvocacyTools && (
-              <span className="text-red-500">{errors.AdvocacyTools}</span>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label For="Inputfeild" className="text-base font-medium text-black">
-              Backing Research Status<span className="text-red-500">*</span>
-            </label>
-            <input
-              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-              rows="3"
-              cols="50"
-              id="Inputfeild"
-              value={BackingResearchStatus}
-              onChange={handleBackingResearchStatuschange}
-              required
-            />
-            {errors.BackingResearchStatus && (
-              <span className="text-red-500">{errors.BackingResearchStatus}</span>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label For="textarea" className="text-base font-medium text-black">
-              Enter Breif Details<span className="text-red-500">*</span>
-            </label>
-            <textarea
-              className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-              rows="3"
-              cols="50"
-              id="Textarea"
-              value={Breif}
-              onChange={handleBreifchange}
-              required
-            />
-            {errors.Breif && (
-              <span className="text-red-500">{errors.Breif}</span>
-            )}
-          </div>
-          <div className="flex items-center justify-center w-full">
-            <button
-              onClick={handleSubmit}
-              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-2 w-1/4"
-            >
-              Save
-            </button>
-      
           </div>
         </div>
-      
-      </div>
-    </Modal>
-    {
-            showSuccessModal &&
-            (
-          
-              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
-                setshowSuccessSuccessModal(false)
-              }}/>
-            )
-          }
-      </>
+      </Modal>
+      {showSuccessModal && (
+        <SuccessModal
+          isOpen={showSuccessModal}
+          p={`Your Data has been Saved `}
+          onClose={() => {
+            setshowSuccessSuccessModal(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { FaTimes, } from "react-icons/fa";
 import { FaPencil, FaCheck } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Researchprojectdata from "./Researchprojectdata";
+import { uploadFile } from "../../Utility/Saveimagefiles";
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import SuccessModal from "../../components/UI/SuccessMessage";
@@ -22,8 +24,12 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   const [fundingagency, setfundingagency] = useState("");
   const [Status_of_project, setStatus_of_project] = useState("Ongoing");
   const [delivery, setdelivery] = useState("");
+  const [AwardLetterCopy, setAwardLetterCopy] = useState("");
+  const [CompletionLetterCopy, setCompletionLetterCopy] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const { data: session } = useSession();
+
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -33,7 +39,10 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     // Activate editing mode
   };
   const HandleProjectChangeValue = () => {
-    setEditingproject(true);
+    if(Status_of_proposal==="Approved"){
+      setEditingproject(true);
+    }
+  
   };
   const handleStatus_of_proposalChange = (e) => {
     setStatus_of_proposal(e.target.value);
@@ -48,9 +57,14 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     if (data) {
       setProjectId(data.project_id);
       setStatus_of_proposal(data.Status_of_proposal);
-      setStatus_of_proposal(data.Status_of_project);
+      setStatus_of_project(data.Status_of_project);
     }
-  }, [data]);
+    if(session){
+      console.log(session);
+
+    }
+  }, [data,session]);
+  
   const resetinfofeilds = () => {
     setStatus_of_proposal("Submitted");
     setStatus_of_project("Ongoing");
@@ -72,6 +86,24 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     setDateofCompletion("");
   };
   const updateinfo = async () => {
+    if (Status_of_proposal==="Approved") {
+      try {
+        if (AwardLetterCopy) {
+          await uploadFile(
+            AwardLetterCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${data.title}_ AwardLetterCopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload Award Letter Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } 
     if (project_id) {
       try {
         const res = await axios.post(
@@ -100,6 +132,24 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   };
 
   const updateprojectinfo = async () => {
+    if (Status_of_project==="Completed") {
+      try {
+        if (CompletionLetterCopy) {
+          await uploadFile(
+            CompletionLetterCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${data.title}_ Completionlettercopy`,
+            "research_project"
+          );
+        } else {
+          alert("Please upload Completion Letter  Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
+      }
+    } 
     if (project_id) {
       try {
         const res = await axios.post(
@@ -122,14 +172,34 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       }
     }
   };
-
+  const getFilenamesToDelete = (data) => {
+    let filenames = [];
+    if (data.Status_of_proposal === "Approved" || data.Status_of_project === "Completed") {
+      filenames.push(`${data.title}_AwardLetterCopy.png`);
+    }
+    if (data.Status_of_project === "Completed") {
+      filenames.push(`${data.title}_CompletionLetterCopy.png`);
+    }
+    if (data.typeofresearch === "Contract Research") {
+      filenames.push(`${data.title}_ContractAgreementCopy.png`);
+    }
+    if (data.reviwedbyIRB === "Yes") {
+      filenames.push(`${data.title}_meetingminutes.png`);
+    }
+    if (data.Status_of_proposal === "Submitted" || data.Status_of_proposal === "Approved") {
+      filenames.push(`${data.title}_SubmissionEmailcopy.png`);
+    }
+    return filenames;
+  };
+  
+  
   const closeModal = () => {
     setIsModalOpen(false);
   };
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-md  m-4 ">
       <div className="flex justify-end items-center mr-6 mt-4">
-        <button onClick={() => onDelete(data.project_id)}>
+        <button onClick={() => onDelete(data.project_id,getFilenamesToDelete(data))}>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
         </button>
       </div>
@@ -230,6 +300,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                               setVal={setFundingApproved}
                               required
                             />
+
                           </>
                         )}
 
@@ -256,8 +327,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                             />
                           </>
                         )}
-                        {data.typeofresearch !== "Contract Research" &&
-                          Status_of_project === "Completed" && (
+                        {data.typeofresearch !== "Contract Research"  && (
                             <div>
                               <InputField
                                 label={"Funding Agency/Body"}
@@ -267,6 +337,23 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                               />
                             </div>
                           )}
+                           <div className="grid grid-cols-2 gap-x-3   text-black">
+                        <label className="text-base font-medium">
+                          Award Letter Copy{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                          type="file"
+                          defaultValue={AwardLetterCopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setAwardLetterCopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+
+                      </div>
                       </div>
                     </div>
                     {Status_of_project === "Completed" && (
@@ -311,7 +398,9 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                   className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
                   onClick={updateinfo}
                 />
+                
               )}
+              
             </span>
             {showSuccessModal && (
               <SuccessModal
@@ -443,6 +532,23 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                           required
                           onChange={handledeliverychange}
                         />
+                        <div className="grid grid-cols-2 gap-x-3   text-black">
+                      <label className="text-base font-medium">
+                        Completion Letter Copy{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                        type="file"
+                        defaultValue={CompletionLetterCopy}
+                        onChange={(e) => {
+                          console.log("File selected:", e.target.files[0]);
+                          setCompletionLetterCopy(e.target.files[0]);
+                        }}
+                        required
+                      />
+                      
+                    </div>
                       </>
                     )}
                   </div>
@@ -463,12 +569,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                   </div>
                 </>
               )}
-              {editingproject && (
-                <FaCheck
-                  className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
-                  onClick={updateprojectinfo}
-                />
-              )}
+
             </span>
             {showSuccessModal && (
               <SuccessModal

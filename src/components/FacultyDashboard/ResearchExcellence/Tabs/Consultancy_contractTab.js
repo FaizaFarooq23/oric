@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import ConsultacyContract from '../Forms/Consultancy_Contract/Consultancy_ContractForm';
 import ConsultacyContractfield from '../Forms/Consultancy_Contract/Consultancy_Contractfeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
+import { deleteFile } from '../Utility/Deleteimage';
 export default function ConsultancyContractTab() {
   const { open: openModal } = useModal("ConsultancyContractFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
@@ -33,8 +34,15 @@ export default function ConsultancyContractTab() {
     fetchConsultancy_Data();
   }, [session]);
  
-const handleDeleteProject = async (id) => {
+const handleDeleteProject = async (id,filename) => {
   try {
+    await deleteFile(
+      session.user.username,
+        "consultancy_contract", // or any other table name relevant to your project
+        filename, // The filename you want to delete
+      `/api/Imagesfeilds/filedelete`
+    );
+
     await axios.delete(`/api/Research_projects/delete_consultancy_contract?id=${id}`);
     setShowDeleteSuccessDialog(true);
       console.log('Project deleted successfully');

@@ -26,7 +26,11 @@ export default async function handler(req, res) {
         Issue_verification: Issue_verification,
       },
     });
-    res.status(200).json(policy_casestudy);
+    res.status(200).json({ 
+      message: "Policy case study created successfully", 
+      policy_casestudy,
+      id: policy_casestudy.id // Explicitly include the id in the response
+    });
   } catch (error) {
     console.error(error);
     res

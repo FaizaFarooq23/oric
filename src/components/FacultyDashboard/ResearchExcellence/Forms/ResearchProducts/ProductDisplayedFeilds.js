@@ -19,7 +19,7 @@ export default function Product_Displayedfield({data ,onDelete}) {
   return (
     <div className="flex flex-col bg-white shadow-lg m-4 h-48 rounded-md   ">
        <div className="flex justify-end items-center mr-6 mt-2">
-          <button onClick={() => onDelete(data.id)}>
+          <button onClick={() => onDelete(data.id,`${data.Title}_BreifCopy.png`)}>
             <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
           </button>
         </div>
@@ -27,7 +27,7 @@ export default function Product_Displayedfield({data ,onDelete}) {
       <div className={`flex flex-col gap-y-4  m-4 gap-x-10`}>
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Title</span>
         </div>
-        <div className="flex justify-center ">
+        <div className="flex justify-start ">
           <span className="text-black ">{data.Title}</span>
         </div>
       </div>
@@ -35,21 +35,21 @@ export default function Product_Displayedfield({data ,onDelete}) {
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Category </span>
         </div>
-        <div className="flex items-end justify-center ">
+        <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Category}</span>
         </div>
       </div>
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Status</span>
         </div>
-        <div className="flex items-end justify-center ">
+        <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Status}</span>
         </div>
       </div>
       <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Name of Lead</span>
         </div>
-        <div className="flex items-end justify-center ">
+        <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Name_of_lead}</span>
         </div>
       </div>

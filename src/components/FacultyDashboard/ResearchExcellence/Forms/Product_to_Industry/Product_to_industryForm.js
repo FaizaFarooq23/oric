@@ -1,11 +1,12 @@
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import React, { useState, useEffect } from "react";
-import { Label } from "recharts";
 import axios from "axios";
+import { uploadFile } from "../../Utility/Saveimagefiles";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal, { useModalState } from "react-simple-modal-provider";
 import SuccessModal from "../../components/UI/SuccessMessage";
+import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 function Product_to_IndustryForm({children}) {
   const [errors, setErrors] = useState({});
   const [isOpen, setOpen] = useModalState();
@@ -31,6 +32,16 @@ function Product_to_IndustryForm({children}) {
     setcategory(e.target.value);
   };
 
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+  const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
+    session?.user?.username,
+    'Title_of_Invention',
+    Title_of_Invention,
+    `/api/Product_to_Industry/Get_Product`
+  );
   const handleDevelopment_Status = (e) => {
     setDevelopment_status(e.target.value);
   };
@@ -50,10 +61,13 @@ function Product_to_IndustryForm({children}) {
     let valid = true;
     const newErrors = {};
     if (Title_of_Invention.trim() === "") {
-      newErrors.TitleofInvention = "Title of Invention is required";
+      newErrors.Title_of_Invention = "Title of Invention is required";
+      valid = false;
+    } else if (isExistingProject) {
+      newErrors.Title_of_Invention = "A Project with this title already exists for you";
       valid = false;
     } else {
-      newErrors.TitleofInvention = "";
+      newErrors.Title_of_Invention= "";
     }
    
     if (Feild_of_use.trim() === "") {
@@ -91,7 +105,26 @@ function Product_to_IndustryForm({children}) {
     setErrors(newErrors);
     return valid;
   };
-  const validateFormStage5 = () => {
+  const validateFormStage3 = () => {
+    let valid = true;
+    const newErrors = {};
+
+    if (Name_of_Partner.trim() === "") {
+      newErrors.Name_of_Partner = "Name of Partner is required";
+      valid = false;
+    } else {
+      newErrors.Name_of_Partner = "";
+    }
+    if (Detail_of_Partner.trim() === "") {
+      newErrors.Detail_of_Partner = "Detail of partner  is required";
+      valid = false;
+    } else {
+      newErrors.Detail_of_Partner= "";
+    }
+    setErrors(newErrors);
+    return valid;
+  };
+  const validateFormStage4 = () => {
     let valid = true;
     const newErrors = {};
     if (KeyAspects.trim() === "") {
@@ -100,12 +133,19 @@ function Product_to_IndustryForm({children}) {
     } else {
       newErrors.Keyaspects = "";
     }
+    if (!PdProof.trim() === "") {
+      newErrors.PdProof = "PdProof is required";
+      valid = false;
+    } else {
+      newErrors.PdProof = "";
+    }
     setErrors(newErrors);
     return valid;
   };
   const resetInventionFormFields = () => {
     setOpen(false);
     setName_of_leadInventor("");
+    setPdProof(null)
     setDesignation_of_leadInventor("");
     setDepartment_of_leadInventor("");
     setTitle_of_Invention("");
@@ -137,6 +177,11 @@ function Product_to_IndustryForm({children}) {
           setStage(stage + 1);
         }
         break;
+        case 3:
+        if (validateFormStage3()) {
+          setStage(stage + 1);
+        }
+        break;
       default:
         setStage(stage + 1); // Update the state with setStage
         break;
@@ -150,26 +195,39 @@ function Product_to_IndustryForm({children}) {
       setStage(1);
     }
   };
-  const { data: session } = useSession();
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
+  
 
   const handleSubmit = async () => {
     try {
       // Validate required fields
-      if (!validateFormStage5 ) {
+      if (!validateFormStage4 ) {
         alert("Please fill all the required fields");
         return;
       }
-
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
         signOut();
         return;
       }
-
+      try {
+        if (PdProof) {
+          await uploadFile(
+            PdProof,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${Title_of_Invention}_PdProof`,
+            "product_to_industry"
+          );
+        }
+        else{
+          alert("Please upload Pdprof")
+        }
+  
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error")
+    }
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -225,8 +283,8 @@ function Product_to_IndustryForm({children}) {
                 setVal={setTitle_of_Invention}
                 required
               />
-              {errors.TitleofInvention && (
-                <span className="text-red-500">{errors.TitleofInvention}</span>
+              {errors.Title_of_Invention && (
+                <span className="text-red-500">{errors.Title_of_Invention}</span>
               )}
             </div>
 
@@ -359,13 +417,19 @@ function Product_to_IndustryForm({children}) {
               </h1>
             </div>
             <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
+              <div>
               <InputField
                 label={"Name of Partner"}
                 value={Name_of_Partner}
                 setVal={setName_of_Partner}
+                required
               />
-           
+                {errors.Name_of_Partner && (
+                <span className="text-red-500">{errors.Name_of_Partner}</span>
+              )}
+           </div>
             </div>
+            <div>
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -380,6 +444,10 @@ function Product_to_IndustryForm({children}) {
               value={Detail_of_Partner}
               onChange={handleDetail_of_Partnerchange}
             />
+              {errors.Detail_of_Partner && (
+                <span className="text-red-500">{errors.Detail_of_Partner}</span>
+              )}
+            </div>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
               <button
                 onClick={prevStage}
@@ -404,13 +472,30 @@ function Product_to_IndustryForm({children}) {
             <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
               Additional Details
             </h1>
+            <div className="grid grid-cols-2 gap-x-3   text-black">
+        <label className="text-base font-medium">
+      PdProof Copy</label>
+      <input
+    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+    type="file"
+    defaultValue={PdProof}
+    onChange={(e) => {
+      console.log("File selected:", e.target.files[0]);
+      setPdProof(e.target.files[0]);
+    }}
+    required
+  />
+  {errors.PdProof && (
+                <span className="text-red-500">{errors.P}</span>
+              )}
+ 
+    </div>
             <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
-            <InputField
-                label={"Pd Proof"}
-                value={PdProof}
-                setVal={setPdProof}
-                type={"file"}
-              />
+            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+
+
+             
+            </div>
             </div>
            
             <label

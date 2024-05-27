@@ -17,9 +17,10 @@ export default function ConsultacyContractfield({ data, onDelete }) {
     setIsModalOpen(false);
   };
   return (
-    <div className="flex flex-col bg-white shadow-lg  h-48 rounded-md   ">
+    <div className="flex flex-col bg-white shadow-lg m-4  h-48 rounded-md   ">
+      
       <div className="flex justify-end items-center mr-6 mt-2">
-        <button onClick={() => onDelete(data.id)}>
+        <button onClick={() => onDelete(data.id,`${data.Title}_Contractcopy.png`)}>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
         </button>
       </div>
@@ -97,6 +98,7 @@ export default function ConsultacyContractfield({ data, onDelete }) {
         closeModal={closeModal}
         data={data}
       />
+    
     </div>
   );
 }

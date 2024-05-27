@@ -7,22 +7,29 @@ import { FaTimes, FaEdit } from 'react-icons/fa';
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import Modal from "react-modal";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { uploadFile } from "../../Utility/Saveimagefiles";
 import SuccessModal from "../../components/UI/SuccessMessage";
 export default function IPLicensingfeild({ data, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [AgreementCopy, setAgreementCopy] = useState("");
   const [Status_of_Licensee, setStatus_of_Licensee] = useState("License Negotitaed");
   const [Date_of_Agreement, setDate_of_Agreement] = useState("");
   const [Licensee_Type, setLicensee_Type] = useState("Exclusive");
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const [id, setid] = useState(null);
-
+  const { data: session } = useSession();
   useEffect(() => {
+    if (session) {
+      console.log(session);
+    }
     if (data) {
       setid(data.id);
       setStatus_of_Licensee(data.Status_of_Licensee);
     }
-  }, [data]);
+  }, [session, data]);
+  
   const handleStatus_of_Licensee = (e) => {
     setStatus_of_Licensee(e.target.value);
   };
@@ -38,7 +45,29 @@ setDate_of_Agreement("")
 setLicensee_Type("Exclusive")
 setStatus_of_Licensee("License Negotiated")
 }
+const UploadFile = async () => {
+if (Status_of_Licensee==="Signed") {
+  try {
+    if (AgreementCopy) {
+      await uploadFile(
+        AgreementCopy,
+        session.user.username,
+        `/api/Imagesfeilds/fileupload`,
+        `${data.Title}_LicenseAgreementCopy`,
+        "ip_licensing"
+      );
+    } else {
+      alert("Please upload Filing Copy");
+    }
+  } catch (error) {
+    console.error("Error saving image:", error);
+    alert("error");
+  }
+} 
+
+};
   const updateinfo = async () => {
+    await UploadFile();
     if (id) {
       try {
         const res = await axios.post(
@@ -63,15 +92,26 @@ setStatus_of_Licensee("License Negotiated")
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-  // Function to close the modal
+  const getFilenamesToDelete = (data) => {
+    let filenames = [];
+    if (data.Status_of_Licensee ==="Granted") {
+      filenames.push(`${data.Title}_LicenseAgreementCopy.png`);
+    }
+    if(data.Status_of_Licensee ==="Granted"||data.Status_of_Licensee==="Negotiations Initiated") {
+      filenames.push(`${data.Title}_NegotationCopy.png`);
+    }
+    
+    return filenames;
+  };
   const closeModal = () => {
     setIsModalOpen(false);
   };
   return (
     <div className="flex flex-col bg-white shadow-lg m-4 h-48 rounded-md   ">
       <div className="flex justify-end items-center mr-6 mt-2">
-        <button onClick={() => onDelete(data.id)}>
+        <button onClick={() => onDelete(
+          data.id,getFilenamesToDelete(data))
+          }>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
         </button>
       </div>
@@ -168,6 +208,26 @@ setStatus_of_Licensee("License Negotiated")
                               />
 
                             </div>
+                            {
+                  Status_of_Licensee==="Signed"&&
+                  <div className="grid grid-cols-2 gap-x-3   text-black">
+
+                  <label className="text-base font-medium">
+                    AgreementCopy <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                    type="file"
+                    defaultValue={AgreementCopy}
+                    onChange={(e) => {
+                      console.log("File selected:", e.target.files[0]);
+                      setAgreementCopy(e.target.files[0]);
+                    }}
+                    required
+                  />
+
+                </div>
+                }
                           </>
                         )}
                       </div>

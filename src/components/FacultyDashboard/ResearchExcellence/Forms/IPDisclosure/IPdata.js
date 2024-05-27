@@ -11,8 +11,8 @@ export default function IPdata({ isOpen, closeModal ,data}) {
   >
     <div >
     <div className="flex justify-end items-end gap-x-6">
-        {/* Edit icon */}
-        <FaEdit className="text-blue-900 text-xl cursor-pointer" onClick={() => handleEdit()} />
+     
+      
         {/* Cross icon */}
         <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
       </div>
@@ -22,47 +22,47 @@ export default function IPdata({ isOpen, closeModal ,data}) {
            
            <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
             <div className="grid grid-cols-2 gap-x-10 w-full"> 
-            <span className="text-black text-base font-semibold border-b-2 ]">Title of Invention</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Title_of_Invention}</span>
+            <span className="text-black text-base font-semibold  ]">Title of Invention</span>
+           <span className="text-black text-base font-semibold  ">{data.Title_of_Invention}</span>
                </div> 
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Type of IP</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Type}</span>
+            <span className="text-black text-base font-semibold  ">Type of IP</span>
+           <span className="text-black text-base font-semibold  ">{data.Type}</span>
                </div> 
                { data.Type!=="IP disclosures" &&
                 <>
                  <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Status of Patent</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Status_of_patent}</span>
+            <span className="text-black text-base font-semibold  ">Status of Patent</span>
+           <span className="text-black text-base font-semibold  ">{data.Status_of_patent}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Date of Filing</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Date_of_filing.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold  ">Date of Filing</span>
+           <span className="text-black text-base font-semibold  ">{data.Date_of_filing.split("T")[0]}</span>
                </div>
                 </>
                }
               
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Category of IP</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Category}</span>
+            <span className="text-black text-base font-semibold  ">Category of IP</span>
+           <span className="text-black text-base font-semibold  ">{data.Category}</span>
                </div>
                <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold border-b-2 ">Nationaity</span>
-           <span className="text-black text-base font-semibold border-b-2 ">{data.Nationality}</span>
+            <span className="text-black text-base font-semibold  ">Nationaity</span>
+           <span className="text-black text-base font-semibold  ">{data.Nationality}</span>
                </div>
              <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Development Status</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Development_Status}</span>
+            <span className="text-black text-base font-semibold ">Development Status</span>
+           <span className="text-black text-base font-semibold ">{data.Development_Status}</span>
             </div>
             {data.Type==="IP disclosures" &&
                 <>
                   <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Previous Disclosure</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Previous_disclosure} </span>
+            <span className="text-black text-base font-semibold ">Previous Disclosure</span>
+           <span className="text-black text-base font-semibold ">{data.Previous_disclosure} </span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Date of Disclosure</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Date_of_disclosure.split("T")[0]}</span>
+            <span className="text-black text-base font-semibold ">Date of Disclosure</span>
+           <span className="text-black text-base font-semibold ">{data.Date_of_disclosure.split("T")[0]}</span>
            </div>
            </>
             }
@@ -72,28 +72,28 @@ export default function IPdata({ isOpen, closeModal ,data}) {
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Name_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Name of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Name_of_leadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Department of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Department_ofleadInventor}</span>
+            <span className="text-black text-base font-semibold ">Department of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Department_ofleadInventor}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Designation of Lead Inventor</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Designation_of_leadInventor}</span>
+            <span className="text-black text-base font-semibold ">Designation of Lead Inventor</span>
+           <span className="text-black text-base font-semibold ">{data.Designation_of_leadInventor}</span>
            </div>
           </div>
           <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Details of Patent Authority or Department</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Name of Patent Authority</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Name_of_patentdept}</span>
+            <span className="text-black text-base font-semibold ">Name of Patent Authority</span>
+           <span className="text-black text-base font-semibold ">{data.Name_of_patentdept}</span>
            </div>
           </div>
           <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Details of Patent Authority</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Details of Patent Authority</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.Detail_of_patent_dept}
             </p>
@@ -102,29 +102,29 @@ export default function IPdata({ isOpen, closeModal ,data}) {
            <h1 className='text-blue-900 font-serif font-bold text-xl mt-6  py-2 border-black'>Additional Details</h1>
           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">IP disclosure</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">IP disclosure</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Filing Copy</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">Filing Copy</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Granting Copy</span>
-           <span className="text-black text-base font-semibold border-b-2">None</span>
+            <span className="text-black text-base font-semibold ">Granting Copy</span>
+           <span className="text-black text-base font-semibold ">None</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Financial Support</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Financial_support}</span>
+            <span className="text-black text-base font-semibold ">Financial Support</span>
+           <span className="text-black text-base font-semibold ">{data.Financial_support}</span>
            </div>
            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold border-b-2">Commercial Partner</span>
-           <span className="text-black text-base font-semibold border-b-2">{data.Commercial_partner}</span>
+            <span className="text-black text-base font-semibold ">Commercial Partner</span>
+           <span className="text-black text-base font-semibold ">{data.Commercial_partner}</span>
            </div>
           </div>
           <div className="grid  grid-cols-2 gap-x-10">
-           <span className="text-black text-base font-semibold border-b-2 ">Key Aspects</span>
-          <span className="text-black text-base font-semibold border-b-2">
+           <span className="text-black text-base font-semibold  ">Key Aspects</span>
+          <span className="text-black text-base font-semibold ">
             <p>
              {data.KeyAspects}
             </p>

@@ -32,7 +32,11 @@ export default async function handler(req, res) {
         Features: Features,
       },
     });
-    res.status(200).json(research_linkage);
+    res.status(200).json({ 
+      message: "Research Linkage created successfully", 
+      research_linkage,
+      id:research_linkage.id // Explicitly include the id in the response
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Error occurred while research linkage" });
