@@ -37,7 +37,6 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     logoutUser();
-
     signOut({ callbackUrl: "http://localhost:3000/" });
   };
 
@@ -45,7 +44,7 @@ export default function Sidebar() {
     <div className="ml-2 h-[98vh] fixed  flex flex-col items-center justify-between bg-blue-900 rounded-lg shadow-left">
       <div className="flex flex-col gap-y-12">
         <div>
-          <img src="images/white-logo.png" alt="logo" className="h-20 w-32" />
+          <img src="images/white-logo.png" alt="logo" className="h-20 "/>
         </div>
         <div className="flex flex-col items-center gap-y-10">
           {router.pathname === "/dashboard" ? (

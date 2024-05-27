@@ -18,7 +18,7 @@ export default function PersonalInfo() {
   const { user } = useContext(UserContext)
 
   useEffect(() => {
-    if (user.username === "admin") {
+    if (user.username === "admin@email.com") {
       return;
     }
     console.log(user)
@@ -77,10 +77,6 @@ export default function PersonalInfo() {
   }, [user]);
 
 
-
-
-
-
   // Update the contact info of the user
   useEffect(() => {
     const updateContactInfo = async () => {
@@ -104,6 +100,8 @@ export default function PersonalInfo() {
       updateContactInfo();
     }
   }, [contactInfo]);
+
+  
 
   return (
     <div className="">

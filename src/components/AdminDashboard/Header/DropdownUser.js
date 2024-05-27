@@ -5,11 +5,12 @@ import { BsPerson } from "react-icons/bs";
 import { TbSettings } from "react-icons/tb";
 import { BiLogOut } from "react-icons/bi";
 import { UserContext } from "@/context/UserContext/GlobalProvider";
+import { signOut } from "next-auth/react";
 
 const DropdownUser = () => {
-  const {user} = useContext(UserContext);
+  const [userEmail, setUserEmail] = useState(null);
+  const { user } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
@@ -38,6 +39,19 @@ const DropdownUser = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   }, [dropdownOpen]);
 
+
+  useEffect(() => {
+    if (user) {
+      setUserEmail(user.email);
+    }
+  }, [user]);
+
+ const {logoutUser} = useContext(UserContext)
+  const handleLogout = () => {
+    logoutUser();
+    signOut({ callbackUrl: "http://localhost:3000/" });
+  };
+
   return (
     <div className="">
       <Link
@@ -54,16 +68,19 @@ const DropdownUser = () => {
         </span>
         <div className="flex items-center justify-center gap-x-2">
           <span className="h-12 w-12 rounded-full">
-            <img
-              src={`uploads/${user.email}.png`}
-              className="rounded-full"
-              alt="User"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "/images/profile.png";
+            {userEmail ?
+              <img
+                src={`/uploads/${userEmail}.png`}
+                className="rounded-full"
+                alt="User"
+              /> : <img
+                src="/images/profile.png"
+                className="rounded-full"
+                alt="User Default"
+              />
 
-              }}
-            />
+            }
+
           </span>
 
           <IoIosArrowDown className="text-gray-500" />
@@ -75,9 +92,8 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-2 mt-4 flex w-[16%] flex-col rounded-b-md border border-stroke bg-white shadow-default ${
-          dropdownOpen === true ? "block" : "hidden"
-        }`}
+        className={`absolute right-2 mt-4 flex w-[16%] flex-col rounded-b-md border border-stroke bg-white shadow-default ${dropdownOpen === true ? "block" : "hidden"
+          }`}
       >
         <ul className="flex w-full flex-col gap-5 border-b border-stroke p-4">
           <li className="flex items-center ">
@@ -89,22 +105,12 @@ const DropdownUser = () => {
               Profile
             </Link>
           </li>
-          <li className="flex items-center">
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base"
-            >
-              <TbSettings className="text-xl" />
-              Account Settings
-            </Link>
-          </li>
         </ul>
-        <button className="flex items-center gap-3 px-3 py-4 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base">
+        <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-4 text-sm font-medium duration-300 ease-in-out hover:text-blue-900 lg:text-base">
           <BiLogOut className="text-xl" />
           Log Out
         </button>
       </div>
-      {/* <!-- Dropdown End --> */}
     </div>
   );
 };

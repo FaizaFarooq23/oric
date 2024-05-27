@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     const admin = await prisma.admin.findFirst({
         where: {
           email: req.query.username,
+          designation:req.query.designation
         },
     })     
     if (admin) {

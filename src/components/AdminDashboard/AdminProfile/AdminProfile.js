@@ -1,49 +1,48 @@
-import React, { useContext, useState } from 'react'
-import Breadcrum from './Breadcrum'
-import AdminLayout from '../AdminLayout/AdminLayout'
-import { IoCameraOutline } from 'react-icons/io5'
-import ProfileForm from './ProfileForm'
-import { UserContext } from '@/context/UserContext/GlobalProvider'
+import React, { useContext, useState } from "react";
+import Breadcrum from "./Breadcrum";
+import AdminLayout from "../AdminLayout/AdminLayout";
+import { IoCameraOutline } from "react-icons/io5";
+import ProfileForm from "./ProfileForm";
+import { UserContext } from "@/context/UserContext/GlobalProvider";
+import axios from "axios";
 
 export default function AdminProfile() {
   const { user } = useContext(UserContext);
-  console.log("User", user)
-  const [formData, setFormData] = useState({
-    fullName: '',
-    designation: '',
-    emailAddress: '',
-    password: '',
-    confirmPassword: ''
-  });
+
   const [profilePhoto, setProfilePhoto] = useState(`/uploads/${user.email}.png`);
   const [coverPhoto, setCoverPhoto] = useState(`/uploads/cover_${user.email}.png`);
 
+  const initialProfile = {
+    username: user.username,
+    designation: user.designation,
+    email: user.email,
+    password: user.password,
+  };
+
+  const [updatedProfile, setUpdatedProfile] = useState(initialProfile);
+
   async function uploadProfilePicture(profilePicture) {
-    console.log('Uploading profile picture:', profilePicture);
-    // Create a FormData object to send the file and name
+    console.log("Uploading profile picture:", profilePicture);
+
     const formData = new FormData();
-    console.log('Profile Picture:', user.email)
-    formData.append('profile_picture', profilePicture);
-    formData.append('profile_picture_name', user.email);
+    formData.append("profile_picture", profilePicture);
 
     try {
-      // Make a POST request to the API endpoint
-      const response = await fetch('/api/images_upload/profile', {
-        method: 'POST',
-        body: formData
+      const response = await fetch("/api/images_upload/profile", {
+        method: "POST",
+        body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to upload profile picture');
+        throw new Error("Failed to upload profile picture");
       }
 
       const data = await response.json();
-      console.log('Profile picture uploaded:', data.profile_picture_path);
+      console.log("Profile picture uploaded:", data.profile_picture_path);
     } catch (error) {
-      console.error('Error uploading profile picture:', error.message);
+      console.error("Error uploading profile picture:", error.message);
     }
   }
-
 
   const handleProfilePhotoUpload = async (event) => {
     const selectedImage = event.target.files && event.target.files[0];
@@ -58,31 +57,27 @@ export default function AdminProfile() {
   };
 
   async function uploadCoverPicture(profilePicture) {
-    console.log('Uploading profile picture:', profilePicture);
-    // Create a FormData object to send the file and name
+    console.log("Uploading cover picture:", profilePicture);
+
     const formData = new FormData();
-    console.log('Profile Picture:', user.email)
-    formData.append('profile_picture', profilePicture);
-    formData.append('profile_picture_name', user.email);
+    formData.append("cover_picture", profilePicture);
 
     try {
-      // Make a POST request to the API endpoint
-      const response = await fetch('/api/images_upload/cover', {
-        method: 'POST',
-        body: formData
+      const response = await fetch("/api/images_upload/cover", {
+        method: "POST",
+        body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to upload profile picture');
+        throw new Error("Failed to upload cover picture");
       }
 
       const data = await response.json();
-      console.log('Profile picture uploaded:', data.profile_picture_path);
+      console.log("Cover picture uploaded:", data.cover_picture_path);
     } catch (error) {
-      console.error('Error uploading profile picture:', error.message);
+      console.error("Error uploading cover picture:", error.message);
     }
   }
-
 
   const handleCoverPhotoUpload = async (event) => {
     const selectedImage = event.target.files && event.target.files[0];
@@ -96,11 +91,40 @@ export default function AdminProfile() {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedProfile((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (updatedProfile.password === "") {
+        delete updatedProfile.password;
+      }
+
+      const res = await axios.post(`/api/admin/update_admin_profile`, updatedProfile);
+      console.log(res);
+      alert("Profile updated successfully");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile");
+    }
+  };
+
+  const rejectChange = () => {
+    setUpdatedProfile(initialProfile);
+    alert("Changes Rejected");
+  };
+
   return (
     <AdminLayout>
       <div className="w-full py-8">
         <Breadcrum pageName="Profile" />
-        <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default ">
+        <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default">
           <div className="relative h-35 md:h-65">
             <img
               src={coverPhoto}
@@ -135,7 +159,7 @@ export default function AdminProfile() {
               <div className="relative drop-shadow-2 rounded-full">
                 <img
                   src={profilePhoto}
-                  className='rounded-full items-center '
+                  className="rounded-full items-center "
                   alt="profile"
                   onError={(e) => {
                     e.target.onerror = null;
@@ -157,19 +181,21 @@ export default function AdminProfile() {
                 </label>
               </div>
             </div>
-            <div className="flex flex-col gap-y-4">
-              <div> <h3 className="mb-1.5 text-2xl font-semibold text-black ">
-                {formData.fullName}
-              </h3>
-                <p className="font-medium">{formData.designation}</p>
-              </div>
-              <div className='flex items-center justify-center'>
-                <ProfileForm formData={formData} setFormData={setFormData} />
-              </div>
+
+            <div className="flex items-center justify-center pt-8">
+              <ProfileForm
+                fullName={updatedProfile.username}
+                emailAddress={updatedProfile.email}
+                password={updatedProfile.password}
+                designation={updatedProfile.designation}
+                handleCancelChange={rejectChange}
+                handleChange={handleInputChange}
+                handleSubmit={handleSubmit}
+              />
             </div>
           </div>
         </div>
       </div>
     </AdminLayout>
-  )
+  );
 }

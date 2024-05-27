@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
       try {
         setLoading(true);
         let userData;
-        if (session.user.username === "admin") {
+        if (session.user.username === "admin@email.com") {
           userData = await fetchAdminData(session.user.username);
         } else {
           userData = await fetchFacultyData(session.user.username);

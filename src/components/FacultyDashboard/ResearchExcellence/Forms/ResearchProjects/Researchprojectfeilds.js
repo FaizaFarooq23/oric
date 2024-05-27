@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { FaTimes, } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { FaPencil, FaCheck } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Researchprojectdata from "./Researchprojectdata";
@@ -197,32 +196,33 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     setIsModalOpen(false);
   };
   return (
-    <div className="flex flex-col bg-white shadow-lg rounded-md  m-4 ">
-      <div className="flex justify-end items-center mr-6 mt-4">
-        <button onClick={() => onDelete(data.project_id,getFilenamesToDelete(data))}>
-          <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
+    <div className="flex flex-col bg-white shadow-lg rounded-md py-5 ">
+      <div className="flex justify-end items-center mr-4">
+        <button onClick={() => onDelete(data.project_id)}>
+          <RiDeleteBin6Line className="text-red-600 cursor-pointer text-xl" />
         </button>
       </div>
-      <div className={`flex  flex-row  justify-between px-10 py-8  `}>
-        <div className={`flex flex-col w-52  gap-y-4 m-3  gap-x-8`}>
-          <div className=" flex items-start justify-start ">
-           
+      <div className={`flex justify-between px-4 py-4 `}>
+        <div className= "flex flex-col w-52 gap-y-4  ">
+          <div className=" flex  items-start justify-start ">
             <span className="text-gray-500  font-medium">Title</span>
           </div>
-          <div className="flex items-end justify-start ">
-            <span className="text-black ">{data.title}</span>
+          <div className="flex  items-end justify-start ">
+            <span className="text-black ">{`${data.title
+              .split(" ")
+              .slice(0,4)
+              .join(" ")}...`}</span>
           </div>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4 m-3 gap-x-8`}>
+        <div className={`flex flex-col w-48 gap-y-4  gap-x-8`}>
           <div className=" flex items-start justify-start w-40">
-           
             <span className="text-gray-500  font-medium">Thematic Area</span>
           </div>
           <div className="flex items-end justify-start ">
             <span className="text-black ">{data.Thematic_Area}</span>
           </div>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4 m-3 gap-x-8 `}>
+        <div className={`flex flex-col w-48 gap-y-4 gap-x-8 `}>
           <div className=" flex items-start justify-start">
             <span className="">
               {editing ? (
@@ -380,7 +380,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                 </Modal>
               ) : (
                 <>
-                  <div className="flex ">
+                  <div className="flex gap-x-1 ">
                     <span className="text-gray-500 font-medium">
                       Status of Proposal
                     </span>
@@ -416,9 +416,8 @@ export default function Researchprojectfeilds({ data, onDelete }) {
             <span className="text-black ">{data.Status_of_proposal} </span>
           </div>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4 m-3   gap-x-8`}>
+        <div className={`flex flex-col w-48 gap-y-4    gap-x-8`}>
           <div className=" flex items-start justify-start w-48">
-           
             <span className="text-gray-500  font-medium">
               Name of Research Grant
             </span>
@@ -428,9 +427,8 @@ export default function Researchprojectfeilds({ data, onDelete }) {
           </div>
         </div>
 
-        <div className={`flex flex-col gap-y-4  w-48 m-3 gap-x-8`}>
+        <div className={`flex flex-col gap-y-4  w-48  gap-x-8`}>
           <div className=" flex items-start justify-start">
-           
             <span className="text-gray-500  font-medium">Type of Research</span>
           </div>
 
@@ -438,7 +436,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
             <span className="text-black ">{data.type_of_research}</span>
           </div>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4 m-3 gap-x-8 `}>
+        <div className={`flex flex-col w-48 gap-y-4  gap-x-8 `}>
           <div className=" flex items-start justify-start">
             <span className="">
               {editingproject ? (

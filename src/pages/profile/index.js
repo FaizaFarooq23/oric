@@ -9,10 +9,15 @@ export default function Index() {
   const [coverPhoto, setCoverPhoto] = useState('images/cover.png');
   const { user } = useContext(UserContext);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user && user.username === 'admin') {
+    console.log('User:', user);
+    if (user && user.email === 'admin@email.com') {
       setIsAdmin(true);
+      setLoading(false);
+    } else if (user) {
+      setLoading(false);
     }
   }, [user]);
 
@@ -68,6 +73,12 @@ export default function Index() {
       };
       reader.readAsDataURL(selectedImage);
     }
+  }
+
+  if (loading) {
+    return <div className='h-screen w-screen flex justify-center items-center'>
+      <div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-900'></div>  
+    </div>;
   }
 
   return (
