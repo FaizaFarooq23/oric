@@ -2,6 +2,7 @@
 import React, { useState,useEffect } from "react";
 import Modal from "react-modal";
 import axios from 'axios';
+import { FaTimes } from "react-icons/fa";
 import { FaPencil, FaCheck } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
@@ -44,7 +45,7 @@ const resetfeilds=()=>{
   setStatus_of_patent("")
 }
 const UploadFile = async () => {
-  if (Status_of_patent ==="Granted") {
+  if (Status_of_patent ==="Granted" && (`${data.Type}`!=="IP disclosures")) {
     try {
       if (GrantingCopy) {
         await uploadFile(
@@ -55,7 +56,7 @@ const UploadFile = async () => {
           "ipandpatent"
         );
       } else {
-        alert("Please upload Filing Copy");
+        alert("Please upload Granting Copy");
       }
     } catch (error) {
       console.error("Error saving image:", error);

@@ -36,6 +36,7 @@ function IPandPatentForm({ children }) {
   const [Filingcopy, setFilingcopy] = useState("");
   const [GrantingCopy, setGrantingCopy] = useState("");
   const [stage, setStage] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
   const { data: session } = useSession();
   useEffect(() => {
     console.log(session);
@@ -98,31 +99,7 @@ function IPandPatentForm({ children }) {
     if (stage === 0) {
       setStage(1);
     }
-    const resetFields = () => {
-      setName_of_leadInventor("");
-      setDesignation_of_leadInventor("");
-      setDepartment_of_leadInventor("");
-      setTitleofInvention("");
-      setcategory("Product");
-      setStatus_of_patent("Filed");
-      setNationality("National");
-      setDevelopment_status("Idea");
-      setDate_of_Filing("");
-      setKeyaspects("");
-      setdelivery("");
-      setDate_of_disclosure("");
-      settype("IP disclosures");
-      setCommercial_partner("");
-      setName_of_patentdept("");
-      setDetail_of_patentdept("");
-      setFinancial_support("");
-      setPrevious_disclosure("");
-      setDisclosureCopy(null);
-      setFilingcopy(null);
-      setGrantingCopy(null)
-      setStage(1);
-      setErrors({});
-    };
+   
   };
   const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
     session?.user?.username,
@@ -245,7 +222,7 @@ function IPandPatentForm({ children }) {
     return valid;
   };
   const UploadFile = async () => {
-    if (type==="IP disclosure") {
+    if (type==="IP disclosures") {
       try {
         if (DisclosureCopy) {
           await uploadFile(
@@ -263,7 +240,7 @@ function IPandPatentForm({ children }) {
         alert("error");
       }
     } 
-   if (Status_of_patent == "Filed"|| Status_of_patent==="Granted") {
+   if ((Status_of_patent == "Filed"|| Status_of_patent==="Granted") &&(type!=="IP disclosures")) {
       try {
         if (Filingcopy) {
           await uploadFile(
@@ -301,8 +278,36 @@ function IPandPatentForm({ children }) {
     } 
     
   };
-  
+  const resetFields = () => {
+    setName_of_leadInventor("");
+    setDesignation_of_leadInventor("");
+    setDepartment_of_leadInventor("");
+    setTitleofInvention("");
+    setcategory("Product");
+    setStatus_of_patent("Filed");
+    setNationality("National");
+    setDevelopment_status("Idea");
+    setDate_of_Filing("");
+    setKeyaspects("");
+    setdelivery("");
+    setDate_of_disclosure("");
+    settype("IP disclosures");
+    setCommercial_partner("");
+    setName_of_patentdept("");
+    setDetail_of_patentdept("");
+    setFinancial_support("");
+    setPrevious_disclosure("");
+    setDisclosureCopy(null);
+    setFilingcopy(null);
+    setGrantingCopy(null)
+    setStage(1);
+    setErrors({});
+  };
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       // Validate required fields
       if (!validateFormStage5) {
@@ -313,7 +318,7 @@ function IPandPatentForm({ children }) {
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
 await UploadFile();
@@ -344,12 +349,14 @@ await UploadFile();
 
       // Make the POST request to save the data
       const res = await axios.post(`/api/IPandPatent/insert_ipandpatent`, data);
-resetFields();
+      resetFields();
       setOpen(false);
       console.log(res);
       setshowSuccessSuccessModal(true);
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
    
   };

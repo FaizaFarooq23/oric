@@ -35,7 +35,7 @@ function IPlicensingForm({ children }) {
   const [AgreementCopy, setAgreementCopy] = useState("");
   const [stage, setStage] = useState(1);
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
-
+  const [submitting, setSubmitting] = useState(false);
   const { data: session } = useSession();
   useEffect(() => {
     console.log(session);
@@ -294,7 +294,7 @@ function IPlicensingForm({ children }) {
             "ip_licensing"
           );
         } else {
-          alert("Please upload Filing Copy");
+          alert("Please upload License Agreement  Copy");
         }
       } catch (error) {
         console.error("Error saving image:", error);
@@ -305,6 +305,10 @@ function IPlicensingForm({ children }) {
   };
   
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       // Validate required fields
       if (!validateFormStage5) {
@@ -315,7 +319,7 @@ function IPlicensingForm({ children }) {
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
 
@@ -355,6 +359,8 @@ function IPlicensingForm({ children }) {
       setshowSuccessSuccessModal(true)
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   };
 

@@ -45,7 +45,7 @@ export default function Dashboard() {
         const res = await axios.get(`/api/admin/get_admin`, {
           params: {
             username: session.user.username,
-            designation: session.user.designation,
+            // designation: session.user.designation,
           },
         });
         console.log(res);

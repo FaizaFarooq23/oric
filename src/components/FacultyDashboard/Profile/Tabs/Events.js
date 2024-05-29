@@ -70,10 +70,16 @@ export default function Event() {
           )
         }
       
-      {eventData.length > 0 &&
-        eventData.map((event, index) => (
-          <EventFields key={index} data={event} onDelete={handleDeleteProject} />
-        ))}
+      {eventData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        eventData.length>0 && 
+      eventData.map((events, index) => (
+        <EventFields key={index} data={events} onDelete={handleDeleteProject} />
+          ))
+      )}
     </div>
   );
 }

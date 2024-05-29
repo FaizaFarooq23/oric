@@ -26,6 +26,7 @@ export default function CivilEventsModal({ children }) {
   const [Organization_involved, setOrganization_involved] = useState("");
   const [Collaborated_developed, setCollaborated_developed] = useState("");
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const [submitting, setSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({});
   const handleSponcernedChange = (e) => {
@@ -112,6 +113,9 @@ export default function CivilEventsModal({ children }) {
       }
       if (Grant.trim() === "") {
         newErrors.Grant = "Grant is required";
+        valid = false;
+      }else if (!/^\d+$/.test(Grant)) {
+        newErrors.Grant = "Grant Amount must contain only numeric digits";
         valid = false;
       } else {
         newErrors.Grant = "";
@@ -220,9 +224,13 @@ export default function CivilEventsModal({ children }) {
     setStage(1);
   };
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     if (session.user.username === "") {
       alert("Please login to continue");
-      signOut();
+      signOut({ callbackUrl: "http://localhost:3000/" });;
       return;
     }
 
@@ -259,13 +267,15 @@ export default function CivilEventsModal({ children }) {
         Venue: Venue_of_event,
         Outcome_Material: outcomeMaterial,
       });
-
+console.log(res)
       setOpen(false);
       resetForm();
       setshowSuccessSuccessModal(true);
     } catch (error) {
       console.error(error);
       alert("Something went wrong error occured");
+    }finally {
+      setSubmitting(false);
     }
   };
 
@@ -364,6 +374,7 @@ export default function CivilEventsModal({ children }) {
                           label={"Sponcering Agency"}
                           value={Name_of_Sponcering}
                           setVal={setName_of_Sponcering}
+                          required
                         />
                         {errors.Name_of_Sponcering && (
                           <span className="text-red-500">
@@ -376,6 +387,7 @@ export default function CivilEventsModal({ children }) {
                           label={"Grant Value"}
                           value={Grant}
                           setVal={setGrant}
+                          required
                         />
                         {errors.Grant && (
                           <span className="text-red-500">{errors.Grant}</span>

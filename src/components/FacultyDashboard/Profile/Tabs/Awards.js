@@ -50,7 +50,7 @@ export default function Awards() {
                   filename, // The filename you want to delete
                 `/api/Imagesfeilds/filedelete`
               );
-              alert("Project and associated file deleted successfully");
+            
               await axios.delete(`/api/faculty/Awards/DeleteAwards?id=${id}`);
               console.log('Project deleted successfully');
               setShowDeleteSuccessModal(true);     } catch (error) {
@@ -70,6 +70,7 @@ export default function Awards() {
     {isFormVisible && (
      <AwardsModal />
     )}
+
      {
           showDeleteSuccessModal &&
           (
@@ -78,11 +79,16 @@ export default function Awards() {
             }}/>
           )
         }
-        {awardsData.length>0 && 
-  awardsData.map((awards, index) => (
-  <AwardsFields key={index} data={awards} onDelete={handleDeleteProject} />
-    ))
-    }
+             {awardsData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        awardsData.length>0 && 
+        awardsData.map((awards, index) => (
+        <AwardsFields key={index} data={awards} onDelete={handleDeleteProject} />
+          ))
+      )}
 
   
   </div>

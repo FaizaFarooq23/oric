@@ -112,6 +112,10 @@ function CasestudyForm({ children }) {
     console.log(session);
   }, [session]);
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       if (!validateForm()) {
         alert("Please fill all the fields");
@@ -119,7 +123,7 @@ function CasestudyForm({ children }) {
       }
       if (session.user.username === "") {
         alert("Please login to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
   
@@ -163,6 +167,8 @@ function CasestudyForm({ children }) {
       }
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   };
   

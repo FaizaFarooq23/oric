@@ -1,96 +1,63 @@
-import React from 'react'
+import React from 'react';
 import Modal from 'react-modal';
-import { FaTimes, FaEdit } from 'react-icons/fa'; 
-export default function Product_Displayeddata({ isOpen, closeModal ,data}) {
+import { FaTimes } from 'react-icons/fa';
+import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
+import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
+
+const Product_Displayeddata = ({ isOpen, closeModal, data }) => {
+  const generalData = [
+    { label: 'Title', value: data.Title },
+    { label: 'Category', value: data.Category },
+    { label: 'Nationality', value: data.Nationality },
+    { label: 'Status', value: data.Status },
+  ];
+  const leadData = [
+    { label: 'Name of Lead', value: data.Name_of_lead },
+    { label: 'Department of Lead', value: data.Department_of_lead },
+    { label: 'Designation of Lead', value: data.Designation_of_lead },
+  ];
+
+  const forumData = [
+    { label: 'Name of Forum', value: data.Name_of_Forum },
+    { label: 'Details of Forum', value: data.Detail_of_Forum },
+  ];
+
+  const additionalData = [
+    { label: 'Fields of Use', value: data.Feild_of_use },
+    { label: 'Brief', value: data.Breif },
+    { label: 'Financial Support', value: data.Financial_support },
+  ];
+
+  const imageData = [
+    {
+      label: 'Breif Copy',
+      value: `/uploadFile/${data.username}/product_displayed/${data.Title}_BreifCopy.png`,
+    },
+  ];
+
   return (
     <Modal
-    isOpen={isOpen}
-    onRequestClose={closeModal}
-    contentLabel="Case Study Details"
-    className="flex gap-y-8 flex-col bg-white shadow-lg h-screen pb-8  mb-4 ml-auto max-h-screen overflow-y-auto  mr-auto rounded-md  w-4/5 border-4 p-10 "
-  >
-    <div >
-    <div className="flex justify-end items-end gap-x-6">
-     
-      
-        {/* Cross icon */}
-        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+      isOpen={isOpen}
+      onRequestClose={closeModal}
+      contentLabel="Product Display Data"
+      className="flex gap-y-8 flex-col bg-white shadow-lg h-screen pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10"
+    >
+      <div>
+        <div className="flex justify-end items-end gap-x-6">
+          <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
+        </div>
+        <DataDisplayModal title="Product Displayed At National or International Level Information" data={[
+         { label: 'Title', value: data.Title }
+          ]}
+          />
+        <DataDisplayModal  data={generalData} gridClassName="grid-cols-2"/>
+        <DataDisplayModal title="Details of Lead" data={leadData} gridClassName="grid-cols-2"/>
+        <DataDisplayModal title="Details of Forum" data={forumData} />
+        <DataDisplayModal title="Additional Details" data={additionalData} />
+        <ImageDisplay title="Breif Copy " data={imageData} />
       </div>
-          <div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black'>Science / Arts Products or Any Creative Activity Performed / Displayed at National or International Level</h1>
-           </div>
-           <div className="grid grid-rows-2 gap-x-10 w-full"> 
-            <span className="text-black text-base font-semibold  ]">Title:</span>
-           <span className="text-black text-base font-semibold  ">{data.Title}</span>
-               </div> 
-             
-           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          
-              
-               <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold  ">Category</span>
-           <span className="text-black text-base font-semibold  ">{data.Category}</span>
-               </div>
-               <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base font-semibold  ">Nationaity</span>
-           <span className="text-black text-base font-semibold  ">{data.Nationality}</span>
-               </div>
-             <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Status</span>
-           <span className="text-black text-base font-semibold ">{data.Status}</span>
-            </div>
-    
-          </div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Details of Lead </h1>
-          <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          
-          <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Name of Lead </span>
-           <span className="text-black text-base font-semibold ">{data.Name_of_lead}</span>
-           </div>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Department of Lead </span>
-           <span className="text-black text-base font-semibold ">{data.Department_of_lead}</span>
-           </div>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Designation of Lead </span>
-           <span className="text-black text-base font-semibold ">{data.Designation_of_lead}</span>
-           </div>
-          </div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Details of Forum </h1>
-          <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Name of Forum</span>
-           <span className="text-black text-base font-semibold ">{data.Name_of_Forum}</span>
-           </div>
-          </div>
-          <div className="grid  grid-rows-2 gap-x-10">
-           <span className="text-black text-base font-semibold  ">Details of Forum:</span>
-          <span className="text-black text-base font-semibold ">
-            <p>
-             {data.Detail_of_Forum}
-            </p>
-            </span>
-           </div>
-           <h1 className='text-blue-900 font-serif font-bold text-xl mt-6  py-2 border-black'>Additional Details</h1>
-          <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Feilds of Use</span>
-           <span className="text-black text-base font-semibold ">{data.Feild_of_use}</span>
-           </div>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Breif</span>
-           <span className="text-black text-base font-semibold ">None</span>
-           </div>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base font-semibold ">Financial Support</span>
-           <span className="text-black text-base font-semibold ">{data.Financial_support}</span>
-           </div>
-          
-          </div>
-         
-    </div>
     </Modal>
   );
 }
 
+export default Product_Displayeddata;

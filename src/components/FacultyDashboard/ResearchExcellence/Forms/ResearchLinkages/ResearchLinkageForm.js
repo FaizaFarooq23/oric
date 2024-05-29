@@ -25,6 +25,7 @@ function ResearchLinkageForm({ children }) {
   const [stage, setStage] = useState(1);
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const validateFormStage1 = () => {
@@ -174,14 +175,17 @@ function ResearchLinkageForm({ children }) {
   };
 
   const handleSubmit = async () => {
-  
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       if (
         validateFormStage3()
       ){
         if (!session || !session.user || !session.user.username) {
           alert("Please log in to continue");
-          signOut();
+          signOut({ callbackUrl: "http://localhost:3000/" });;
           return;
         }
      
@@ -235,6 +239,8 @@ else{
      
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   };
 

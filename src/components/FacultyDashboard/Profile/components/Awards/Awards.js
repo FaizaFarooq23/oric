@@ -21,7 +21,7 @@ export default function AwardsModal({ children }) {
   const [stage, setStage] = useState(1);
   const [errors, setErrors] = useState({});
   const { data: session } = useSession();
-
+  const [submitting, setSubmitting] = useState(false);
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   const handleRelevantCertificateChange = (option) => {
@@ -75,6 +75,9 @@ export default function AwardsModal({ children }) {
     }
     if (amount.trim() === "") {
       newErrors.amount= "Amount of Prize is required";
+      valid = false;
+    }else if (!/^\d+$/.test(amount)) {
+      newErrors.amount = "Amount must contain only numeric digits";
       valid = false;
     } else {
       newErrors.amount= "";
@@ -158,16 +161,24 @@ export default function AwardsModal({ children }) {
     console.log(session);
   }, [session]);
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
-      if (!validateFormStage3) {
+      if (!validateFormStage3()) {
         alert("Please fill all the fields");
+        setSubmitting(false);
         return;
       }
+
       if (session.user.username === "") {
         alert("Please login to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });
+        setSubmitting(false);
         return;
       }
+
       try {
         if (copy_of_Mou) {
           await uploadFile(
@@ -184,6 +195,7 @@ export default function AwardsModal({ children }) {
         console.error("Error saving image:", error);
         alert("error");
       }
+
       const res = await axios.post(`/api/faculty/Awards/insertAwards`, {
         username: session.user.username,
         Title_of_award: title,
@@ -198,11 +210,13 @@ export default function AwardsModal({ children }) {
       });
 
       setOpen(false);
-      resetForm()    
-      setshowSuccessSuccessModal(true)
+      resetForm();
+      setshowSuccessSuccessModal(true);
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
  // Define a function to handle moving to the next stage
