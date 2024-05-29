@@ -115,7 +115,7 @@ export default function Grid({ data }) {
           
         </div>
         <button
-          className="bg-blue-900 hover:bg-gradient-to-r from-blue-900 to-[#3e92cc]  cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg "
+          className="bg-blue-900 hover:button-gradient hover:bg-gradient-to-r from-blue-900 to-[#3e92cc]  cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg "
           onClick={onBtnExport}
         >
           Download CSV export file

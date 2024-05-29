@@ -7,7 +7,6 @@ export default function AdminLayout({ children }) {
   return (
     <div className="w-full">
       <div>
-        {" "}
         <AdminHeader  />
       </div>
       <div className="flex ">

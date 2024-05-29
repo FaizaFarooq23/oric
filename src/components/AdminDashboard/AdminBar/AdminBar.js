@@ -5,6 +5,7 @@ import React, { useContext } from 'react'
 import { FaResearchgate } from 'react-icons/fa6'
 import { GiCalendarHalfYear } from 'react-icons/gi'
 import { TbApps, TbReport } from 'react-icons/tb'
+import ResearchCallForm from '../ResearchCall/ResearchCallForm'
 
 export default function AdminBar() {
 const barData = [
@@ -18,7 +19,7 @@ url:" /dashboard"
   },  
 {
 icon: <FaResearchgate />,
-url:" "
+url:"/generate-research-calls"
 },
 
 
