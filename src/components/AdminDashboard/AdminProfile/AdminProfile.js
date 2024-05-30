@@ -17,6 +17,7 @@ export default function AdminProfile() {
     designation: user.designation,
     email: user.email,
     password: user.password,
+    confirmPassword: user.password,
   };
 
   const [updatedProfile, setUpdatedProfile] = useState(initialProfile);
@@ -103,12 +104,17 @@ export default function AdminProfile() {
     e.preventDefault();
     try {
       if (updatedProfile.password === "") {
-        delete updatedProfile.password;
+        alert("Password cannot be empty")
+        return
+      } else if (updatedProfile.password !== updatedProfile.confirmPassword) {
+        alert("Passwords do not match")
+        return
       }
 
       const res = await axios.post(`/api/admin/update_admin_profile`, updatedProfile);
       console.log(res);
       alert("Profile updated successfully");
+      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile");

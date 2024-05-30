@@ -90,7 +90,6 @@ export default function ProfileForm({
               name="password"
               id="Password"
               placeholder="******"
-              value={password}
               onChange={handleChange}
             />
           </div>
