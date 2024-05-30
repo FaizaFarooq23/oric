@@ -649,7 +649,7 @@ function Researchprojectform({ children }) {
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
       await UploadFile();

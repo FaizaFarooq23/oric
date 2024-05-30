@@ -26,7 +26,9 @@ function Product_to_IndustryForm({children}) {
   const [Detail_of_Partner, setDetail_of_Partner] = useState("");
   const [Financial_support, setFinancial_support] = useState("");
   const [PdProof, setPdProof] = useState("");
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(1)
+  const [submitting, setSubmitting] = useState(false);
+
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
@@ -198,6 +200,10 @@ function Product_to_IndustryForm({children}) {
   
 
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       // Validate required fields
       if (!validateFormStage4 ) {
@@ -207,7 +213,7 @@ function Product_to_IndustryForm({children}) {
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
       try {
@@ -257,6 +263,8 @@ function Product_to_IndustryForm({children}) {
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   };
 

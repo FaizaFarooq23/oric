@@ -15,6 +15,7 @@ function Product_DisplayedForm({children}) {
     useState("");
   const [Department_of_lead, setDepartment_of_lead] =
     useState("");
+    const [submitting, setSubmitting] = useState(false);
   const [Title, setTitle] = useState("");
   const [category, setcategory] = useState("Product");
   const [Status, setStatus] = useState("");
@@ -176,6 +177,10 @@ function Product_DisplayedForm({children}) {
   };
   
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       // Validate required fields
       if (!validateFormStage4 ) {
@@ -186,7 +191,7 @@ function Product_DisplayedForm({children}) {
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
       try {
@@ -235,6 +240,8 @@ function Product_DisplayedForm({children}) {
       console.log(res);
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
     
   };

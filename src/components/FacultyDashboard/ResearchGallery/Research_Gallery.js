@@ -97,7 +97,7 @@ function Research_Gallery() {
           // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });
         return;
       }
         const response = await axios.get("/api/Research_Gallery/research_gallery");

@@ -118,7 +118,7 @@ export default function EducationFormModal({ children }) {
       }
       if (session.user.account_number === "") {
         alert("Login to continue");
-        signOut();
+        signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
       const res = await axios.post(`/api/faculty/education/insert_faculty_education`, {

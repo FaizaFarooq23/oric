@@ -28,6 +28,7 @@ function ConsultacyContract({ children }) {
   const [delievery, setdelievery] = useState("");
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
   const [showSuccessModal, setshowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handleRemarkschange = (e) => {
     setRemarks(e.target.value);
@@ -167,12 +168,16 @@ function ConsultacyContract({ children }) {
   };
   const handleSubmit = async () => {
     const isValid = await validateForm();
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     if (isValid && (Contractcopy)) {
     try {
       if (session.user.username === "") {
         alert("Please login to continue");
-        signOut();
-        return;
+        signOut({ callbackUrl: "http://localhost:3000/" });      
+          return;
       }
       try {
         if (Contractcopy) {
@@ -214,6 +219,8 @@ function ConsultacyContract({ children }) {
     }
      catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   }
     

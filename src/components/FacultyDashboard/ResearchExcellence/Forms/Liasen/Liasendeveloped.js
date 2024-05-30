@@ -27,7 +27,7 @@ function Liasendeveloped({ children }) {
           }
           if (session.user.username === "") {
             alert("Please login to continue");
-            signOut();
+            signOut({ callbackUrl: "http://localhost:3000/" });;
             return;
           }
           const res = await axios.post(`/api/Research_projects/insert_liasen`, {

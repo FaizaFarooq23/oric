@@ -1,307 +1,166 @@
-import React from 'react'
+import React from 'react';
 import Modal from 'react-modal';
-// import Modal, { useModalState } from "react-simple-modal-provider";
-import { FaTimes, FaEdit } from 'react-icons/fa'; 
-export default function Researchprojectdata({ isOpen, closeModal, data }) {
+import { FaTimes } from 'react-icons/fa'; 
+import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
+import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
+
+const Researchprojectdata = ({ isOpen, closeModal, data }) => {
+  // Define data for different sections
+  const projectDetails = [
+    { label: 'Title of Research Project', value: data.title },
+    { label: 'Thematic Area', value: data.Thematic_Area },
+    { label: 'Type of Research', value: data.type_of_research },
+    ...(data.type_of_research === 'Solo Project' ? [{ label: 'Category', value: data.category }] : []),
+    { label: 'Name of Research Grant', value: data.Name_of_Research_Grant },
+    { label: 'Nationality', value: data.Nationality },
+    { label: 'Status of Proposal', value: data.Status_of_proposal },
+    ...(data.Status_of_project === 'Completed' ? [{ label: 'Date of Completion', value: data.Date_of_Completion.split("T")[0] || 'Nill' }] : []),
+    { label: 'Start Date', value: data.start_Date.split("T")[0] },
+    { label: 'End Date', value: data.end_Date.split("T")[0] }
+  ];
+
+  const contractDetails = data.type_of_research === 'Contract' ? [
+    { label: 'Date of contract signed', value: data.Date_of_ContractSigned.split("T")[0] },
+    { label: 'Date of contract', value: data.Date_of_Contract.split("T")[0] },
+    { label: 'Counter Parts from Industry', value: data.Counterparts }
+  ] : [];
+
+  const submissionDetails = [
+    { label: 'Date of Submission', value: data.Date_of_Submission.split("T")[0] },
+    ...(data.Status_of_proposal === 'Approved' && data.Date_of_Approval ? [
+      { label: 'Date of Approval', value: data.Date_of_Approval.split("T")[0] }
+    ] : []),
+    ...(data.Status_of_proposal === 'Approved' && data.type_of_research === 'Solo Project' && data.category === 'Non-HEC' ? [
+      { label: 'ORIC Overhead', value: data.ORIC_Overhead }
+    ] : []),
+    ...(data.Status_of_proposal === 'Approved' ? [
+      { label: 'Status of Project', value: data.Status_of_project }
+    ] : [])
+  ];
+
+  const piDetails = [
+    { label: 'Name of Pi', value: data.Name_of_pi },
+    { label: 'Department of Pi', value: data.Department_of_Pi },
+    { label: 'Designation of Pi', value: data.Designation_of_Pi }
+  ];
+
+  const copiDetails = data.type_of_research === 'Joint Research' ? [
+    { label: 'Name of CoPi', value: data.Name_of_CoPi },
+    { label: 'Department of CoPi', value: data.Department_of_CoPi },
+    { label: 'Designation of CoPi', value: data.Designation_of_CoPi }
+  ] : [];
+
+  const sponsorDetails = data.type_of_research === 'Contract Research' ? [
+    { label: 'Name of Sponsoring Agency', value: data.Name_of_Sponcering_Agency },
+    { label: 'Sponsoring Agency Country', value: data.Sponcering_Agency_Country },
+    { label: 'Sponsoring Agency Address', value: data.Sponcering_Agency_Address }
+  ] : [];
+
+  const irbDetails = [
+    { label: 'Reviewed By IRB', value: data.reviwedbyIRB },
+    ...(data.reviwedbyIRB === 'Yes' ? [
+      { label: 'Date of Review', value: data.Date_of_review.split("T")[0] },
+      { label: 'Meeting Decision', value: data.meetingdecision }
+    ] : [])
+  ];
+
+  const fundingDetails = [
+    { label: 'Total Funding Requested', value: data.funding_requested },
+    ...(data.Status_of_proposal === 'Approved' ? [
+      { label: 'Total Funding Approved', value: data.funding_approved }
+    ] : []),
+    ...(data.Status_of_proposal === 'Completed' ? [
+      { label: 'Total Funding Utilized', value: data.funding_utilized }
+    ] : [])
+  ];
+
+  const partnerDetails = [
+    { label: 'Collaborating Partner', value: data.Collaborating_Partne },
+    { label: 'Co-funding Partner', value: data.Cofunding_Partner }
+  ];
+
+  const additionalDetails = [
+    { label: 'Proposal Submission Email Copy', value: 'National' }, // Update value if necessary
+    { label: 'Award Letter Copy', value: 'National' }, // Update value if necessary
+    { label: 'Completion Letter Copy', value: 'National' }, // Update value if necessary
+    ...(data.type_of_research === 'Contract Research' ? [
+      { label: 'Contract Agreement Copy', value: 'National' } // Update value if necessary
+    ] : [])
+  ];
+
+  const remarks = [
+    { label: 'Remarks', value: data.Remarks }
+  ];
+
+  const deliverables = data.Status_of_project === 'Completed' ? [
+    { label: 'Key Project Deliverables', value: data.delivery }
+  ] : [];
+
+  const imageData = [];
+  if (data.Status_of_proposal === "Approved" || data.Status_of_project == "Completed") {
+      imageData.push({
+        label: 'Award Letter Copy',
+        value: `/uploadFile/${data.username}/research_project/${data.title}_AwardLetterCopy.png`
+      });
+    
+  } else if (data.Status_of_project == "Completed") {
+    
+      imageData.push({
+        label: 'Completion Letter Copy',
+        value: `/uploadFile/${data.username}/research_project/${data.title}_CompletionLetterCopy.png`
+      });
+    
+  } else if (data.type_of_research == "Contract Research") {
+  
+      imageData.push({
+        label: 'Contract Agreement Copy',
+        value: `/uploadFile/${data.username}/research_project/${data.title}_ContractAgreementCopy.png`
+      });
+    
+  } else if (data.reviwedbyIRB == "Yes") {
+   
+      imageData.push({
+        label: 'Meeting Minutes Copy',
+        value: `/uploadFile/${data.username}/research_project/${data.title}_meetingminutes.png`
+      });
+    
+  }
+  if(data.Status_of_proposal === "Approved"||data.Status_of_proposal === "Submitted"){
+    imageData.push({
+      label: 'Submission Email Copy',
+      value: `/uploadFile/${data.username}/research_project/${data.title}_SubmissionEmailcopy.png`
+    });
+  }
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Research Project Details"
-      className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto h-screen  overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-12 "
+      className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-12"
     >
-      <div>
       <div className="flex justify-end items-end gap-x-6">
-        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
+        <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
       </div>
-      <div className='flex flex-col gap-x-10 gap-y-10  px-6 '>
-     
-        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2 border-black'>Research Project Details</h1>
-        <div className="grid grid-cols-2 gap-x-8 ">
-          <span className="text-black text-base gap-x-8 font-semibold  ">Title of Research Project</span>
-          <span className="text-black text-base font-semibold  ">{data.title}</span>
-        </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Thematic Area</span>
-            <span className="text-black text-base font-semibold  ">{data.Thematic_Area}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Type of Research</span>
-            <span className="text-black text-base font-semibold ">{data.type_of_research}</span>
-          </div>
-          { data.type_of_research==="Solo Project" &&
-            <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Category</span>
-            <span className="text-black text-base font-semibold ">{data.category}</span>
+      <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">Research Project Details</h1>
       
-          </div>
-         
-          }
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Name of Research Grant</span>
-            <span className="text-black text-base font-semibold ">{data.Name_of_Research_Grant}</span>
-          </div>
-         
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Nationality</span>
-            <span className="text-black text-base font-semibold ">{data.Nationality}</span>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Status of Proposal</span>
-            <span className="text-black text-base font-semibold ">{data.Status_of_proposal}</span>
-          </div>
-
-          {data.Status_of_project === "Completed"  &&
-            <div className="grid grid-cols-2 gap-x-8">
-              <span className="text-black text-base font-semibold ">Date of Completion</span>
-              {
-              data.Date_of_Completion !== "" ?(
-              <span className="text-black text-base font-semibold ">{data.Date_of_Completion.split("T")[0]}</span>
-              ):(
-                <span className="text-black text-base font-semibold ">Nill</span>
-
-              )
-              }
-
-            </div>
-
-          }
-
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Start Date</span>
-            <span className="text-black text-base font-semibold ">{data.start_Date.split("T")[0]}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">End Date</span>
-            <span className="text-black text-base font-semibold ">{data.end_Date.split("T")[0]}</span>
-          </div>
-          {data.type_of_research === "Contract" ? (
-            <>
-              <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold ">Date of contract signed</span>
-                <span className="text-black text-base font-semibold ">{data.Date_of_ContractSigned.split("T")[0]}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold ">Date of contract</span>
-                <span className="text-black text-base font-semibold ">{data.Date_of_Contract.split("T")[0]}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-x-8">
-                <span className="text-black text-base font-semibold ">Counter Parts from Industry</span>
-                <span className="text-black text-base font-semibold ">{data.Counterparts}</span>
-              </div>
-            </>) : (
-            <>
-              <div className="grid grid-cols-2 gap-x-8 ">
-                <span className="text-black text-base font-semibold ">Date of Submission</span>
-                <span className="text-black text-base font-semibold ">{data.Date_of_Submission.split("T")[0]}</span>
-              </div>
-
-              {
-                data.Status_of_proposal === "Approved" &&
-                <>
-                {
-                  data.Date_of_Approval!=="" &&
-                  <div className="grid grid-cols-2 gap-x-8">
-                    <span className="text-black text-base font-semibold ">Date of Approval</span>
-                    <span className="text-black text-base font-semibold ">{data.Date_of_Approval.split("T")[0]}</span>
-                  </div>
-                }
-                  
-                  { (data.type_of_research==="Solo Project" && data.category==="Non-HEC" ) &&
-                     <div className="grid grid-cols-2 gap-x-8">
-                     <span className="text-black text-base font-semibold ">ORIC Overhead</span>
-                     <span className="text-black text-base font-semibold ">{data.ORIC_Overhead}</span>
-                   </div>
-                  }
-                  <div className="grid grid-cols-2 gap-x-8">
-                    <span className="text-black text-base font-semibold ">Status of Project</span>
-                    <span className="text-black text-base font-semibold ">{data.Status_of_project}</span>
-                  </div>
-                </>
-
-              }
-
-            </>
-          )
-
-          }
-
-        </div>
-
-        <div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Pi</h1>
-        </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Name of Pi</span>
-            <span className="text-black text-base font-semibold ">{data.Name_of_pi}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Department of Pi</span>
-            <span className="text-black text-base font-semibold ">{data.Department_of_Pi} </span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Designation of Pi</span>
-            <span className="text-black text-base font-semibold ">{data.Designation_of_Pi}</span>
-          </div>
-
-        </div>
-
-        {
-          data.type_of_research==="Joint Research" &&
-          <>
-            <div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of CoPi</h1>
-        </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Name of CoPi</span>
-            <span className="text-black text-base font-semibold">{data.Name_of_CoPi} </span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Department of CoPi</span>
-            <span className="text-black text-base font-semibold ">{data.Department_of_CoPi}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Designation of CoPi</span>
-            <span className="text-black text-base font-semibold ">{data.Designation_of_CoPi}</span>
-          </div>
-
-        </div>
-          </>
-        }
-        {  data.type_of_research==="Contract Research" &&
-<>
-      
-<div>
-  <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Sponcering Agency</h1>
-</div>
-<div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-  <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold ">Name of Sponcering Agency</span>
-    <span className="text-black text-base font-semibold ">{data.Name_of_Sponcering_Agency}</span>
-  </div>
-  <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold ">Sponcering Agency Country</span>
-    <span className="text-black text-base font-semibold">{data.Sponcering_Agency_Country}</span>
-  </div>
-  <div className="grid grid-cols-2 gap-x-8">
-    <span className="text-black text-base font-semibold ">Sponcering Agency Address</span>
-    <span className="text-black text-base font-semibold ">{data.Sponcering_Agency_Address}</span>
-  </div>
-
-</div>
-</>
-        }
-
-<div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of IRB Review</h1>
-        </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Reviewed By IRB</span>
-            <span className="text-black text-base font-semibold ">{data.reviwedbyIRB}</span>
-          </div>
-          {
-            data.reviwedbyIRB==="Yes" &&
-            <>
-             <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Date of Review</span>
-            <span className="text-black text-base font-semibold ">{data.Date_of_review.split("T")[0]} </span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Meeting Decision</span>
-            <span className="text-black text-base font-semibold ">{data.meetingdecision}</span>
-          </div>
-            </>
-           
-          }
-          
-
-        </div>
-        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Funding(PKR Million)</h1>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          {
-            data.type_of_research !== "Contract Research" &&
-            data.Status_of_project === "Completed"  &&
-            <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Funding Agency/Body</span>
-            <span className="text-black text-base font-semibold">{data.funding_agency}</span>
-          </div>
-          }
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  w-48">Total Funding Requested </span>
-            <span className="text-black text-base font-semibold  w-48">{data.funding_requested}</span>
-          </div>
-        {data.Status_of_proposal === "Approved" &&
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Total Funding Approved</span>
-            <span className="text-black text-base font-semibold ">{data.funding_approved} </span>
-          </div>
-}
-{data.Status_of_proposal === "Completed" &&
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Total Funding Utilized</span>
-            <span className="text-black text-base font-semibold ">{data.funding_utilized} </span>
-          </div>
-}
-        </div>
-
-        <div>
-          <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Details of Partners</h1>
-        </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Collaborating Partner</span>
-            <span className="text-black text-base font-semibold ">{data.Collaborating_Partne} </span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Co-funding Partner</span>
-            <span className="text-black text-base font-semibold ">{data.Cofunding_Partner} </span>
-          </div>
-        </div>
-        <h1 className='text-blue-900 font-serif font-bold text-xl  py-2  border-black'>Additional Details</h1>
-        <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base gap-x-24 font-semibold  w-60 ">Proposal Submission Email Copy</span>
-            <span className="text-black text-base font-semibold ">National </span>
-          </div>
-        <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-          
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold ">Award Letter Copy</span>
-            <span className="text-black text-base font-semibold ">National </span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  " >Completion Letter Copy</span>
-            <span className="text-black text-base font-semibold  ">National </span>
-          </div>
-          {
-            data.type_of_research=="Contract Research" &&
-            <div className="grid grid-cols-2 gap-x-8">
-            <span className="text-black text-base font-semibold  ">Contract Agreement Copy</span>
-            <span className="text-black text-base font-semibold  ">National </span>
-          </div>
-          }
-         
-        </div>
-        <div className="grid gap-y-8 gap-x-8">
-          <span className="text-black text-base w-40 font-semibold  ">Remarks:</span>
-          <span className="text-black text-base font-semibold  ">{data.Remarks} </span>
-        </div>
-        {
-          data.Status_of_project==="Completed" &&
-          <div className="grid  gap-x-8">
-          <span className="text-black text-base w-56 font-semibold  ">Key Project deliverables</span>
-          <span className="text-black text-base font-semibold  ">{data.delivery} </span>
-        </div>
-        }
-      
-        
-      </div>
-      </div>
+      <DataDisplayModal title="Project Details" data={projectDetails} gridClassName="grid-cols-2" />
+      {contractDetails.length > 0 && <DataDisplayModal title="Contract Details" data={contractDetails} gridClassName="grid-cols-2" />}
+      {submissionDetails.length > 0 && <DataDisplayModal title="Submission Details" data={submissionDetails} gridClassName="grid-cols-2" />}
+      <DataDisplayModal title="Details of Pi" data={piDetails} gridClassName="grid-cols-2" />
+      {copiDetails.length > 0 && <DataDisplayModal title="Details of CoPi" data={copiDetails} gridClassName="grid-cols-2" />}
+      {sponsorDetails.length > 0 && <DataDisplayModal title="Details of Sponsoring Agency" data={sponsorDetails} gridClassName="grid-cols-2" />}
+      <DataDisplayModal title="Details of IRB Review" data={irbDetails} gridClassName="grid-cols-2" />
+      <DataDisplayModal title="Details of Funding (PKR Million)" data={fundingDetails} gridClassName="grid-cols-2" />
+      <DataDisplayModal title="Details of Partners" data={partnerDetails} gridClassName="grid-cols-2" />
+      <DataDisplayModal title="Additional Details" data={additionalDetails}  />
+      <DataDisplayModal title="Remarks" data={remarks}  />
+      {deliverables.length > 0 && <DataDisplayModal title="Key Project Deliverables" data={deliverables}  />}
+      {imageData.length > 0 && (
+          <ImageDisplay title="Document Copies" data={imageData} />
+        )}
     </Modal>
-  );
-}
 
+  );
+};
+
+export default Researchprojectdata;

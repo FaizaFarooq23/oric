@@ -66,9 +66,16 @@ export default function Education() {
             }}/>
           )
         }
-      {educationalData.map((data, index) => (
-      <EducationField key={index} data={data} onDelete={handleDeleteProject}/>
-      ))}
+     {educationalData.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          No data exists at the moment.
+        </div>
+      ) : (
+        educationalData.length>0 &&   
+ educationalData.map((data, index) => (
+  <EducationField key={index} data={data} onDelete={handleDeleteProject}/>
+  ))
+      )}
     </div>
   );
 }

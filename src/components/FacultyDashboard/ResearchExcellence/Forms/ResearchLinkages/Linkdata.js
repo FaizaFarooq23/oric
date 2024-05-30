@@ -1,95 +1,76 @@
-import React from 'react'
+import React from 'react';
 import Modal from 'react-modal';
-import { FaTimes, FaEdit } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
+import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
+import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
 
-export default function Linkdata({ isOpen, closeModal ,data }) {
-  
+const Linkdata = ({ isOpen, closeModal, data }) => {
+  const formattedLinkDataStage1 = [
+    { label: 'Type of Linkage', value: data.Type_of_Linkage },
+    { label: 'Date of Agreement', value: data.Date_of_Agreement.split("T")[0] },
+    { label: 'Field of Study', value: data.Field_of_Study },
+    { label: 'Nationality', value: data.Nationality },
+    { label: 'Name of Research Grant', value: data.Name_of_Research_Grant },
+  ];
+
+  const formattedLinkDataStage2 = [
+    { label: 'Name of Host Institute', value: data.Name_of_Host_Institute },
+    { label: 'Address of Host Institute', value: data.Address_of_Host_Institute },
+  ];
+
+  const formattedLinkDataStage3 = [
+    { label: 'Collaborating Agency Name', value: data.Collaborating_Agency },
+    { label: 'Collaborating Agency Address', value: data.Collaborating_Agency_Address },
+  ];
+  const formattedLinkDataStage4 = [
+    { label: 'Scope of Collaboration', value: data.Scope },
+    { label: 'Salient Features of Linkage', value: data.Features },
+  ];
+  const imageData = [
+    {
+      label: 'MoU Copy',
+      value: `/uploadFile/${data.username}/research_linkage/${data.id}_MoUcopy.png`,
+    },
+  ]
   return (
     <Modal
-    isOpen={isOpen}
-    onRequestClose={closeModal}
-    contentLabel="Case Study Details"
-    className="flex gap-y-8 flex-col bg-white shadow-lg h-screen w-screen pb-8   max-h-screen overflow-y-auto  rounded-md  w-4/5 border-4 p-10 "
-  >
-    <div>
-    <div className="flex justify-end items-end gap-x-6">
-     
-      
-        {/* Cross icon */}
-        <FaTimes className="text-red-500 text-xl  cursor-pointer" onClick={closeModal} />
-      </div>
-          <div >
-          <h1 className= 'text-blue-900  font-serif font-bold text-xl  py-2 m-2 border-black'>Research Linkage Details</h1>
-           </div>
-           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-            <div className="grid grid-cols-2 gap-x-10 "> 
-            <span className="text-black text-base  font-semibold ">Type of linkage</span>
-           <span className="text-black text-base  font-semibold ">{data.Feild_of_Study}</span>
-        </div> 
-        <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base  font-semibold">Date of Agreement</span>
-           <span className="text-black text-base  font-semibold">{data.Date_of_Agreement.split("T")[0]}</span>
-        </div> 
-             <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base  font-semibold">Feild of Study</span>
-           <span className="text-black text-base  font-semibold">{data.Feild_of_Study}</span>
-            </div>
-           <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base  font-semibold">Nationality</span>
-           <span className="text-black text-base  font-semibold">{data.Nationality}</span>
-           </div>
+      isOpen={isOpen}
+      onRequestClose={closeModal}
+      contentLabel="Case Study Details"
+      className="flex gap-y-8 flex-col bg-white shadow-lg h-screen w-screen pb-8 max-h-screen overflow-y-auto rounded-md w-4/5 border-4 p-10 "
+    >
+      <div>
+        <div className="flex justify-end items-end gap-x-6">
+          <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
+        </div>
         
-            <div className="grid grid-cols-2 gap-x-10">
-            <span className="text-black text-base  font-semibold">Name of Research Grant</span>
-           <span className="text-black text-base  font-semibold">{data.Name_of_Research_Grant}</span>
-            </div>
-            </div>
-             <div>
-          <h1 className= 'text-blue-900  font-serif font-bold text-xl  pt-4 m-2 border-black'>Host Institue Detail</h1>
-          </div> 
-          <div className='grid grid-cols-2 gap-y-8 pt-6 gap-x-16'> 
-           <div className="grid grid-cols-2 gap-x-10">
-           <span className="text-black text-base  font-semibold">Name of Host Institute</span>
-          <span className="text-black text-base  font-semibold">{data.Name_of_Host_Institute}</span>
-           </div>
-           <div className="grid grid-cols-2 gap-x-10">
-           <span className="text-black text-base  font-semibold">Address of Host Institue</span>
-          <span className="text-black text-base  font-semibold">{data.Address_of_Host_Institute} </span>
-           </div>
-           <h1 className= 'text-blue-900  font-serif font-bold text-xl  py-2 m-2 border-black'>Collaborating Agency Detail</h1>
-          </div> 
-          <div > 
-           <div className="grid grid-cols-2 py-8 gap-x-10">
-           <span className="text-black text-base  font-semibold ">Collaborating Agency Name</span>
-          <span className="text-black text-base  font-semibold">{data. Collaborating_Agency }</span>
-           </div>
-          
-          </div>
-          <div className="grid grid-cols-2 gap-x-10">
-           <span className="text-black text-base  font-semibold">Collaborating Agency Address</span>
-          <span className="text-black text-base  font-semibold">{data.Collaborating_Agency_Address } </span>
-           </div>
-<div>
-<h1 className= 'text-blue-900  font-serif font-bold text-xl  pt-6 m-2 border-black'>Additional Details</h1>
-</div>  
-           <div className='grid grid-cols-2 gap-y-8 gap-x-16  py-6'>
-           <div className="grid grid-cols-2 gap-y-10 gap-x-8">
-            <span className="text-black text-base  font-semibold ">MoU Copy</span>
-           <span className="text-black text-base  font-semibold ">National </span>
-            </div>
-           </div>
-           <div className="grid grid-cols-2 gap-y-10 py-4 gap-x-8">
-            <span className="text-black text-base  font-semibold  ">Scope of  Collaboration</span>
-           <span className="text-black text-base  font-semibold  ">{ data.Scope }</span>
-            </div>
-            <div className="grid grid-cols-2 gap-y-10 gap-x-8">
-            <span className="text-black text-base  font-semibold  ">Salient Features of Linkage</span>
-           <span className="text-black text-base  font-semibold  ">{data.Features}</span>
-            </div>
-            
-           
-    </div>
+        <DataDisplayModal
+          title="Research Linkage Details"
+          gridClassName="grid-cols-2"
+          data={formattedLinkDataStage1}
+        />
+        
+        <DataDisplayModal
+          title="Host Institute Detail"
+          gridClassName="grid-cols-2"
+          data={formattedLinkDataStage2}
+        />
+       
+        <DataDisplayModal
+          title="Collaborating Agency Detail"
+          gridClassName="grid-cols-2"
+          data={formattedLinkDataStage3}
+        />
+        
+        <DataDisplayModal
+          title="Additional Details"
+          data={formattedLinkDataStage4}
+        />
+      </div>
+      <ImageDisplay title="MoU Copy" data={imageData} />
+      
     </Modal>
   );
 }
 
+export default Linkdata;

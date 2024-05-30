@@ -22,7 +22,6 @@ export default function Login({ adminLogin, facultyLogin, setAdminLogin }) {
       alert("Please fill all the fields");
       return;
     }
-
     const res = await signIn("credentials", {
       redirect: false,
       username: username,

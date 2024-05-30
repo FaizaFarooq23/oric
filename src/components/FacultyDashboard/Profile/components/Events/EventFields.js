@@ -1,7 +1,17 @@
-import React from "react";
+import React ,{useState} from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Eventsdata from "./EventsData";
 export default function EventFields({ data,onDelete }) {
- 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+   // Function to open the modal
+   const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div  className={`flex flex-col bg-white shadow-lg rounded-md  m-4 `}>
             <div className="flex justify-end items-center mr-6 mt-4">
@@ -60,6 +70,11 @@ export default function EventFields({ data,onDelete }) {
       </div>
       
     </div>
+    <div className="flex justify-end  mr-6">
+<button onClick={openModal}>Click to View Full Details
+</button>
+</div>  
+<Eventsdata isOpen={isModalOpen} closeModal={closeModal} data={data}/>
     </div>
   );
 }
