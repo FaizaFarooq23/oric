@@ -39,10 +39,9 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     // Activate editing mode
   };
   const HandleProjectChangeValue = () => {
-    if(Status_of_proposal==="Approved"){
+    if (Status_of_proposal === "Approved") {
       setEditingproject(true);
     }
-  
   };
   const handleStatus_of_proposalChange = (e) => {
     setStatus_of_proposal(e.target.value);
@@ -59,12 +58,11 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       setStatus_of_proposal(data.Status_of_proposal);
       setStatus_of_project(data.Status_of_project);
     }
-    if(session){
+    if (session) {
       console.log(session);
-
     }
-  }, [data,session]);
-  
+  }, [data, session]);
+
   const resetinfofeilds = () => {
     setStatus_of_proposal("Submitted");
     setStatus_of_project("Ongoing");
@@ -86,14 +84,14 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     setDateofCompletion("");
   };
   const updateinfo = async () => {
-    if (Status_of_proposal==="Approved") {
+    if (Status_of_proposal === "Approved") {
       try {
         if (AwardLetterCopy) {
           await uploadFile(
             AwardLetterCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${data.title}_ AwardLetterCopy`,
+            `${data.title}_AwardLetterCopy`,
             "research_project"
           );
         } else {
@@ -103,7 +101,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
         console.error("Error saving image:", error);
         alert("error");
       }
-    } 
+    }
     if (project_id) {
       try {
         const res = await axios.post(
@@ -132,14 +130,14 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   };
 
   const updateprojectinfo = async () => {
-    if (Status_of_project==="Completed") {
+    if (Status_of_project === "Completed") {
       try {
         if (CompletionLetterCopy) {
           await uploadFile(
             CompletionLetterCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${data.title}_ Completionlettercopy`,
+            `${data.title}_Completionlettercopy`,
             "research_project"
           );
         } else {
@@ -149,7 +147,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
         console.error("Error saving image:", error);
         alert("error");
       }
-    } 
+    }
     if (project_id) {
       try {
         const res = await axios.post(
@@ -174,7 +172,10 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   };
   const getFilenamesToDelete = (data) => {
     let filenames = [];
-    if (data.Status_of_proposal === "Approved" || data.Status_of_project === "Completed") {
+    if (
+      data.Status_of_proposal === "Approved" ||
+      data.Status_of_project === "Completed"
+    ) {
       filenames.push(`${data.title}_AwardLetterCopy.png`);
     }
     if (data.Status_of_project === "Completed") {
@@ -186,32 +187,34 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     if (data.reviwedbyIRB === "Yes") {
       filenames.push(`${data.title}_meetingminutes.png`);
     }
-    if (data.Status_of_proposal === "Submitted" || data.Status_of_proposal === "Approved") {
+    if (
+      data.Status_of_proposal === "Submitted" ||
+      data.Status_of_proposal === "Approved"
+    ) {
       filenames.push(`${data.title}_SubmissionEmailcopy.png`);
     }
     return filenames;
   };
-  
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-md py-5 ">
       <div className="flex justify-end items-center mr-4">
-        <button onClick={() => onDelete(data.project_id)}>
+        <button onClick={() => onDelete(data.project_id,getFilenamesToDelete(data))}>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer text-xl" />
         </button>
       </div>
       <div className={`flex justify-between px-4 py-4 `}>
-        <div className= "flex flex-col w-52 gap-y-4  ">
+        <div className="flex flex-col w-52 gap-y-4  ">
           <div className=" flex  items-start justify-start ">
             <span className="text-gray-500  font-medium">Title</span>
           </div>
           <div className="flex  items-end justify-start ">
             <span className="text-black ">{`${data.title
               .split(" ")
-              .slice(0,4)
+              .slice(0, 4)
               .join(" ")}...`}</span>
           </div>
         </div>
@@ -301,7 +304,35 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                               setVal={setFundingApproved}
                               required
                             />
-
+                            {data.typeofresearch !== "Contract Research" && (
+                              <div>
+                                <InputField
+                                  label={"Funding Agency/Body"}
+                                  value={fundingagency}
+                                  setVal={setfundingagency}
+                                  required
+                                />
+                              </div>
+                            )}
+                            <div className="grid grid-cols-2 gap-x-3   text-black">
+                              <label className="text-base font-medium">
+                                Award Letter Copy{" "}
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <input
+                                className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                                type="file"
+                                defaultValue={AwardLetterCopy}
+                                onChange={(e) => {
+                                  console.log(
+                                    "File selected:",
+                                    e.target.files[0]
+                                  );
+                                  setAwardLetterCopy(e.target.files[0]);
+                                }}
+                                required
+                              />
+                            </div>
                           </>
                         )}
 
@@ -328,33 +359,6 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                             />
                           </>
                         )}
-                        {data.typeofresearch !== "Contract Research"  && (
-                            <div>
-                              <InputField
-                                label={"Funding Agency/Body"}
-                                value={fundingagency}
-                                setVal={setfundingagency}
-                                required
-                              />
-                            </div>
-                          )}
-                           <div className="grid grid-cols-2 gap-x-3   text-black">
-                        <label className="text-base font-medium">
-                          Award Letter Copy{" "}
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
-                          type="file"
-                          defaultValue={AwardLetterCopy}
-                          onChange={(e) => {
-                            console.log("File selected:", e.target.files[0]);
-                            setAwardLetterCopy(e.target.files[0]);
-                          }}
-                          required
-                        />
-
-                      </div>
                       </div>
                     </div>
                     {Status_of_project === "Completed" && (
@@ -399,9 +403,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                   className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
                   onClick={updateinfo}
                 />
-                
               )}
-              
             </span>
             {showSuccessModal && (
               <SuccessModal
@@ -532,22 +534,21 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                           onChange={handledeliverychange}
                         />
                         <div className="grid grid-cols-2 gap-x-3   text-black">
-                      <label className="text-base font-medium">
-                        Completion Letter Copy{" "}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
-                        type="file"
-                        defaultValue={CompletionLetterCopy}
-                        onChange={(e) => {
-                          console.log("File selected:", e.target.files[0]);
-                          setCompletionLetterCopy(e.target.files[0]);
-                        }}
-                        required
-                      />
-                      
-                    </div>
+                          <label className="text-base font-medium">
+                            Completion Letter Copy{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                            type="file"
+                            defaultValue={CompletionLetterCopy}
+                            onChange={(e) => {
+                              console.log("File selected:", e.target.files[0]);
+                              setCompletionLetterCopy(e.target.files[0]);
+                            }}
+                            required
+                          />
+                        </div>
                       </>
                     )}
                   </div>
@@ -568,7 +569,6 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                   </div>
                 </>
               )}
-
             </span>
             {showSuccessModal && (
               <SuccessModal

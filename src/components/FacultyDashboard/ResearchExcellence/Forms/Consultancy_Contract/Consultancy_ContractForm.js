@@ -137,8 +137,9 @@ function ConsultacyContract({ children }) {
     if (Enddate.trim() === "") {
       newErrors.Enddate = "End Date is required";
       valid = false;
-    } else {
-      newErrors.Enddate = "";
+    } else if (new Date(Enddate) <= new Date(Startdate)) {
+      newErrors.EndDate = "Enter Correct Information";
+      valid = false;
     }
 
     if (delievery.trim() === "") {
@@ -197,7 +198,7 @@ function ConsultacyContract({ children }) {
           username: session.user.username,
           Type_of_ConsultancyServices: consultancy_services,
           Title: Title_of_Project,
-          Name_of_Pi: NameofPi,
+          Name_of_Pi:NameofPi,
           Designation_of_Pi: Designation_of_Pi,
           Department_of_Pi: Department_of_Pi,
           Date_of_Execution: new Date(DateofExecution).toISOString(),

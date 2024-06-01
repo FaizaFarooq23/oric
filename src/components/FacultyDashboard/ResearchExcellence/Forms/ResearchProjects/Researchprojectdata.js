@@ -69,7 +69,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
     ...(data.Status_of_proposal === 'Approved' ? [
       { label: 'Total Funding Approved', value: data.funding_approved }
     ] : []),
-    ...(data.Status_of_proposal === 'Completed' ? [
+    ...(data.Status_of_project === 'Completed' ? [
       { label: 'Total Funding Utilized', value: data.funding_utilized }
     ] : [])
   ];
@@ -79,14 +79,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
     { label: 'Co-funding Partner', value: data.Cofunding_Partner }
   ];
 
-  const additionalDetails = [
-    { label: 'Proposal Submission Email Copy', value: 'National' }, // Update value if necessary
-    { label: 'Award Letter Copy', value: 'National' }, // Update value if necessary
-    { label: 'Completion Letter Copy', value: 'National' }, // Update value if necessary
-    ...(data.type_of_research === 'Contract Research' ? [
-      { label: 'Contract Agreement Copy', value: 'National' } // Update value if necessary
-    ] : [])
-  ];
+
 
   const remarks = [
     { label: 'Remarks', value: data.Remarks }
@@ -97,28 +90,29 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
   ] : [];
 
   const imageData = [];
-  if (data.Status_of_proposal === "Approved" || data.Status_of_project == "Completed") {
+  if (data.Status_of_proposal === "Approved") {
       imageData.push({
         label: 'Award Letter Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_AwardLetterCopy.png`
       });
     
-  } else if (data.Status_of_project == "Completed") {
+  } 
+  if (data.Status_of_project === "Completed") {
     
-      imageData.push({
-        label: 'Completion Letter Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.title}_CompletionLetterCopy.png`
-      });
+    imageData.push({
+      label: 'Completion Letter Copy',
+      value: `/uploadFile/${data.username}/research_project/${data.title}_Completionlettercopy.png`
+    });
     
-  } else if (data.type_of_research == "Contract Research") {
-  
+  } 
+  if (data.type_of_research === "Contract Research") {
       imageData.push({
         label: 'Contract Agreement Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_ContractAgreementCopy.png`
       });
     
-  } else if (data.reviwedbyIRB == "Yes") {
-   
+  } 
+  if (data.reviwedbyIRB === "Yes") {
       imageData.push({
         label: 'Meeting Minutes Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_meetingminutes.png`
@@ -136,7 +130,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Research Project Details"
-      className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-12"
+      className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto w-full h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-12"
     >
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
@@ -152,7 +146,6 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
       <DataDisplayModal title="Details of IRB Review" data={irbDetails} gridClassName="grid-cols-2" />
       <DataDisplayModal title="Details of Funding (PKR Million)" data={fundingDetails} gridClassName="grid-cols-2" />
       <DataDisplayModal title="Details of Partners" data={partnerDetails} gridClassName="grid-cols-2" />
-      <DataDisplayModal title="Additional Details" data={additionalDetails}  />
       <DataDisplayModal title="Remarks" data={remarks}  />
       {deliverables.length > 0 && <DataDisplayModal title="Key Project Deliverables" data={deliverables}  />}
       {imageData.length > 0 && (

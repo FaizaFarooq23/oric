@@ -4,9 +4,7 @@ import Product_to_IndustryTab from '../../Tabs/Product_to_industry'
 
 function Product_to_industry() {
   return (
-    // <div>
-    //   hey baby
-    // </div>
+   
    
     <Product_to_IndustryTab/>
   )

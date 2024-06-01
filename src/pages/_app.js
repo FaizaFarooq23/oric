@@ -15,6 +15,10 @@ import Product_DisplayedFormModal from "@/components/FacultyDashboard/ResearchEx
 import IPLicensingModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/IP_Licensing/IP_LicensingForm";
 import Product_to_IndustryFormModal from "@/components/FacultyDashboard/ResearchExcellence/Forms/Product_to_Industry/Product_to_industryForm";
 import AwardsModal from "@/components/FacultyDashboard/Profile/components/Awards/Awards";
+import ReveneueByHEIFormModal from "@/components/AdminDashboard/ORICSustainability/Forms/ReveneueByHEIForm";
+import RevenueByORICFormModal from "@/components/AdminDashboard/ORICSustainability/Forms/RevenueByORIC/RevenueByORICForm";
+import Trainings_EventsForm from "@/components/AdminDashboard/ORICSustainability/Forms/Training_Events/Trainings_EventsForm";
+import VisitForm from "@/components/AdminDashboard/ORICSustainability/Forms/Visits/VisitsForm";
 export default function App({ Component, session, pageProps }) {
   return (
     <SessionProvider session={session}>
@@ -31,8 +35,16 @@ export default function App({ Component, session, pageProps }) {
           ConsultancyContractFormModal,
           IPandPatentFormModal,
           Product_DisplayedFormModal,
-          Product_to_IndustryFormModal,       
-        ]}
+          Product_to_IndustryFormModal, 
+          ReveneueByHEIFormModal,  
+          RevenueByORICFormModal ,
+          Trainings_EventsForm,
+          VisitForm,
+          
+        ]}  
+      
+       
+       
       >
 
         <UserProvider>

@@ -176,18 +176,7 @@ export default function EducationFormModal({ children }) {
               <span className="text-red-500">{errors.fieldOfStudy}</span>
             )}
             </div>
-            <div>
-  <Dropdown
-    label={"Field of Study"}
-    dropdownOptions={dropdown[1].option}
-    value={fieldOfStudy}
-    handleOptionChange={handleFieldOfStudyChange}
-    required
-  />
-  {errors.fieldOfStudy && (
-    <span className="text-red-500">{errors.fieldOfStudy}</span>
-  )}
-</div>
+          
 
 <div>
   <Dropdown

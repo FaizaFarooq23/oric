@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useContext } from 'react'
 import { FaResearchgate } from 'react-icons/fa6'
-import { GiCalendarHalfYear } from 'react-icons/gi'
+import { FaChartLine } from 'react-icons/fa';
 import { TbApps, TbReport } from 'react-icons/tb'
 import ResearchCallForm from '../ResearchCall/ResearchCallForm'
 
@@ -21,7 +21,10 @@ url:" /dashboard"
 icon: <FaResearchgate />,
 url:"/generate-research-calls"
 },
-
+{
+  icon:<FaChartLine /> ,
+  url:"ORIC_Sustainability"
+}
 
 ]
 
