@@ -24,8 +24,7 @@ const Product_Displayeddata = ({ isOpen, closeModal, data }) => {
 
   const additionalData = [
     { label: 'Fields of Use', value: data.Feild_of_use },
-    { label: 'Brief', value: data.Breif },
-    { label: 'Financial Support', value: data.Financial_support },
+       { label: 'Financial Support', value: data.Financial_support },
   ];
 
   const imageData = [
@@ -40,7 +39,7 @@ const Product_Displayeddata = ({ isOpen, closeModal, data }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Product Display Data"
-      className="flex gap-y-8 flex-col bg-white shadow-lg h-screen pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10"
+      className="flex gap-y-8 flex-col bg-white shadow-lg w-full h-screen pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10"
     >
       <div>
         <div className="flex justify-end items-end gap-x-6">

@@ -26,7 +26,7 @@ export default function VisitsFields({ data, onDelete }) {
 
   const formattedData = [
     { label: 'Name of Visitor', value: data.Name_of_Visitor },
-    { label: 'Date of Visit', value: data.Date_of_Visit },
+    { label: 'Date of Visit', value: data.Date_of_Visit.split("T")[0] },
     { label: 'Agenda of Visit', value: isAgendaTruncated && !isAgendaExpanded ? truncatedAgenda : data.Agenda_of_Visit },
     // Add more fields as needed
   ];
@@ -58,7 +58,7 @@ export default function VisitsFields({ data, onDelete }) {
             </button>
             </div>
           ) : null}
-          <VisitDataDisplay isOpen={isModalOpen} closeModal={closeModal} data={data} />
+          
         </div>
       </div>
     </div>

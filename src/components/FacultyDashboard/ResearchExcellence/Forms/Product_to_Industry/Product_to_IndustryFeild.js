@@ -28,7 +28,10 @@ export default function Product_to_IndustryFeilds({data ,onDelete}) {
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Title of Invention</span>
         </div>
         <div className="flex justify-center ">
-          <span className="text-black ">{data.Title_of_Invention}</span>
+        <span className="text-black ">{`${data.Title_of_Invention
+              .split(" ")
+              .slice(0, 4)
+              .join(" ")}...`}</span>
         </div>
       </div>
 

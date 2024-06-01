@@ -8,7 +8,7 @@ const Linkdata = ({ isOpen, closeModal, data }) => {
   const formattedLinkDataStage1 = [
     { label: 'Type of Linkage', value: data.Type_of_Linkage },
     { label: 'Date of Agreement', value: data.Date_of_Agreement.split("T")[0] },
-    { label: 'Field of Study', value: data.Field_of_Study },
+    { label: 'Field of Study', value: data.Feild_of_Study },
     { label: 'Nationality', value: data.Nationality },
     { label: 'Name of Research Grant', value: data.Name_of_Research_Grant },
   ];

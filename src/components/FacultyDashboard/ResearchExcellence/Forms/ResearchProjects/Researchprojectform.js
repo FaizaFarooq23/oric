@@ -500,7 +500,7 @@ function Researchprojectform({ children }) {
       newErrors.CompletionLetterCopy = "";
     }
     if (typeofresearch === "Contract Research") {
-      if (ContractAgreementCopy.trim() === "") {
+      if (!ContractAgreementCopy=== "") {
         newErrors.ContractAgreementCopy = "Contract Agreement is required";
         valid = false;
       } else {

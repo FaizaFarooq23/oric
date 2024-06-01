@@ -19,6 +19,8 @@ function CasestudyForm({ children }) {
   const [Casestudycopy, setCasestudycopy] = useState("");
   const { data: session } = useSession();
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
 
   const handleAdvocacyToolschange = (e) => {

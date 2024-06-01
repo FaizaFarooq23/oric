@@ -18,7 +18,7 @@ export default function CivilEventsModal({ children }) {
   const [Name_of_Sponcering, setName_of_Sponcering] = useState("");
   const [Sponcerned, setSponcerned] = useState("No");
   const [Grant, setGrant] = useState("");
-  const [Role, setRole] = useState("Organized");
+  const [Role, setRole] = useState("Organizor");
   const [outcome, setoutcome] = useState("");
   const [outcomeMaterial, setoutcomeMaterial] = useState("");
   const [Remarks, setRemarks] = useState("");

@@ -75,7 +75,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
   ];
 
   const partnerDetails = [
-    { label: 'Collaborating Partner', value: data.Collaborating_Partne },
+    { label: 'Collaborating Partner', value: data.Collaborating_Partner },
     { label: 'Co-funding Partner', value: data.Cofunding_Partner }
   ];
 

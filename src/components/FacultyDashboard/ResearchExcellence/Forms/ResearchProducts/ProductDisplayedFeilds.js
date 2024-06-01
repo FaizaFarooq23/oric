@@ -28,7 +28,10 @@ export default function Product_Displayedfield({data ,onDelete}) {
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Title</span>
         </div>
         <div className="flex justify-start ">
-          <span className="text-black ">{data.Title}</span>
+        <span className="text-black ">{`${data.Title
+              .split(" ")
+              .slice(0, 4)
+              .join(" ")}...`}</span>
         </div>
       </div>
 

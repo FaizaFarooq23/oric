@@ -16,7 +16,7 @@ const Consultancy_data = ({ isOpen, closeModal, data }) => {
   ];
 
   const formattedConsultancyDataStage2 = [
-    { label: 'Name of Pi', value: data.Name_of_pi },
+    { label: 'Name of Pi', value: data.Name_of_Pi },
     { label: 'Department of Pi', value: data.Department_of_Pi },
     { label: 'Designation of Pi', value: data.Designation_of_Pi },
   ];

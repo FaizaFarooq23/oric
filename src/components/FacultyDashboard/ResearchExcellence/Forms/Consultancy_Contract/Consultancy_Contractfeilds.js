@@ -29,11 +29,14 @@ export default function ConsultacyContractfield({ data, onDelete }) {
           <div className=" flex items-start justify-start ">
             {" "}
             <span className="text-gray-500  font-medium">
-              Title of ProjectS
+              Title of Project
             </span>
           </div>
           <div className="flex items-end justify-center ">
-            <span className="text-black ">{data.Title}</span>
+          <span className="text-black ">{`${data.Title
+              .split(" ")
+              .slice(0, 4)
+              .join(" ")}...`}</span>
           </div>
         </div>
         <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>

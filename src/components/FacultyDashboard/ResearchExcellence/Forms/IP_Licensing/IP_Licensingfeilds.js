@@ -124,7 +124,10 @@ if (Status_of_Licensee==="Signed") {
             </span>
           </div>
           <div className="flex justify-center ">
-            <span className="text-black ">{data.Title}</span>
+          <span className="text-black ">{`${data.Title
+              .split(" ")
+              .slice(0, 4)
+              .join(" ")}...`}</span>
           </div>
         </div>
 
