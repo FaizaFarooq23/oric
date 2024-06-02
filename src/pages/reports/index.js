@@ -25,11 +25,7 @@ export default function Index() {
 
   useEffect(() => {
     fetchData("/api/stats/reports", setData);
-    fetchData("/api/stats/research-excellence-api/case-study/get_case_study", setCaseStudyData);
-    fetchData("/api/stats/research-excellence-api/liaison_development", setLiaisonData);
-    fetchData("/api/stats/research-excellence-api/get-research-links", setLinkageData);
-    fetchData("/api/stats/research-excellence-api/git-consultancy-contract", setConsultancyData);
-  }, []);
+     }, []);
 
   return (
     <AdminLayout>

@@ -31,7 +31,8 @@ var filterParams = {
   },
 };
 
-export default function LinkageGrid({ linkageData}) {
+export default function LinkageGrid() {
+  const [data, setData] = useState();
   const gridRef = useRef();
   const router = useRouter();
   const [colDefs] = useState([
@@ -55,20 +56,20 @@ export default function LinkageGrid({ linkageData}) {
     { field: "Features", filter: true, headerName: "Features" },
   ]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/handler?project_id=${router.query.project_id}`);
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    if (router.query.project_id) {
-      fetchData();
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`/api/stats/research-excellence-api/get-research-links`); // Update with your actual API endpoint
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }, [router.query.project_id]);
+  };
+
+  useEffect(() => {
+    fetchData();
+
+  }, []);
 
   const onBtnExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv();
@@ -95,7 +96,7 @@ export default function LinkageGrid({ linkageData}) {
       <div className={"ag-theme-quartz"} style={{ width: "100%", height: "600px" }}>
         <AgGridReact
           ref={gridRef}
-          rowData={linkageData}
+          rowData={data}
           columnDefs={colDefs}
           suppressExcelExport={true}
           rowSelection={"single"}

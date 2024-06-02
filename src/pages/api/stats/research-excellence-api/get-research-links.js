@@ -2,14 +2,9 @@
 import prisma from "@/lib/prisma";
 
 export default async function handler(req, res) {
-    const { project_id } = req.query;
     
     try {
-        const researchLinks = await prisma.Research_Linkage.findMany({
-        where: {
-            project_id: parseInt(project_id),
-        },
-        });
+        const researchLinks = await prisma.Research_Linkage.findMany();
         res.status(200).json(researchLinks);
     } catch (error) {
         console.log(error);
