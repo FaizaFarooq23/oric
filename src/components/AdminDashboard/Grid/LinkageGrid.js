@@ -58,7 +58,7 @@ export default function LinkageGrid({ linkageData}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/handler?project_id=${router.query.project_id}`); // Update with your actual API endpoint
+        const response = await fetch(`/api/handler?project_id=${router.query.project_id}`);
         const result = await response.json();
         setData(result);
       } catch (error) {
