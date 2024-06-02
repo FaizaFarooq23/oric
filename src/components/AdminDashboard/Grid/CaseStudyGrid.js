@@ -34,10 +34,10 @@ var filterParams = {
 };
 
 // Create new GridExample component
-export default function CaseStudyGrid({caseStudyData}) {
+export default function CaseStudyGrid() {
   const gridRef = useRef();
   const router = useRouter();
-  const [data, setData] = useState([caseStudyData]);
+  const [data, setData] = useState([]);
   const [colDefs] = useState([
     { field: "Name_of_Government_Body", filter: true, headerName: "Government Body" },
     { field: "Advocacy_tools", filter: true, headerName: "Advocacy Tools" },
@@ -55,16 +55,18 @@ export default function CaseStudyGrid({caseStudyData}) {
     { field: "Issue_verification", filter: true, headerName: "Issue Verification" },
   ]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/stats/research-excellence-api/case-study/get_case_study');  // Update with your API endpoint
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/stats/research-excellence-api/case-study/get_case_study');  // Update with your API endpoint
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    
     fetchData();
   }, []);
 

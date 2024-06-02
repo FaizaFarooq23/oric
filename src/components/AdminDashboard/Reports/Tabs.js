@@ -3,11 +3,11 @@ import Grid from "../Grid/Grid";
 import CaseStudyGrid from "../Grid/CaseStudyGrid";
 import LiaisonGrid from "../Grid/LiaisonGrid";
 import LinkageGrid from "../Grid/LinkageGrid";
+import ConsultancyGrid from "../Grid/ConsultancyGrid";
 
-export default function ResearchTabs({ data,caseStudyData,liaisonData,linkageData,consultancyData }) {
+export default function ResearchTabs({ data, }) {
   const [ipActiveTab, setIpActiveTab] = useState(false);
   const [activeTab, setActiveTab] = useState("Research Project Reports");
-
   const researchTabs = [
     {
       tabTitle: "Research Project Reports",
@@ -15,19 +15,19 @@ export default function ResearchTabs({ data,caseStudyData,liaisonData,linkageDat
     },
     {
       tabTitle: "Case Studies",
-      component: <CaseStudyGrid caseStudyData={caseStudyData} />,
+      component: <CaseStudyGrid />,
     },
     {
       tabTitle: "Liaison Development",
-      component: <LiaisonGrid liaisonData={liaisonData}/>,
+      component: <LiaisonGrid />,
     },
     {
       tabTitle: "Research Links",
-      component: <LinkageGrid  linkageData={linkageData}/>,
+      component: <LinkageGrid/>,
     },
     {
       tabTitle: "Consaltancy Contracts",
-      component: null,
+      component: <ConsultancyGrid />,
     },
   ];
 

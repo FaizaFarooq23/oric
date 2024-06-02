@@ -31,10 +31,10 @@ var filterParams = {
   },
 };
 
-export default function LiaisonGrid({liaisonData}) {
+export default function LiaisonGrid() {
   const gridRef = useRef();
   const router = useRouter();
-  const [data, setData] = useState([liaisonData]);
+  const [data, setData] = useState([]);
   const [colDefs] = useState([
     { field: "username", filter: true, headerName: "Username" },
     { field: "Liasen_developed_with", filter: true, headerName: "Developed With" },
@@ -47,16 +47,18 @@ export default function LiaisonGrid({liaisonData}) {
     },
   ]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/stats/research-excellence-api/liasen_development'); // Update with your actual API endpoint
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/handler'); // Update with your actual API endpoint
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    
     fetchData();
   }, []);
 
