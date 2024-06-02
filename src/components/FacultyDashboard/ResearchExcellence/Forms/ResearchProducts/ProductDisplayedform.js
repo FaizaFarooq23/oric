@@ -117,7 +117,13 @@ function Product_DisplayedForm({children}) {
     if (!Breif) {
       newErrors.Breif = "Breif copy is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Breif.type)) {
+      newErrors.Breif = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+
+    else {
       newErrors.Breif = "";
     }
 
@@ -185,6 +191,7 @@ function Product_DisplayedForm({children}) {
       // Validate required fields
       if (!validateFormStage4 ) {
         alert("Please fill all the required fields");
+        setSubmitting(true)
         return;
       }
 
@@ -475,11 +482,11 @@ function Product_DisplayedForm({children}) {
                 Previous
               </button>
               <button
-                onClick={handleSubmit}
-                className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-              >
-                Save
-              </button>
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
+                  </button>
             </div>
           </div>
         </>

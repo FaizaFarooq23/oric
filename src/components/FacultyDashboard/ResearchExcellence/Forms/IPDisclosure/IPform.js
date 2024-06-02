@@ -182,28 +182,47 @@ function IPandPatentForm({ children }) {
   const validateFormStage4 = () => {
     let valid = true;
     const newErrors = {};
-
-    if ((type==="IP disclosures") && (!DisclosureCopy)) {
-      newErrors.DisclosureCopy =
-        "Disclosure Copy is required";
-      valid = false;
-    } else {
-      newErrors.DisclosureCopy = "";
-    }
-    if ((Status_of_patent==="Filed" || Status_of_patent==="Granted") && (type!=="IP disclosures") &&(!Filingcopy) ) {
+if((type==="IP disclosures")){
+  if ((!DisclosureCopy)) {
+    newErrors.DisclosureCopy =
+      "Disclosure Copy is required";
+    valid = false;
+  } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(DisclosureCopy.type)) {
+    newErrors.DisclosureCopy = "Only jpg, jpeg, and png files are allowed";
+    valid = false;
+  }
+  else {
+    newErrors.DisclosureCopy = "";
+  }
+}
+   else{
+    if (((Status_of_patent==="Filed" || Status_of_patent==="Granted"))  &&(!Filingcopy) ) {
       newErrors.Filingcopy =
         "Filing Copy is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Filingcopy.type)) {
+      newErrors.Filingcopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.Filingcopy = "";
     }
-    if ( Status_of_patent==="Granted"&& (!GrantingCopy) && (type!=="IP disclosures")) {
+    if ( Status_of_patent==="Granted"&& (!GrantingCopy) ) {
       newErrors.Grantingcopy =
         "Granting Copy is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(GrantingCopy.type)) {
+      newErrors.Grantingcopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.Grantingcopy = "";
     }
+
+   }
+ 
     setErrors(newErrors);
     return valid;
   }
@@ -312,6 +331,7 @@ function IPandPatentForm({ children }) {
       // Validate required fields
       if (!validateFormStage5) {
         alert("Please fill all the required fields");
+        setSubmitting(false)
         return;
       }
 
@@ -762,9 +782,9 @@ await UploadFile();
                   </button>
                   <button
                     onClick={handleSubmit}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-                  >
-                    Save
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
                   </button>
                 </div>
               </div>

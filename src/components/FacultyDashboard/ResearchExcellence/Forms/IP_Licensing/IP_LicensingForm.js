@@ -180,13 +180,23 @@ function IPlicensingForm({ children }) {
     if (!Negotiationcopy) {
       newErrors.Negotiationcopy = "Negotiation Copy is required";
       valid = false;
-    } else {
+    }
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Negotiationcopy.type)) {
+      newErrors.Negotiationcopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+     else {
       newErrors.Negotiationcopy = "";
     }
     if (!AgreementCopy && (Status_of_Licensee==="Signed")) {
       newErrors.AgreementCopy = "Agreement Copy is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AgreementCopy.type)) {
+      newErrors.AgreementCopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.AgreementCopy = "";
     }
     setErrors(newErrors);
@@ -746,11 +756,11 @@ function IPlicensingForm({ children }) {
                   Previous
                 </button>
                 <button
-                  onClick={handleSubmit}
-                  className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-                >
-                  Save
-                </button>
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
+                  </button>
               </div>
             </div>
           </>

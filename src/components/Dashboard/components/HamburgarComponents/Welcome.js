@@ -4,11 +4,12 @@ import React, { useContext } from 'react'
 export default function Welcome() {
   const {user} = useContext(UserContext);
   return (
-    <div className="flex justify-between items-center bg-div-gray px-4 mt-8 rounded-lg">
+    <div className="flex justify-between items-center w-50% bg-div-gray px-4 mt-8 rounded-lg">
         {user &&
         <div className="flex flex-col" >
           
           <span className="text-2xl font-bold">Hello {user.name}!</span>
+          <span className="text-xl font-semibold">{user.designation}</span>
           
           <span>Its good to see you again.</span>
         </div>

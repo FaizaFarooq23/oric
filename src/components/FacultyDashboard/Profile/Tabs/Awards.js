@@ -53,6 +53,7 @@ export default function Awards() {
             
               await axios.delete(`/api/faculty/Awards/DeleteAwards?id=${id}`);
               console.log('Project deleted successfully');
+              
               setShowDeleteSuccessModal(true);     } catch (error) {
               console.error('Error deleting project:', error);
             }

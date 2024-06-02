@@ -347,12 +347,12 @@ if(validateForm()){
 
           </div>
           <div className="flex justify-center">
-            <button
-              onClick={handleSubmit}
-              className="px-4 py-2 bg-blue-950 w-5/6 text-white font-semibold rounded-md"
-            >
-              Save
-            </button>
+          <button
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
+                  </button>
           </div>
         </div>
       </Modal>

@@ -151,7 +151,11 @@ function ConsultacyContract({ children }) {
     if (!Contractcopy) {
       newErrors.Contractcopy = "Contract copy are required";
       valid = false;
-    } else {
+    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Contractcopy.type)) {
+      newErrors.Contractcopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.Contractcopy = "";
     }
     if (Contract_value.trim() === "") {
@@ -433,12 +437,12 @@ setOpen(false)
           />
  
           <div className="flex items-center justify-center w-full">
-            <button
-              onClick={handleSubmit}
-              className="bg-blue-900 text-white px-4 py-2 rounded-md mt-2 w-1/4"
-            >
-              Save
-            </button>
+          <button
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
+                  </button>
           </div>
         </div>
       </div>
