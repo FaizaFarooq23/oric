@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
     try {
       // Delete the project with the given ID
-      await prisma.liasen.delete({
+      await prisma.liaison.delete({
         where: {
           Liasen_id: parseInt(Liasen_id),
         },
