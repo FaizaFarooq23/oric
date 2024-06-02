@@ -36,9 +36,9 @@ export default function SustainabilityTabs() {
 
   return (
     <>
-      <div className="flex justify-end 	"></div>
+      <div className="flex justify-end"></div>
 
-      <div className="flex flex-col items-center text-base font-semibold  gap-y-10 research-shadow px-4 pb-10 pt-5 rounded-[10px] bg-white w-full">
+      <div className="flex flex-col items-center text-base font-semibold  gap-y-10 research-shadow px-4 pb-10 pt-5 rounded-[10px] bg-white w-full my-10">
         <div className="flex items-start justify-start p-4 gap-x-28 text-sm">
           {tabs.map((tab, index) => (
             <div
@@ -48,7 +48,7 @@ export default function SustainabilityTabs() {
                 activeTab === tab.name
                   ? "border-blue-900 text-white p-4 border-b-[3px]"
                   : "border-2 bg-white border-blue-950 text-black "
-              } flex items-center border-2 bg-blue-950 p-4 rounded-md text-black p-4 rounded-md justify-center h-12 cursor-pointer `}
+              } flex items-center border-2 bg-blue-950 p-4 rounded-md text-black justify-center h-12 cursor-pointer `}
             >
               {tab.name}
             </div>

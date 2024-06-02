@@ -14,7 +14,6 @@ const DropdownUser = () => {
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
@@ -60,36 +59,31 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         href="#"
       >
-          <>
-  {user ? (
-    <span className="hidden text-right lg:block">
-      <span className="block text-sm font-medium text-black ">
-        {user.username}
-      </span>
-      <span className="block text-xs">
-        {user.designation}
-      </span>
-    </span>
-  ) : null}
-  
-  <div className="flex items-center justify-center gap-x-2">
-    <span className="h-12 w-12 rounded-full">
-      {userEmail ? (
-        <img
-          src={`/uploads/${userEmail}.png`}
-          className="rounded-full"
-          alt="User"
-        />
-      ) : (
-        <img
-          className="rounded-full"
-          alt="User Default"
-        />
-      )}
-    </span>
-    <IoIosArrowDown className="text-gray-500" />
-  </div>
-</>
+    {  user&&  <span className="hidden text-right lg:block">
+          <span className="block text-sm font-medium text-black ">
+            {user.username}
+          </span>
+          <span className="block text-xs">{user.designation}</span>
+        </span>}
+        <div className="flex items-center justify-center gap-x-2">
+          <span className="h-12 w-12 rounded-full">
+            {userEmail ?
+              <img
+                src={`/uploads/${userEmail}.png`}
+                className="rounded-full"
+                alt="User"
+              /> : <img
+                src="/images/profile.png"
+                className="rounded-full"
+                alt="User Default"
+              />
+
+            }
+
+          </span>
+
+          <IoIosArrowDown className="text-gray-500" />
+        </div>
       </Link>
 
       {/* <!-- Dropdown Start --> */}
