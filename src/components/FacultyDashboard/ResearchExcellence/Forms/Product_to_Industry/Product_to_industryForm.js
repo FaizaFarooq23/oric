@@ -138,7 +138,12 @@ function Product_to_IndustryForm({children}) {
     if (!PdProof.trim() === "") {
       newErrors.PdProof = "PdProof is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(PdProof.type)) {
+      newErrors.PdProof = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.PdProof = "";
     }
     setErrors(newErrors);
@@ -208,6 +213,7 @@ function Product_to_IndustryForm({children}) {
       // Validate required fields
       if (!validateFormStage4 ) {
         alert("Please fill all the required fields");
+        setSubmitting(false)
         return;
       }
       // Check if the user is authenticated
@@ -547,11 +553,11 @@ function Product_to_IndustryForm({children}) {
                 Previous
               </button>
               <button
-                onClick={handleSubmit}
-                className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-              >
-                Save
-              </button>
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Saving..." : "Save"}
+                  </button>
             </div>
           </div>
         </>

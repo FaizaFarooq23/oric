@@ -44,6 +44,7 @@ export default function Education() {
     try {
       await axios.delete(`/api/faculty/education/delete_education?education_id=${education_id}`);
       console.log('Project deleted successfully');
+      
       setShowDeleteSuccessModal(true);     } catch (error) {
       console.error('Error deleting project:', error);
     }

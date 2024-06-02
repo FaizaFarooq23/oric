@@ -45,10 +45,11 @@ export default function Event() {
           filename, // The filename you want to delete
         `/api/Imagesfeilds/filedelete`
       );
-      alert("Project and associated file deleted successfully");
+     
     
       await axios.delete(`/api/faculty/Events/Delete_event?id=${id}`);
       console.log('Project deleted successfully');
+      
       setShowDeleteSuccessModal(true);     } catch (error) {
       console.error('Error deleting project:', error);
     }

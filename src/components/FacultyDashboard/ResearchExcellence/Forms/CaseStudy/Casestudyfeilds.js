@@ -24,29 +24,32 @@ export default function Casestudyfeilds({data,onDelete}) {
           </button>
         </div>
     <div className={`flex  flex-row h-36 justify-between px-10 py-8  `}>
-    <div className={`flex flex-col gap-y-4 m-3 w-62 m-4 gap-x-10`}>
+    <div className={`flex flex-col gap-y-4 m-3  m-4 gap-x-10`}>
         <div className=" flex items-start justify-start  w-62 "> <span className="text-gray-500  font-medium">Research Backing Status</span>
         </div>
         <div className="flex items-end justify-start ">
-          <span className="text-black ">{data.Banking_research_status}</span>
+        <span className="text-black ">{`${data.Banking_research_status
+              .split(" ")
+              .slice(0, 2)
+              .join(" ")}...`}</span>
         </div>
       </div>
      
-      <div className={`flex flex-col gap-y-4 m-3  w-42 m-4 gap-x-10`}>
+      <div className={`flex flex-col gap-y-4  m-3 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Name of Government Body</span>
         </div>
         <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Name_of_Government_Body}</span>
         </div>
       </div>
-      <div className={`flex flex-col gap-y-4 m-3 w-42m-4 gap-x-10`}>
+      <div className={`flex flex-col gap-y-4 m-3 m-4 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Area Advocated</span>
         </div>
         <div className="flex items-end justify-start ">
           <span className="text-black ">{data.Area_advocated}</span>
         </div>
       </div>
-      <div className={`flex flex-col gap-y-4 m-3 w-42  m-4 gap-x-10`}>
+      <div className={`flex flex-col gap-y-4 m-3 m-4 gap-x-10`}>
         <div className=" flex items-start justify-start "> <span className="text-gray-500  font-medium">Date of Presentation</span>
         </div>
         <div className="flex items-end justify-start ">

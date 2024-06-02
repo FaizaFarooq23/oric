@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-phone-input-2/lib/style.css";
-import axios from 'axios';
+import axios from "axios";
 import FormInput from "../../Common/FormInput";
 import { useRouter } from "next/router";
 import PhoneInputComponent from "../../Common/PhoneNumberInput";
@@ -24,111 +24,90 @@ export default function Register() {
   const validateForm = async () => {
     const newErrors = {};
     let isValid = true;
-  
-    if (name.trim() === "") {
-      newErrors.name = "Name is required";
-      isValid = false;
-    }
-    // else {
-    //   const nameExists = await checkFieldExists(name, "name");
-    //   if (nameExists) {
-    //     newErrors.name = "Name already exists";
-    //     isValid = false;
-    //   }
-    // }
-  
-    if (email.trim() === "") {
-      newErrors.email = "Email is required";
-      isValid = false;
-    } 
-    // else {
-    //   const emailExists = await checkFieldExists(email, "email");
-    //   if (emailExists) {
-    //     newErrors.email = "Email already exists";
-    //     isValid = false;
-    //   }
-    // }
-  
-    if (password.trim() === "") {
-      newErrors.password = "Password is required";
-      isValid = false;
-    }
-  
-    if (confirmPassword.trim() === "") {
-      newErrors.confirmPassword = "Confirm Password is required";
-      isValid = false;
-    }
-  
-    if (phoneNumber.trim() === "") {
-      newErrors.phoneNumber = "Phone Number is required";
-      isValid = false;
-    }
-  
-    if (username.trim() === "") {
-      newErrors.username = "Username is required";
-      isValid = false;
-    }
-    // } else {
-    //   // const usernameExists = await checkFieldExists(username, "username");
-    //   // if (usernameExists) {
-    //   //   newErrors.username = "Username already exists";
-    //   //   isValid = false;
-    //   // }
-    //   isValid = ;
-    // }
-  
-    if (department.trim() === "") {
-      newErrors.department = "Required";
-      isValid = false;
-    }
-  
-    if (dateOfBirth.trim() === "") {
-      newErrors.dateOfBirth = "Required";
-      isValid = false;
-    }
-  
-    if (qualification.trim() === "") {
-      newErrors.qualification = "Required";
-      isValid = false;
-    }
-  
-    if (designation.trim() === "") {
-      newErrors.designation ="Required";
-      isValid = false;
-    }
-  
-    if (cnic.trim() === "") {
-      newErrors.cnic = "CNIC is required";
-      isValid = false;
-    } else {
-      const cnicRegex = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/;
-      const isValidCnic = cnicRegex.test(cnic);
-      if (!isValidCnic) {
-        newErrors.cnic = "Invalid CNIC format.";
+    const requiredFields = [
+      { field: "name", value: name, error: "Name is required" },
+      { field: "email", value: email, error: "Email is required" },
+      { field: "username", value: username, error: "Username is required" },
+      { field: "password", value: password, error: "Password is required" },
+      {
+        field: "confirmPassword",
+        value: confirmPassword,
+        error: "Confirm Password is required",
+      },
+      {
+        field: "phoneNumber",
+        value: phoneNumber,
+        error: "Phone Number is required",
+      },
+      {
+        field: "department",
+        value: department,
+        error: "Department is required",
+      },
+      {
+        field: "dateOfBirth",
+        value: dateOfBirth,
+        error: "Date of Birth is required",
+      },
+      {
+        field: "qualification",
+        value: qualification,
+        error: "Qualification is required",
+      },
+      {
+        field: "designation",
+        value: designation,
+        error: "Designation is required",
+      },
+      { field: "cnic", value: cnic, error: "CNIC is required" },
+    ];
+
+    requiredFields.forEach(({ field, value, error }) => {
+      if (value.trim() === "") {
+        newErrors[field] = error;
         isValid = false;
       }
-      // const cnicExists = await checkFieldExists(cnic, "cnic");
-      // if (cnicExists) {
-      //   newErrors.cnic = "cnic already exists";
-      //   isValid = false;
-      // }
+    });
+
+    if (cnic && !/^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic)) {
+      newErrors.cnic = "Invalid CNIC format.";
+      isValid = false;
     }
-  
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setErrors(newErrors);
+      return false;
+    }
+    try {
+      const response = await axios.post("/api/faculty/fieldscheck", {
+        name,
+        username,
+        email,
+        cnic,
+        phoneNumber,
+      });
+      const existingFields = response.data;
+
+      Object.entries(existingFields).forEach(([field, exists]) => {
+        if (exists) {
+          newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+          isValid = false;
+        }
+      });
+    } catch (error) {
+      console.error("Error checking existing fields:", error);
+      isValid = false;
+    }
+
     setErrors(newErrors);
     return isValid;
   };
-  
-  // const checkFieldExists = async (value, field) => {
-  //   try {
-  //     const response = await axios.get('/api/faculty/get_faculty', {
-  //       params: { [field]: value },
-  //     });
-  //     return response.status === 200;
-  //   } catch (error) {
-  //     console.error('Error checking field existence:', error);
-  //     return false;
-  //   }
-  // };
+
   const handleRegister = async () => {
     if (await validateForm()) {
       try {
@@ -151,7 +130,7 @@ export default function Register() {
             cnic,
           }),
         });
-  
+
         if (response.ok) {
           // Registration successful
           console.log("Registration successful");
@@ -169,7 +148,6 @@ export default function Register() {
       }
     }
   };
-  
 
   return (
     <div className="w-screen h-screen flex flex-col justify-between">

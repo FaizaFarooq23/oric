@@ -7,8 +7,8 @@ import ImageDisplay from '../Common/Imagedisplay';
 const Eventsdata = ({ isOpen, closeModal, data }) => {
   const formattedEventDataStage1 = [
     { label: 'Title of Event', value: data.Title_of_Event },
-    { label: 'Date of Event', value: data.Date_of_Event },
-    { label: 'Venue of Event', value: data.Venue_of_Event },
+    { label: 'Date of Event', value: data.Date_of_Event.split("T")[0]  },
+    { label: 'Venue of Event', value: data.Venue },
     { label: 'Community Addressed', value: data.Community },
     { label: 'Role', value: data.Role },
     { label: 'Sponsored Event', value: data.Sponcerned },
@@ -31,7 +31,7 @@ const Eventsdata = ({ isOpen, closeModal, data }) => {
 
   const imageData = [
     {
-      label: 'Contract Copy',
+      label: 'Event Report /Bonchure Copy',
       value: `/uploadFile/${data.username}/civil_engagement_events/${data.Title_of_Event}_Eventreport_bonchures.png`,
     },
     // Add more image data as needed

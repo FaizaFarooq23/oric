@@ -58,6 +58,7 @@ function Researchprojectform({ children }) {
   const [errors, setErrors] = useState({});
   const [showSuccessModal, setshowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const { data: session } = useSession();
+  const [submitting, setSubmitting] = useState(false);
   useEffect(() => {
     console.log(session);
   }, [session]);
@@ -128,6 +129,7 @@ function Researchprojectform({ children }) {
       default:
         setStage(stage + 1);
     }
+   
     
   };
 
@@ -393,8 +395,6 @@ function Researchprojectform({ children }) {
     let valid = true;
     const newErrors = {};
 
-    // Regular expression to match only numerical values
-    const numericalRegex = /^[0-9]+$/;
 
     if (
       typeofresearch !== "Contract Research" &&
@@ -410,29 +410,45 @@ function Researchprojectform({ children }) {
     if (fundingRequested.trim() === "") {
       newErrors.fundingRequested = "Funding Requested is required";
       valid = false;
+    } else if (!/^\d+$/.test(fundingRequested)) {
+      newErrors.fundingRequested = "Funding Requested must contain only numeric digits";
+      valid = false;
     } else {
       newErrors.fundingRequested = "";
     }
-
-    if (Status_of_proposal === "Approved" && fundingApproved.trim() === "") {
-      newErrors.fundingApproved = "Funding Approved is required";
-      valid = false;
-    } else {
-      newErrors.fundingApproved = "";
+  
+    if (Status_of_proposal === "Approved") {
+      if (fundingApproved.trim() === "") {
+        newErrors.fundingApproved = "Funding Approved is required";
+        valid = false;
+      } else if (!/^\d+$/.test(fundingApproved)) {
+        newErrors.fundingApproved = "Funding Approved must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingApproved = "";
+      }
     }
-
-    if (fundingUtilized.trim() === "" && Status_of_project === "Completed") {
-      newErrors.fundingUtilized = "Funding Utilized is required";
-      valid = false;
-    } else {
-      newErrors.fundingUtilized = "";
-    }
-
-    if (fundingRealesed.trim() === "" && Status_of_project === "Completed") {
-      newErrors.fundingRealesed = "Funding Released is required";
-      valid = false;
-    } else {
-      newErrors.fundingRealesed = "";
+  
+    if (Status_of_project === "Completed") {
+      if (fundingUtilized.trim() === "") {
+        newErrors.fundingUtilized = "Funding Utilized is required";
+        valid = false;
+      } else if (!/^\d+$/.test(fundingUtilized)) {
+        newErrors.fundingUtilized = "Funding Utilized must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingUtilized = "";
+      }
+  
+      if (fundingRealesed.trim() === "") {
+        newErrors.fundingRealesed = "Funding Released is required";
+        valid = false;
+      } else if (!/^\d+$/.test(fundingRealesed)) {
+        newErrors.fundingRealesed = "Funding Released must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingRealesed = "";
+      }
     }
 
     setErrors(newErrors);
@@ -469,7 +485,10 @@ function Researchprojectform({ children }) {
       if (!meetingminutes) {
         newErrors.meetingminutes = "Meeting minutes is required";
         valid = false;
-      } else {
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(meetingminutes.type)) {
+        newErrors.meetingminutes = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      }else {
         newErrors.meetingminutes = "";
       }
     }
@@ -483,27 +502,43 @@ function Researchprojectform({ children }) {
     if (!SubmissionEmailCopy) {
       newErrors.SubmissionEmailCopy = "Email Copy is required";
       valid = false;
-    } else {
+    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(SubmissionEmailCopy.type)) {
+      newErrors.SubmissionEmailCopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }else {
       newErrors.SubmissionEmailCopy = "";
     }
 
     if ((!AwardLetterCopy) && (Status_of_proposal!=="Submitted")) {
       newErrors.AwardLetterCopy = "Award Letter is required";
       valid = false;
-    } else {
+    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
+      newErrors.AwardLetterCopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }else {
       newErrors.AwardLetterCopy = "";
     }
     if ((!CompletionLetterCopy)&& (Status_of_project==="Completed")) {
       newErrors.CompletionLetterCopy = "Completion Letter is required";
       valid = false;
-    } else {
+    } 
+    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
+      newErrors.CompletionLetterCopy = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.CompletionLetterCopy = "";
     }
     if (typeofresearch === "Contract Research") {
       if (!ContractAgreementCopy=== "") {
         newErrors.ContractAgreementCopy = "Contract Agreement is required";
         valid = false;
-      } else {
+      } 
+      else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(ContractAgreementCopy.type)) {
+        newErrors.ContractAgreementCopy = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      }
+      else {
         newErrors.ContractAgreementCopy = "";
       }
     }
@@ -563,6 +598,7 @@ function Researchprojectform({ children }) {
       } catch (error) {
         console.error("Error saving image:", error);
         alert("error");
+        setSubmitting(false);
       }
     } else if (Status_of_project == "Completed") {
       try {
@@ -580,6 +616,7 @@ function Researchprojectform({ children }) {
       } catch (error) {
         console.error("Error saving image:", error);
         alert("error");
+        setSubmitting(false);
       }
     } else if (typeofresearch == "Contract Research") {
       try {
@@ -598,6 +635,7 @@ function Researchprojectform({ children }) {
        catch (error) {
         console.error("Error saving image:", error);
         alert("error");
+        setSubmitting(false);
       }
     } 
     else if (reviwedbyIRB == "Yes") {
@@ -617,6 +655,7 @@ function Researchprojectform({ children }) {
        catch (error) {
         console.error("Error saving image:", error);
         alert("error");
+        setSubmitting(false);
       }
     } 
     
@@ -635,14 +674,19 @@ function Researchprojectform({ children }) {
       } catch (error) {
         console.error("Error saving image:", error);
         alert("error");
+        setSubmitting(false);
       }
     
   };
   const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
     try {
       // Validate required fields
       if (!validateFormStage7()) {
-        // If form is not valid, return
+        setSubmitting(false);
         return;
       }
 
@@ -716,6 +760,8 @@ function Researchprojectform({ children }) {
       setshowSuccessModal(true);
     } catch (error) {
       console.error("Error inserting information:", error);
+    }finally {
+      setSubmitting(false);
     }
   };
 
@@ -1548,9 +1594,9 @@ function Researchprojectform({ children }) {
                   </button>
                   <button
                     onClick={handleSubmit}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-                  >
-                    Save
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Submitting..." : "Submit"}
                   </button>
                 </div>
               </div>

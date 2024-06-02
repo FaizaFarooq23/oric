@@ -165,15 +165,16 @@ export default function CivilEventsModal({ children }) {
     let valid = true;
     const newErrors = {};
   
-   
     if (!Event_detail) {
       newErrors.Event_detail = "Brief Event Report is required";
       valid = false;
-    } else {
+    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Event_detail.type)) {
+      newErrors.Event_detail = "Only jpg, jpeg, and png files are allowed";
+      valid = false;
+    }
+    else {
       newErrors.Event_detail = "";
     }
-  
-  
     setErrors(newErrors);
     return valid;
   };
@@ -189,11 +190,7 @@ export default function CivilEventsModal({ children }) {
           setStage(stage + 1);
         }
         break;
-        case 3:
-          if (validateFormStage3()) {
-            setStage(stage + 1);
-          }
-          break;
+        
       default:
         setStage(stage + 1); // Update the state with setStage
         break;
@@ -228,12 +225,20 @@ export default function CivilEventsModal({ children }) {
       return;
     }
     setSubmitting(true);
+  
     if (session.user.username === "") {
       alert("Please login to continue");
-      signOut({ callbackUrl: "http://localhost:3000/" });;
+      signOut({ callbackUrl: "http://localhost:3000/" });
       return;
     }
-
+  
+    // Check if all stages are valid
+    if (!(await validateFormStage1()) || !validateFormStage2() || !validateFormStage3()) {
+      alert("Please fill all the fields correctly");
+      setSubmitting(false);
+      return;
+    }
+  
     try {
       if (Event_detail) {
         await uploadFile(
@@ -245,11 +250,16 @@ export default function CivilEventsModal({ children }) {
         );
       } else {
         alert("Please upload Event Report Copy");
+        setSubmitting(false);
+        return;
       }
     } catch (error) {
       console.error("Error saving image:", error);
-      alert("error");
+      alert("Error uploading file");
+      setSubmitting(false);
+      return;
     }
+  
     try {
       const res = await axios.post(`/api/faculty/Events/insert`, {
         username: session.user.username,
@@ -267,17 +277,20 @@ export default function CivilEventsModal({ children }) {
         Venue: Venue_of_event,
         Outcome_Material: outcomeMaterial,
       });
-console.log(res)
+  
+      console.log(res);
       setOpen(false);
       resetForm();
       setshowSuccessSuccessModal(true);
+     
     } catch (error) {
       console.error(error);
-      alert("Something went wrong error occured");
-    }finally {
+      alert("Something went wrong, error occurred");
+    } finally {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <>
@@ -540,9 +553,9 @@ console.log(res)
                   </button>
                   <button
                     onClick={handleSubmit}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 "
-                  >
-                    Save
+                    disabled={submitting}
+                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    {submitting ? "Submitting..." : "Submit"}
                   </button>
                 </div>
               </div>
