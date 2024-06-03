@@ -31,7 +31,7 @@ export default function Hamburgar() {
      {/* <div className="text-xl font-bold">
       Researches
      </div> */}
-     <div className="flex flex-col text-[#D8D8D8] text-sm font-medium ">
+     <div className="flex flex-col text-[#D8D8D8] text-sm w-full h-96 overflow-y-scroll no-scrollbar  font-medium ">
       <div className=" flex  items-start justify-start gap-x-10">{tabs.map((tab, index) => (
         <div
           key={index}
@@ -47,7 +47,7 @@ export default function Hamburgar() {
 
       ))}
       </div>
-      <div className="w-full">
+      <div >
         {tabs.map((tab, index) => (
           <div key={index}>
             {activeTab === tab.name && tab.component}

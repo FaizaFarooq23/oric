@@ -1,7 +1,6 @@
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import React, { useState, useEffect } from "react";
-import { Label } from "recharts";
 import axios from "axios";
 import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -182,50 +181,45 @@ function IPandPatentForm({ children }) {
   const validateFormStage4 = () => {
     let valid = true;
     const newErrors = {};
-if((type==="IP disclosures")){
-  if ((!DisclosureCopy)) {
-    newErrors.DisclosureCopy =
-      "Disclosure Copy is required";
-    valid = false;
-  } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(DisclosureCopy.type)) {
-    newErrors.DisclosureCopy = "Only jpg, jpeg, and png files are allowed";
-    valid = false;
-  }
-  else {
-    newErrors.DisclosureCopy = "";
-  }
-}
-   else{
-    if (((Status_of_patent==="Filed" || Status_of_patent==="Granted"))  &&(!Filingcopy) ) {
-      newErrors.Filingcopy =
-        "Filing Copy is required";
-      valid = false;
-    } 
-    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Filingcopy.type)) {
-      newErrors.Filingcopy = "Only jpg, jpeg, and png files are allowed";
-      valid = false;
+  
+    if (type === "IP disclosures") {
+      if (!DisclosureCopy) {
+        newErrors.DisclosureCopy = "Disclosure Copy is required";
+        valid = false;
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(DisclosureCopy.type)) {
+        newErrors.DisclosureCopy = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      } else {
+        newErrors.DisclosureCopy = "";
+      }
+    } else {
+      if (!Filingcopy) {
+        newErrors.Filingcopy = "Filing Copy is required";
+        valid = false;
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Filingcopy.type)) {
+        newErrors.Filingcopy = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      } else {
+        newErrors.Filingcopy = "";
+      }
+  
+      if (Status_of_patent === "Granted") {
+        if (!GrantingCopy) {
+          newErrors.Grantingcopy = "Granting Copy is required";
+          valid = false;
+        } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(GrantingCopy.type)) {
+          newErrors.Grantingcopy = "Only jpg, jpeg, and png files are allowed";
+          valid = false;
+        } else {
+          newErrors.Grantingcopy = "";
+        }
+      }
     }
-    else {
-      newErrors.Filingcopy = "";
-    }
-    if ( Status_of_patent==="Granted"&& (!GrantingCopy) ) {
-      newErrors.Grantingcopy =
-        "Granting Copy is required";
-      valid = false;
-    } 
-    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(GrantingCopy.type)) {
-      newErrors.Grantingcopy = "Only jpg, jpeg, and png files are allowed";
-      valid = false;
-    }
-    else {
-      newErrors.Grantingcopy = "";
-    }
-
-   }
- 
+  
     setErrors(newErrors);
     return valid;
-  }
+  };
+  
   const validateFormStage5 = () => {
     let valid = true;
     const newErrors = {};
@@ -259,42 +253,45 @@ if((type==="IP disclosures")){
         alert("error");
       }
     } 
-   if ((Status_of_patent == "Filed"|| Status_of_patent==="Granted") &&(type!=="IP disclosures")) {
-      try {
-        if (Filingcopy) {
-          await uploadFile(
-            Filingcopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofInvention}_Filingcopy`,
-            "ipandpatent"
-          );
-        } else {
-          alert("Please upload Filing Copy");
+    else{
+      if ((Status_of_patent == "Filed"|| Status_of_patent==="Granted") &&(type!=="IP disclosures")) {
+        try {
+          if (Filingcopy) {
+            await uploadFile(
+              Filingcopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofInvention}_filingcopy`,
+              "ipandpatent"
+            );
+          } else {
+            alert("Please upload Filing Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
         }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-      }
-    } 
-    if (Status_of_patent == "Granting") {
-      try {
-        if (GrantingCopy) {
-          await uploadFile(
-            GrantingCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_GrantingCopy`,
-            "ipandpatent"
-          );
-        } else {
-          alert("Please upload Granting Copy");
+      } 
+      if (Status_of_patent == "Granting") {
+        try {
+          if (GrantingCopy) {
+            await uploadFile(
+              GrantingCopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_grantingCopy`,
+              "ipandpatent"
+            );
+          } else {
+            alert("Please upload Granting Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
         }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-      }
-    } 
+      } 
+    }
+   
     
   };
   const resetFields = () => {

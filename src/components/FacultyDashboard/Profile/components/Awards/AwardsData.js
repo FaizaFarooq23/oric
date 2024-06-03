@@ -14,7 +14,7 @@ const Awardsdata = ({ isOpen, closeModal, data }) => {
   const formattedDataStage2= [
     { label: 'Name of Winner', value: data.Name_of_winner},
     { label: 'Designation of Winner', value: data. Designation_of_winner },
-    { label: 'Deprtment of Winner', value: data.Department_of_Winner }, 
+    { label: 'Deprtment of Winner', value: data.Department_of_winer }, 
   ];
   const imageData = [
     { label: 'MoU Copy', 

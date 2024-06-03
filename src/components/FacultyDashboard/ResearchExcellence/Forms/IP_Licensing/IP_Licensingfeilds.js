@@ -20,6 +20,8 @@ export default function IPLicensingfeild({ data, onDelete }) {
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const [id, setid] = useState(null);
   const { data: session } = useSession();
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (session) {
       console.log(session);
@@ -45,7 +47,23 @@ setDate_of_Agreement("")
 setLicensee_Type("Exclusive")
 setStatus_of_Licensee("License Negotiated")
 }
+const validateForm = () => {
+  let formErrors = {};
+ if((Status_of_Licensee==="Signed") ){
+  if ((!AgreementCopy)) {
+    formErrors.AgreementCopy = "Agreemen Copy is required";
+  }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AgreementCopy.type)) {
+    formErrors.AgreementCopy = "File formate not supported Upload Image file only ";
+  } 
+  if ((!Date_of_Agreement)) {
+    formErrors.Date_of_Agreement = "Date of Agreement is required";
+  }
+ }
+  setErrors(formErrors);
+  return Object.keys(formErrors).length === 0;
+};
 const UploadFile = async () => {
+
 if (Status_of_Licensee==="Signed") {
   try {
     if (AgreementCopy) {
@@ -67,6 +85,7 @@ if (Status_of_Licensee==="Signed") {
 
 };
   const updateinfo = async () => {
+    if (validateForm()) {
     await UploadFile();
     if (id) {
       try {
@@ -87,6 +106,10 @@ if (Status_of_Licensee==="Signed") {
       }
     
     }
+  }
+  else{
+    alert("Please fill the fields correctly")
+  }
   };
   // Function to open the modal
   const openModal = () => {
@@ -209,7 +232,7 @@ if (Status_of_Licensee==="Signed") {
                                 type={"date"}
                                 required
                               />
-
+ {errors.Date_of_Agreement && <p className="text-red-500">{errors.Date_of_Agreement}</p>}
                             </div>
                             {
                   Status_of_Licensee==="Signed"&&
@@ -228,7 +251,7 @@ if (Status_of_Licensee==="Signed") {
                     }}
                     required
                   />
-
+ {errors.AgreementCopy && <p className="text-red-500">{errors.AgreementCopy}</p>}
                 </div>
                 }
                           </>
