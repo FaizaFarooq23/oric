@@ -175,8 +175,8 @@ if(validateForm()){
               }}
             />
           </div>
-          <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
-            <h1 className="text-blue-900 mt-2 font-serif font-bold text-xl  border-black">
+          <h1 className="text-blue-900   font-bold text-xl  border-black">
+            <h1 className="text-blue-900 mt-2   font-bold text-xl  border-black">
               Details of Events
             </h1>
           </h1>
@@ -302,7 +302,7 @@ if(validateForm()){
 
 
             <div className="mt-2">
-              <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+              <h1 className="text-blue-900   font-bold text-xl  border-black">
                 Additional Details
               </h1>
             </div>

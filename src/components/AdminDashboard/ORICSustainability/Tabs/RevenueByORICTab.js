@@ -60,14 +60,15 @@ export default function RevenueByORICTab() {
   };
 
   return (
-    <div>
-      <div className="flex justify-end items-center gap-x-8 text-2xl">
+    <div className="">
+      <div className="flex justify-end items-center gap-x-8 text-2xl mr-8">
+     <span className="text-lg font-semibold text-blue-900">Add Revenue</span>
         <FiPlusCircle
           className="text-blue-900 cursor-pointer"
           onClick={openModal}
         />
       </div>
-
+<div className="">
       {isFormVisible && <RevenueByORICForm />}
       {showDeleteSuccessModal && (
         <SuccessModal
@@ -92,6 +93,7 @@ export default function RevenueByORICTab() {
           />
         ))
       )}
+      </div>
     </div>
   );
 }

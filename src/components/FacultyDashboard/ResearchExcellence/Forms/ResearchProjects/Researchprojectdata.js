@@ -135,7 +135,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
       </div>
-      <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">Research Project Details</h1>
+      <h1 className="text-blue-900   font-bold text-xl py-2 border-black">Research Project Details</h1>
       
       <DataDisplayModal title="Project Details" data={projectDetails} gridClassName="grid-cols-2" />
       {contractDetails.length > 0 && <DataDisplayModal title="Contract Details" data={contractDetails} gridClassName="grid-cols-2" />}

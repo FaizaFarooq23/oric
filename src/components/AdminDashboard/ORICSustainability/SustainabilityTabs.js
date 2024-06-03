@@ -36,19 +36,17 @@ export default function SustainabilityTabs() {
 
   return (
     <>
-      <div className="flex justify-end"></div>
-
-      <div className="flex  text-base font-semibold  gap-y-10  px-4 pb-10 pt-5 rounded-[10px] w-full my-10">
-        <div className="flex flex-col items-start  justify-start gap-y-6 pl-6">
+      <div className="grid grid-cols-2  text-base font-semibold  gap-y-10   px-4 pb-10 pt-5 rounded-[10px] w-full my-10">
+        <div className="flex flex-col justify-start gap-y-10 pt-10 pl-6 ">
           {tabs.map((tab, index) => (
             <div
               key={index}
               onClick={() => handleTabChange(tab)}
-              className={`${
+              className={`w-1/2  ${
                 activeTab === tab.name
                   ? "text-white bg-blue-900"
                   : "bg-white text-blue-900"
-              } cursor-pointer rounded-full tab-shadow font-bold text-base leading-[22px] px-4 py-1`}>
+              } cursor-pointer rounded-lg tab-shadow font-bold text-base leading-[22px] px-4 py-2`}>
               {tab.name}
             </div>
           ))}
