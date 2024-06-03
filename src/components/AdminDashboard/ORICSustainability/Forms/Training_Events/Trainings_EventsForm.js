@@ -286,7 +286,7 @@ if(validateForm()){
               <div >
                 <Dropdown
                   label={"Audience Type"}
-                  dropdownOptions={["Faculty", "Students", "Researcher", "ORIC Personal"]}
+                  dropdownOptions={["Faculty","Students","Researcher","ORIC Personal"]}
                   value={Audience_Type}
                   handleOptionChange={handleAudienceType}
                   required

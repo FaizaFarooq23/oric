@@ -499,53 +499,57 @@ function Researchprojectform({ children }) {
   const validateFormStage6 = () => {
     let valid = true;
     const newErrors = {};
+  
     if (!SubmissionEmailCopy) {
       newErrors.SubmissionEmailCopy = "Email Copy is required";
       valid = false;
     } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(SubmissionEmailCopy.type)) {
       newErrors.SubmissionEmailCopy = "Only jpg, jpeg, and png files are allowed";
       valid = false;
-    }else {
+    } else {
       newErrors.SubmissionEmailCopy = "";
     }
-
-    if ((!AwardLetterCopy) && (Status_of_proposal!=="Submitted")) {
-      newErrors.AwardLetterCopy = "Award Letter is required";
-      valid = false;
-    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
-      newErrors.AwardLetterCopy = "Only jpg, jpeg, and png files are allowed";
-      valid = false;
-    }else {
-      newErrors.AwardLetterCopy = "";
+  
+    if (Status_of_proposal !== "Submitted") {
+      if (!AwardLetterCopy) {
+        newErrors.AwardLetterCopy = "Award Letter is required";
+        valid = false;
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
+        newErrors.AwardLetterCopy = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      } else {
+        newErrors.AwardLetterCopy = "";
+      }
     }
-    if ((!CompletionLetterCopy)&& (Status_of_project==="Completed")) {
-      newErrors.CompletionLetterCopy = "Completion Letter is required";
-      valid = false;
-    } 
-    else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
-      newErrors.CompletionLetterCopy = "Only jpg, jpeg, and png files are allowed";
-      valid = false;
+  
+    if (Status_of_project === "Completed") {
+      if (!CompletionLetterCopy) {
+        newErrors.CompletionLetterCopy = "Completion Letter is required";
+        valid = false;
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
+        newErrors.CompletionLetterCopy = "Only jpg, jpeg, and png files are allowed";
+        valid = false;
+      } else {
+        newErrors.CompletionLetterCopy = "";
+      }
     }
-    else {
-      newErrors.CompletionLetterCopy = "";
-    }
+  
     if (typeofresearch === "Contract Research") {
-      if (!ContractAgreementCopy=== "") {
+      if (!ContractAgreementCopy) {
         newErrors.ContractAgreementCopy = "Contract Agreement is required";
         valid = false;
-      } 
-      else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(ContractAgreementCopy.type)) {
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(ContractAgreementCopy.type)) {
         newErrors.ContractAgreementCopy = "Only jpg, jpeg, and png files are allowed";
         valid = false;
-      }
-      else {
+      } else {
         newErrors.ContractAgreementCopy = "";
       }
     }
-
+  
     setErrors(newErrors);
     return valid;
   };
+  
   const validateFormStage7 = () => {
     let valid = true;
     const newErrors = {};

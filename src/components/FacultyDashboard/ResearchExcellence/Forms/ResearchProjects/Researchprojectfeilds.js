@@ -10,6 +10,7 @@ import { uploadFile } from "../../Utility/Saveimagefiles";
 import Dropdown from "@/components/FacultyDashboard/Profile/components/Common/Dropdown";
 import InputField from "@/components/FacultyDashboard/Profile/components/Common/InputField";
 import SuccessModal from "../../components/UI/SuccessMessage";
+
 export default function Researchprojectfeilds({ data, onDelete }) {
   const [editing, setEditing] = useState(false);
   const [editingproject, setEditingproject] = useState(false);
@@ -29,29 +30,35 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const { data: session } = useSession();
+  const [errors, setErrors] = useState({});
 
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
+  
   const handleValueClick = () => {
     setEditing(true);
-    // Activate editing mode
   };
+
   const HandleProjectChangeValue = () => {
     if (Status_of_proposal === "Approved") {
       setEditingproject(true);
     }
   };
+
   const handleStatus_of_proposalChange = (e) => {
     setStatus_of_proposal(e.target.value);
   };
+
   const handleStatus_of_projectChange = (e) => {
     setStatus_of_project(e.target.value);
   };
+
   const handledeliverychange = (e) => {
     setdelivery(e.target.value);
   };
+
   useEffect(() => {
     if (data) {
       setProjectId(data.project_id);
@@ -83,7 +90,81 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     setfundingagency("");
     setDateofCompletion("");
   };
+
+  const validateForm = () => {
+    let formErrors = {};
+    if (Status_of_proposal === "Approved") {
+      if (!DateofApproval) {
+        formErrors.DateofApproval = "Date of Approval is required";
+      }
+      if((data.type_of_research === "Solo Project") && (data.category === "HEC") &&(!ORIC_overhead))
+     {
+      formErrors.ORIC_overhead = "ORIC Overhead is required";
+                        }
+      if (!fundingApproved) {
+        formErrors.fundingApproved = "Funding Approved is required";
+      }
+      if (!fundingagency) {
+        formErrors.fundingagency = "Funding Agency is required";
+      }
+      if (!AwardLetterCopy) {
+        formErrors.AwardLetterCopy = "Award Letter Copy is required";
+      }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
+        formErrors.AwardLetterCopy = "File formate not supported ";
+      } 
+    }
+    if (Status_of_project === "Completed") {
+      if (!DateofCompletion) {
+        formErrors.DateofCompletion = "Date of Completion is required";
+      }
+      if (!fundingUtilized) {
+        formErrors.fundingUtilized = "Funding Utilized is required";
+      }
+      if (!fundingRealesed) {
+        formErrors.fundingRealesed = "Funding Released is required";
+      }
+      if (!delivery) {
+        formErrors.delivery = "Project deliverables are required";
+      }
+      if ((!CompletionLetterCopy)) {
+        formErrors.CompletionLetterCopy = "Completion Letter Copy is required";
+      }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
+        formErrors.CompletionLetterCopy = "File formate not supported ";
+      } 
+    }
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  };
+
+  const ValidateProjectform=()=>{
+    let formErrors = {};
+    if (Status_of_project === "Completed") {
+      if (!DateofCompletion) {
+        formErrors.DateofCompletion = "Date of Completion is required";
+      }
+      if (!fundingUtilized) {
+        formErrors.fundingUtilized = "Funding Utilized is required";
+      }
+      if (!fundingRealesed) {
+        formErrors.fundingRealesed = "Funding Released is required";
+      }
+      if (!delivery) {
+        formErrors.delivery = "Project deliverables are required";
+      }
+      if ((!CompletionLetterCopy)) {
+        formErrors.CompletionLetterCopy = "Completion Letter Copy is required";
+      }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
+        formErrors.CompletionLetterCopy = "File formate not supported ";
+      } 
+    }
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  }
   const updateinfo = async () => {
+    if (!validateForm()) {alert("There is some error in data u entered")
+      return;}
+      
+
     if (Status_of_proposal === "Approved") {
       try {
         if (AwardLetterCopy) {
@@ -130,46 +211,55 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   };
 
   const updateprojectinfo = async () => {
-    if (Status_of_project === "Completed") {
-      try {
-        if (CompletionLetterCopy) {
-          await uploadFile(
-            CompletionLetterCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${data.title}_Completionlettercopy`,
-            "research_project"
-          );
-        } else {
-          alert("Please upload Completion Letter  Copy");
-        }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-      }
-    }
-    if (project_id) {
-      try {
-        const res = await axios.post(
-          `/api/Research_projects/update_research_project?projectId=${project_id}`,
-          {
-            Status_of_project: Status_of_project,
-            funding_realesed: fundingRealesed,
-            fundingUtilized: fundingUtilized,
-            funding_agency: fundingagency,
-            Date_of_Completion: new Date(DateofCompletion),
-            delivery: delivery,
-          }
+    if (!ValidateProjectform()){
+      alert("There is some error in data u entered")
+      return;
+
+    } 
+else{
+  if (Status_of_project === "Completed") {
+    try {
+      if (CompletionLetterCopy) {
+        await uploadFile(
+          CompletionLetterCopy,
+          session.user.username,
+          `/api/Imagesfeilds/fileupload`,
+          `${data.title}_Completionlettercopy`,
+          "research_project"
         );
-        console.log(res);
-        setShowSuccessModal(true);
-        resetprojectfeilds();
-        setEditingproject(false);
-      } catch (error) {
-        console.error("Error updating information:", error);
+      } else {
+        alert("Please upload Completion Letter Copy");
       }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error");
     }
+  }
+  if (project_id) {
+    try {
+      const res = await axios.post(
+        `/api/Research_projects/update_research_project?projectId=${project_id}`,
+        {
+          Status_of_project: Status_of_project,
+          funding_realesed: fundingRealesed,
+          fundingUtilized: fundingUtilized,
+          funding_agency: fundingagency,
+          Date_of_Completion: new Date(DateofCompletion),
+          delivery: delivery,
+        }
+      );
+      console.log(res);
+      setShowSuccessModal(true);
+      resetprojectfeilds();
+      setEditingproject(false);
+    } catch (error) {
+      console.error("Error updating information:", error);
+    }
+  }
+}
+   
   };
+
   const getFilenamesToDelete = (data) => {
     let filenames = [];
     if (
@@ -199,311 +289,118 @@ export default function Researchprojectfeilds({ data, onDelete }) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-md py-5 ">
-      <div className="flex justify-end items-center mr-4">
-        <button onClick={() => onDelete(data.project_id,getFilenamesToDelete(data))}>
-          <RiDeleteBin6Line className="text-red-600 cursor-pointer text-xl" />
-        </button>
+    <div className="flex justify-end items-center mr-4">
+      <button onClick={() => onDelete(data.project_id,getFilenamesToDelete(data))}>
+        <RiDeleteBin6Line className="text-red-600 cursor-pointer text-xl" />
+      </button>
+    </div>
+    <div className={`flex justify-between px-4 py-4 `}>
+      <div className="flex flex-col w-52 gap-y-4  ">
+        <div className=" flex  items-start justify-start ">
+          <span className="text-gray-500  font-medium">Title</span>
+        </div>
+        <div className="flex  items-end justify-start ">
+          <span className="text-black ">{`${data.title
+            .split(" ")
+            .slice(0, 4)
+            .join(" ")}...`}</span>
+        </div>
       </div>
-      <div className={`flex justify-between px-4 py-4 `}>
-        <div className="flex flex-col w-52 gap-y-4  ">
-          <div className=" flex  items-start justify-start ">
-            <span className="text-gray-500  font-medium">Title</span>
-          </div>
-          <div className="flex  items-end justify-start ">
-            <span className="text-black ">{`${data.title
-              .split(" ")
-              .slice(0, 4)
-              .join(" ")}...`}</span>
-          </div>
+      <div className={`flex flex-col w-48 gap-y-4  gap-x-8`}>
+        <div className=" flex items-start justify-start w-40">
+          <span className="text-gray-500  font-medium">Thematic Area</span>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4  gap-x-8`}>
-          <div className=" flex items-start justify-start w-40">
-            <span className="text-gray-500  font-medium">Thematic Area</span>
-          </div>
-          <div className="flex items-end justify-start ">
-            <span className="text-black ">{data.Thematic_Area}</span>
-          </div>
+        <div className="flex items-end justify-start ">
+          <span className="text-black ">{data.Thematic_Area}</span>
         </div>
-        <div className={`flex flex-col w-48 gap-y-4 gap-x-8 `}>
-          <div className=" flex items-start justify-start">
-            <span className="">
-              {editing ? (
-                <Modal
-                  isOpen={editing}
-                  className={`flex flex-col my-10 gap-y-8 w-4/5 max-h-screen overflow-y-scroll  mx-auto  bg-white shadow-lg rounded-md px-10 py-8`}
-                >
-                  <div className="flex gap-y-8 flex-col  px-10 py-8">
-                    <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
-                      <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
-                        Update Information
-                      </h1>
-                      <div className="flex justify-end items-end gap-x-6">
-                        <span>
-                          <FaCheck
-                            className="text-base text-green-500  h-4 w-4 cursor-pointer"
-                            onClick={updateinfo}
-                          />
-                        </span>
-                        <FaTimes
-                          className="text-red-500 text-xl  cursor-pointer"
-                          onClick={() => {
-                            setEditing(false);
-                          }}
+      </div>
+      <div className={`flex flex-col w-48 gap-y-4 gap-x-8 `}>
+        <div className=" flex items-start justify-start">
+          <span className="">
+            {editing ? (
+              <Modal
+                isOpen={editing}
+                className={`flex flex-col my-10 gap-y-8 w-4/5 max-h-screen overflow-y-scroll  mx-auto  bg-white shadow-lg rounded-md px-10 py-8`}
+              >
+                <div className="flex gap-y-8 flex-col  px-10 py-8">
+                  <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
+                    <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+                      Update Information
+                    </h1>
+                    <div className="flex justify-end items-end gap-x-6">
+                      <span>
+                        <FaCheck
+                          className="text-base text-green-500  h-4 w-4 cursor-pointer"
+                          onClick={updateinfo}
                         />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row ">
-                      <div className="grid grid-cols-2 gap-x-16 gap-y-10 ">
-                        <Dropdown
-                          label="Status of Proposal :"
-                          dropdownOptions={["Submitted", "Approved"]}
-                          value={Status_of_proposal}
-                          handleOptionChange={handleStatus_of_proposalChange}
-                        />
-
-                        {data.type_of_research === "Solo Project" &&
-                          data.category === "HEC" &&
-                          Status_of_proposal === "Approved" && (
-                            <>
-                              <InputField
-                                label={"ORIC Overhead "}
-                                value={ORIC_overhead}
-                                setVal={setORIC_overhead}
-                                type={"text"}
-                                required
-                              />
-                            </>
-                          )}
-                        {Status_of_proposal === "Approved" && (
-                          <>
-                            <InputField
-                              label={"Date of Approval"}
-                              value={DateofApproval}
-                              setVal={setDateofApproval}
-                              type={"date"}
-                              required
-                            />
-
-                            <Dropdown
-                              label={"Status of project"}
-                              dropdownOptions={[
-                                "Ongoing",
-                                "Delayed",
-                                "Completed",
-                              ]}
-                              value={Status_of_project}
-                              handleOptionChange={handleStatus_of_projectChange}
-                              required
-                            />
-                            <InputField
-                              label={"Total Funding Approved(PKR)"}
-                              value={fundingApproved}
-                              setVal={setFundingApproved}
-                              required
-                            />
-                            {data.typeofresearch !== "Contract Research" && (
-                              <div>
-                                <InputField
-                                  label={"Funding Agency/Body"}
-                                  value={fundingagency}
-                                  setVal={setfundingagency}
-                                  required
-                                />
-                              </div>
-                            )}
-                            <div className="grid grid-cols-2 gap-x-3   text-black">
-                              <label className="text-base font-medium">
-                                Award Letter Copy{" "}
-                                <span className="text-red-500">*</span>
-                              </label>
-                              <input
-                                className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
-                                type="file"
-                                defaultValue={AwardLetterCopy}
-                                onChange={(e) => {
-                                  console.log(
-                                    "File selected:",
-                                    e.target.files[0]
-                                  );
-                                  setAwardLetterCopy(e.target.files[0]);
-                                }}
-                                required
-                              />
-                            </div>
-                          </>
-                        )}
-
-                        {Status_of_project === "Completed" && (
-                          <>
-                            <InputField
-                              label={"Total Funding Utilized(PKR)"}
-                              value={fundingUtilized}
-                              setVal={setFundingUtilized}
-                              required
-                            />
-                            <InputField
-                              label={"Total Funding Realesed(PKR)"}
-                              value={fundingRealesed}
-                              setVal={setFundingRealesed}
-                              required
-                            />
-                            <InputField
-                              label={"Date of Completion"}
-                              value={DateofCompletion}
-                              setVal={setDateofCompletion}
-                              type={"date"}
-                              required
-                            />
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    {Status_of_project === "Completed" && (
-                      <>
-                        <label
-                          htmlFor="textarea"
-                          className="text-base font-medium text-black"
-                        >
-                          Write key project deliverables
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                          className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-                          rows="5"
-                          cols="50"
-                          id="Textarea"
-                          value={delivery}
-                          required
-                          onChange={handledeliverychange}
-                        />
-                      </>
-                    )}
-                  </div>
-                </Modal>
-              ) : (
-                <>
-                  <div className="flex gap-x-1 ">
-                    <span className="text-gray-500 font-medium">
-                      Status of Proposal
-                    </span>
-                    {!editing && data.Status_of_proposal !== "Approved" && (
-                      <FaPencil
-                        className="text-base text-blue-900 h-4 w-4 cursor-pointer"
-                        onClick={handleValueClick}
+                      </span>
+                      <FaTimes
+                        className="text-red-500 text-xl  cursor-pointer"
+                        onClick={() => {
+                          setEditing(false);
+                        }}
                       />
-                    )}
-                  </div>
-                </>
-              )}
-              {editing && (
-                <FaCheck
-                  className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
-                  onClick={updateinfo}
-                />
-              )}
-            </span>
-            {showSuccessModal && (
-              <SuccessModal
-                isOpen={showSuccessModal}
-                p={`Your Data Has Been Updated`}
-                onClose={() => {
-                  setShowSuccessModal(false);
-                }}
-              />
-            )}
-          </div>
-          <div className="flex justify-start ">
-            <span className="text-black ">{data.Status_of_proposal} </span>
-          </div>
-        </div>
-        <div className={`flex flex-col w-48 gap-y-4    gap-x-8`}>
-          <div className=" flex items-start justify-start w-48">
-            <span className="text-gray-500  font-medium">
-              Name of Research Grant
-            </span>
-          </div>
-          <div className="flex items-end justify-start ">
-            <span className="text-black ">{data.Name_of_Research_Grant}</span>
-          </div>
-        </div>
-
-        <div className={`flex flex-col gap-y-4  w-48  gap-x-8`}>
-          <div className=" flex items-start justify-start">
-            <span className="text-gray-500  font-medium">Type of Research</span>
-          </div>
-
-          <div className="flex justify-start ">
-            <span className="text-black ">{data.type_of_research}</span>
-          </div>
-        </div>
-        <div className={`flex flex-col w-48 gap-y-4  gap-x-8 `}>
-          <div className=" flex items-start justify-start">
-            <span className="">
-              {editingproject ? (
-                <Modal
-                  isOpen={editingproject}
-                  onRequestClose={() => setEditingproject(false)}
-                  contentLabel="Edit Project Status"
-                  className={`flex my-10 w-4/5  mx-auto   bg-white shadow-lg rounded-md p-4`}
-                >
-                  <div className="flex px-10 py-4  flex-col">
-                    <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
-                      <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
-                        Update Information
-                      </h1>
-                      <div className="flex justify-end items-end gap-x-6">
-                        <span>
-                          <FaCheck
-                            className="text-base text-green-500  h-4 w-4 cursor-pointer"
-                            onClick={updateprojectinfo}
-                          />
-                        </span>
-                        <FaTimes
-                          className="text-red-500 text-xl  cursor-pointer"
-                          onClick={() => {
-                            setEditingproject(false);
-                          }}
-                        />
-                      </div>
                     </div>
-
-                    <div className="flex ">
-                      <div className="grid grid-cols-2 gap-x-16 gap-y-10 ">
-                        <Dropdown
-                          label={"Status of project"}
-                          dropdownOptions={["Ongoing", "Delayed", "Completed"]}
-                          value={data.Status_of_project}
-                          handleOptionChange={handleStatus_of_projectChange}
-                          required
-                        />
-                        {Status_of_project === "Completed" && (
-                          <>
+                  </div>
+                  <div className="flex flex-row ">
+                    <div className="grid grid-cols-2 gap-x-16 gap-y-10 ">
+                      <Dropdown
+                        label="Status of Proposal :"
+                        dropdownOptions={["Submitted", "Approved"]}
+                        value={Status_of_proposal}
+                        handleOptionChange={handleStatus_of_proposalChange}
+                      />
+                      {data.type_of_research === "Solo Project" &&
+                        data.category === "HEC" &&
+                        Status_of_proposal === "Approved" && (
+                          <div>
+                      
                             <InputField
-                              label={"Total Funding Utilized(PKR)"}
-                              value={fundingUtilized}
-                              setVal={setFundingUtilized}
+                              label={"ORIC Overhead "}
+                              value={ORIC_overhead}
+                              setVal={setORIC_overhead}
+                              type={"text"}
                               required
                             />
-                            <InputField
-                              label={"Total Funding Realesed(PKR)"}
-                              value={fundingRealesed}
-                              setVal={setFundingRealesed}
-                              required
-                            />
-                            <InputField
-                              label={"Date of Completion"}
-                              value={DateofCompletion}
-                              setVal={setDateofCompletion}
-                              type={"date"}
-                              required
-                            />
-                          </>
+                       {errors.ORIC_overhead && <p className="text-red-500">{errors.ORIC_overhead}</p>}
+                          </div>
                         )}
-                        {data.typeofresearch !== "Contract Research" &&
-                          Status_of_project === "Completed" && (
+                      {Status_of_proposal === "Approved" && (
+                        <>
+                        <div>
+                          <InputField
+                            label={"Date of Approval"}
+                            value={DateofApproval}
+                            setVal={setDateofApproval}
+                            type={"date"}
+                            required
+                          />
+                     {errors.DateofApproval && <p className="text-red-500">{errors.DateofApproval}</p>}
+                     </div>
+                          <Dropdown
+                            label={"Status of project"}
+                            dropdownOptions={[
+                              "Ongoing",
+                              "Delayed",
+                              "Completed",
+                            ]}
+                            value={Status_of_project}
+                            handleOptionChange={handleStatus_of_projectChange}
+                            required
+                          />
+                          <div>
+                          <InputField
+                            label={"Total Funding Approved(PKR)"}
+                            value={fundingApproved}
+                            setVal={setFundingApproved}
+                            required
+                          />
+                           {errors.fundingApproved && <p className="text-red-500">{errors.fundingApproved}</p>}
+                           </div>
+                          {data.typeofresearch !== "Contract Research" && (
                             <div>
                               <InputField
                                 label={"Funding Agency/Body"}
@@ -511,89 +408,322 @@ export default function Researchprojectfeilds({ data, onDelete }) {
                                 setVal={setfundingagency}
                                 required
                               />
+                                {errors.fundingagency && <p className="text-red-500">{errors.fundingagency}</p>}
                             </div>
                           )}
-                      </div>
-                    </div>
-                    {Status_of_project === "Completed" && (
-                      <>
-                        <label
-                          htmlFor="textarea"
-                          className="text-base mt-2 font-medium text-black"
-                        >
-                          Write key project deliverables
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                          className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-                          rows="5"
-                          cols="50"
-                          id="Textarea"
-                          value={delivery}
-                          required
-                          onChange={handledeliverychange}
-                        />
-                        <div className="grid grid-cols-2 gap-x-3   text-black">
-                          <label className="text-base font-medium">
-                            Completion Letter Copy{" "}
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
-                            type="file"
-                            defaultValue={CompletionLetterCopy}
-                            onChange={(e) => {
-                              console.log("File selected:", e.target.files[0]);
-                              setCompletionLetterCopy(e.target.files[0]);
-                            }}
+                          <div className="grid grid-cols-2 gap-x-3   text-black">
+                            <label className="text-base font-medium">
+                              Award Letter Copy{" "}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                              type="file"
+                              defaultValue={AwardLetterCopy}
+                              onChange={(e) => {
+                                console.log(
+                                  "File selected:",
+                                  e.target.files[0]
+                                );
+                                setAwardLetterCopy(e.target.files[0]);
+                              }}
+                              required
+                            />
+                              {errors.AwardLetterCopy && <p className="text-red-500">{errors.AwardLetterCopy}</p>}
+                          </div>
+                        </>
+                      )}
+
+                      {Status_of_project === "Completed" && (
+                        <>
+                        <div>
+                          <InputField
+                            label={"Total Funding Utilized(PKR)"}
+                            value={fundingUtilized}
+                            setVal={setFundingUtilized}
                             required
                           />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </Modal>
-              ) : (
-                <>
-                  <div className="flex ">
-                    <span className="text-gray-500 font-medium ">
-                      Project Status
-                    </span>
-                    {!editingproject &&
-                      data.Status_of_project !== "Completed" && (
-                        <FaPencil
-                          className="text-base ml-2 text-blue-900 h-4 w-4 cursor-pointer"
-                          onClick={HandleProjectChangeValue}
-                        />
+                            {errors.fundingUtilized && <p className="text-red-500">{errors.fundingUtilized}</p>}
+                          </div>
+                          <div>
+                          <InputField
+                            label={"Total Funding Realesed(PKR)"}
+                            value={fundingRealesed}
+                            setVal={setFundingRealesed}
+                            required
+                          />
+                            {errors.fundingRealesed && <p className="text-red-500">{errors.fundingRealesed}</p>}
+                          </div>
+                          <div>
+                          <InputField
+                            label={"Date of Completion"}
+                            value={DateofCompletion}
+                            setVal={setDateofCompletion}
+                            type={"date"}
+                            required
+                          />
+                            {errors.DateofCompletion && <p className="text-red-500">{errors.DateofCompletion}</p>}
+                          </div>
+                        </>
                       )}
+                    </div>
                   </div>
-                </>
-              )}
-            </span>
-            {showSuccessModal && (
-              <SuccessModal
-                isOpen={showSuccessModal}
-                p={`Your Data Has Been Updated`}
-                onClose={() => {
-                  setShowSuccessModal(false);
-                }}
+                  {Status_of_project === "Completed" && (
+                    <>
+                      <label
+                        htmlFor="textarea"
+                        className="text-base font-medium text-black"
+                      >
+                        Write key project deliverables
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                        rows="5"
+                        cols="50"
+                        id="Textarea"
+                        value={delivery}
+                        required
+                        onChange={handledeliverychange}
+                      />
+                        {errors.delivery && <p className="text-red-500">{errors.delivery}</p>}
+                    </>
+                  )}
+                </div>
+              </Modal>
+            ) : (
+              <>
+                <div className="flex gap-x-1 ">
+                  <span className="text-gray-500 font-medium">
+                    Status of Proposal
+                  </span>
+                  {!editing && data.Status_of_proposal !== "Approved" && (
+                    <FaPencil
+                      className="text-base text-blue-900 h-4 w-4 cursor-pointer"
+                      onClick={handleValueClick}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+            {editing && (
+              <FaCheck
+                className="text-base text-green-500 ml-2 h-4 w-4 cursor-pointer"
+                onClick={updateinfo}
               />
             )}
-          </div>
-          <div className="flex justify-start ">
-            <span className="text-black ">{data.Status_of_project} </span>
-          </div>
+          </span>
+          {showSuccessModal && (
+            <SuccessModal
+              isOpen={showSuccessModal}
+              p={`Your Data Has Been Updated`}
+              onClose={() => {
+                setShowSuccessModal(false);
+              }}
+            />
+          )}
+        </div>
+        <div className="flex justify-start ">
+          <span className="text-black ">{data.Status_of_proposal} </span>
+        </div>
+      </div>
+      <div className={`flex flex-col w-48 gap-y-4    gap-x-8`}>
+        <div className=" flex items-start justify-start w-48">
+          <span className="text-gray-500  font-medium">
+            Name of Research Grant
+          </span>
+        </div>
+        <div className="flex items-end justify-start ">
+          <span className="text-black ">{data.Name_of_Research_Grant}</span>
         </div>
       </div>
 
-      <div className="flex justify-end mr-6">
-        <button onClick={openModal}>Click to View Full Details</button>
+      <div className={`flex flex-col gap-y-4  w-48  gap-x-8`}>
+        <div className=" flex items-start justify-start">
+          <span className="text-gray-500  font-medium">Type of Research</span>
+        </div>
+
+        <div className="flex justify-start ">
+          <span className="text-black ">{data.type_of_research}</span>
+        </div>
       </div>
-      <Researchprojectdata
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        data={data}
-      />
+      <div className={`flex flex-col w-48 gap-y-4  gap-x-8 `}>
+        <div className=" flex items-start justify-start">
+          <span className="">
+            {editingproject ? (
+              <Modal
+                isOpen={editingproject}
+                onRequestClose={() => setEditingproject(false)}
+                contentLabel="Edit Project Status"
+                className={`flex my-10 w-4/5  mx-auto   bg-white shadow-lg rounded-md p-4`}
+              >
+                <div className="flex px-10 py-4  flex-col">
+                  <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
+                    <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+                      Update Information
+                    </h1>
+                    <div className="flex justify-end items-end gap-x-6">
+                        <span>
+                        <FaCheck
+                          className="text-base text-green-500  h-4 w-4 cursor-pointer"
+                          onClick={updateprojectinfo}
+                        />
+                      </span>
+                                              
+                      <FaTimes
+                        className="text-red-500 text-xl  cursor-pointer"
+                        onClick={() => {
+                          setEditingproject(false);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex ">
+                    <div className="grid grid-cols-2 gap-x-16 gap-y-10 ">
+                      <div>
+                      <Dropdown
+                        label={"Status of project"}
+                        dropdownOptions={["Ongoing", "Delayed", "Completed"]}
+                        value={data.Status_of_project}
+                        handleOptionChange={handleStatus_of_projectChange}
+                        required
+                      />
+                      </div>
+
+                      {Status_of_project === "Completed" && (
+                        <>
+                        <div>
+                          <InputField
+                            label={"Total Funding Utilized(PKR)"}
+                            value={fundingUtilized}
+                            setVal={setFundingUtilized}
+                            required
+                          />
+                           {errors.fundingUtilized && <p className="text-red-500">{errors.fundingUtilized}</p>}
+                          </div>
+                          <div>
+                          <InputField
+                            label={"Total Funding Realesed(PKR)"}
+                            value={fundingRealesed}
+                            setVal={setFundingRealesed}
+                            required
+                          />
+                           {errors.fundingRealesed && <p className="text-red-500">{errors.fundingRealesed}</p>}
+                          </div>
+                          <div>
+                          <InputField
+                            label={"Date of Completion"}
+                            value={DateofCompletion}
+                            setVal={setDateofCompletion}
+                            type={"date"}
+                            required
+                          />
+                           {errors.Date_of_Completion && <p className="text-red-500">{errors.Date_of_Completion}</p>}
+                          </div>
+                        </>
+                      )}
+                      {data.typeofresearch !== "Contract Research" &&
+                        Status_of_project === "Completed" && (
+                          <div>
+                            <InputField
+                              label={"Funding Agency/Body"}
+                              value={fundingagency}
+                              setVal={setfundingagency}
+                              required
+                            />
+                             {errors.funding_agency && <p className="text-red-500">{errors.funding_agency}</p>}
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                  {Status_of_project === "Completed" && (
+                    <>
+                      <label
+                        htmlFor="textarea"
+                        className="text-base mt-2 font-medium text-black"
+                      >
+                        Write key project deliverables
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                        rows="5"
+                        cols="50"
+                        id="Textarea"
+                        value={delivery}
+                        required
+                        onChange={handledeliverychange}
+                      />
+                       {errors.delivery && <p className="text-red-500">{errors.delivery}</p>}
+                      <div className="grid grid-cols-2 gap-x-3   text-black">
+                        <label className="text-base font-medium">
+                          Completion Letter Copy{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+                          type="file"
+                          defaultValue={CompletionLetterCopy}
+                          onChange={(e) => {
+                            console.log("File selected:", e.target.files[0]);
+                            setCompletionLetterCopy(e.target.files[0]);
+                          }}
+                          required
+                        />
+                         {errors.CompletionLetterCopy && <p className="text-red-500">{errors.CompletionLetterCopy}</p>}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </Modal>
+            ) : (
+              <>
+                <div className="flex ">
+                  <span className="text-gray-500 font-medium ">
+                    Project Status
+                  </span>
+                  {!editingproject &&
+                    data.Status_of_project !== "Completed" && Status_of_proposal ==="Approved" && (
+                      <FaPencil
+                        className="text-base ml-2 text-blue-900 h-4 w-4 cursor-pointer"
+                        onClick={HandleProjectChangeValue}
+                      />
+                    )}
+                </div>
+              </>
+            )}
+          </span>
+          {showSuccessModal && (
+            <SuccessModal
+              isOpen={showSuccessModal}
+              p={`Your Data Has Been Updated`}
+              onClose={() => {
+                setShowSuccessModal(false);
+              }}
+            />
+          )}
+        </div>
+        <div className="flex justify-start ">
+          {
+            Status_of_proposal ==="Approved" ?
+            <span className="text-black ">{data.Status_of_project} </span>:
+            <span className="text-black ">{"Not Approved yet"} </span>
+          }
+         
+        </div>
+      </div>
     </div>
+
+    <div className="flex justify-end mr-6">
+      <button onClick={openModal}>Click to View Full Details</button>
+    </div>
+    <Researchprojectdata
+      isOpen={isModalOpen}
+      closeModal={closeModal}
+      data={data}
+    />
+  </div>
+
   );
 }

@@ -177,6 +177,7 @@ function IPlicensingForm({ children }) {
   const validateFormStage4 = () => {
     let valid = true;
     const newErrors = {};
+    if(Status_of_Licensee!=="Signed"){
     if (!Negotiationcopy) {
       newErrors.Negotiationcopy = "Negotiation Copy is required";
       valid = false;
@@ -188,7 +189,9 @@ function IPlicensingForm({ children }) {
      else {
       newErrors.Negotiationcopy = "";
     }
-    if (!AgreementCopy && (Status_of_Licensee==="Signed")) {
+  }
+   else{
+    if (!AgreementCopy ) {
       newErrors.AgreementCopy = "Agreement Copy is required";
       valid = false;
     } 
@@ -199,6 +202,7 @@ function IPlicensingForm({ children }) {
     else {
       newErrors.AgreementCopy = "";
     }
+   } 
     setErrors(newErrors);
     return valid;
   };

@@ -20,6 +20,7 @@ export default function IPfield({data ,onDelete}) {
   const [id, setProjectId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control SuccessModal visibility
   const { data: session } = useSession();
+  const [errors, setErrors] = useState({});
  
   // Function to open the modal
   const openModal = () => {
@@ -31,6 +32,18 @@ export default function IPfield({data ,onDelete}) {
   const handleValueClick = () => {
     setEditing(true);
    // Activate editing mode
+  };
+  const validateForm = () => {
+    let formErrors = {};
+   if((Status_of_patent === "Granted") && (`${data.Type}`!=="IP disclosures")){
+    if ((!GrantingCopy)) {
+      formErrors.GrantingCopy = "Granting Copy is required";
+    }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(GrantingCopy.type)) {
+      formErrors.GrantingCopy = "File formate not supported Upload Image file only ";
+    } 
+   }
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
   };
   useEffect(() => {
     if(data) {
@@ -45,27 +58,32 @@ const resetfeilds=()=>{
   setStatus_of_patent("")
 }
 const UploadFile = async () => {
-  if (Status_of_patent ==="Granted" && (`${data.Type}`!=="IP disclosures")) {
-    try {
-      if (GrantingCopy) {
-        await uploadFile(
-          GrantingCopy,
-          session.user.username,
-          `/api/Imagesfeilds/fileupload`,
-          `${data.Title_of_Invention}_ Grantingcopy`,
-          "ipandpatent"
-        );
-      } else {
-        alert("Please upload Granting Copy");
+ 
+    if (Status_of_patent ==="Granted" && (`${data.Type}`!=="IP disclosures")) {
+      try {
+        if (GrantingCopy) {
+          await uploadFile(
+            GrantingCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${data.Title_of_Invention}_grantingcopy`,
+            "ipandpatent"
+          );
+        } 
+        else {
+          alert("Please upload Granting Copy");
+        }
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error");
       }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("error");
-    }
-  } 
+    } 
+ 
+ 
   
   };
 const updateinfo = async () => {
+  if(validateForm()){
     await UploadFile();
     if (id) {
       try {
@@ -80,14 +98,19 @@ const updateinfo = async () => {
         console.error("Error updating information:", error);
       }
     }
+  }
+  else{
+    alert("Please fill  the fields correctly")
+    return
+  }
   };
   const getFilenamesToDelete = (data) => {
     let filenames = [];
     if ((Status_of_patent === "Granted") && (`${data.Type}`!=="IP disclosures")) {
-      filenames.push(`${data.Title_of_Invention}_Grantingcopy.png`);
+      filenames.push(`${data.Title_of_Invention}_grantingcopy.png`);
     }
     if (data.Status_of_patent ==="Granted"||data.Status_of_patent==="Filed") {
-      filenames.push(`${data.Title_of_Invention}_Filingcopy.png`);
+      filenames.push(`${data.Title_of_Invention}_filingcopy.png`);
     }
     
     return filenames;
@@ -194,7 +217,7 @@ Update Information
                           }}
                           required
                         />
-                       
+                        {errors.GrantingCopy && <p className="text-red-500">{errors.GrantingCopy}</p>}
                       </div>
                     ))}
                   </div>
