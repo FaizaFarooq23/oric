@@ -66,12 +66,7 @@ export default function LiaisonGrid() {
     gridRef.current.api.exportDataAsCsv();
   }, []);
 
-  const onSelectionChanged = useCallback(() => {
-    const selectedRows = gridRef.current.api.getSelectedRows();
-    const result = selectedRows.length === 1 ? selectedRows[0].Liasen_id : "";
-    const name = selectedRows.length === 1 ? selectedRows[0].username : "";
-    router.push(`/liaison/${result}/${name}`);
-  }, [router]);
+ 
 
   return (
     <div className="flex flex-col gap-y-8">
@@ -92,7 +87,6 @@ export default function LiaisonGrid() {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
         />
       </div>
     </div>

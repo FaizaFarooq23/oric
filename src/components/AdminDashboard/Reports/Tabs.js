@@ -41,7 +41,7 @@ export default function ResearchTabs({ data, }) {
       component: <IpDisclosureGrid />,
     },
     {
-      tabTitle: "Projects Deployed",
+      tabTitle: "Product Displayed",
       component: <DeployedProjectsGrid/>,
     },
     {

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import IPdata from "@/components/FacultyDashboard/ResearchExcellence/Forms/IPDisclosure/IPdata";
 
 const today = new Date();
 
@@ -37,6 +38,10 @@ var filterParams = {
 export default function IpDisclosureGrid() {
   const gridRef = useRef();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+  const [selectedRow, setSelectedRow] = useState();
+
   const [data, setData] = useState([]);
   const [colDefs] = useState([
     { field: "username", filter: true, headerName: "Email" },
@@ -88,7 +93,8 @@ export default function IpDisclosureGrid() {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
-    router.push(`/project/${result}/${name}`);
+    setSelectedRow(selectedRows[0]);
+    setIsModalOpen(true);
   }, []);
 
   // Container: Defines the grid's theme & dimensions.
@@ -111,9 +117,19 @@ export default function IpDisclosureGrid() {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
+          onRowClicked={onSelectionChanged}
         />
       </div>
+
+      {
+        selectedRow &&
+        <IPdata
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          data={selectedRow}
+          admin={true}
+        />
+      }
     </div>
   );
 }
