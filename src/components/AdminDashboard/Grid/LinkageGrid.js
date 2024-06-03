@@ -36,7 +36,7 @@ export default function LinkageGrid() {
   const gridRef = useRef();
   const router = useRouter();
   const [colDefs] = useState([
-    { field: "username", filter: true, headerName: "Username" },
+    { field: "username", filter: true, headerName: "Email" },
     { field: "Type_of_Linkage", filter: true, headerName: "Type of Linkage" },
     { field: "Feild_of_Study", filter: true, headerName: "Field of Study" },
     { field: "Nationality", filter: true, headerName: "Nationality" },

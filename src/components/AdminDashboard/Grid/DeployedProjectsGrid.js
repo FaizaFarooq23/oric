@@ -34,31 +34,27 @@ var filterParams = {
 };
 
 // Create new GridExample component
-export default function CaseStudyGrid() {
+export default function DeployedProjectsGrid() {
   const gridRef = useRef();
   const router = useRouter();
   const [data, setData] = useState([]);
   const [colDefs] = useState([
-    { field: "username", filter: true, headerName: "Username" },
-    { field: "Name_of_Government_Body", filter: true, headerName: "Government Body" },
-    { field: "Advocacy_tools", filter: true, headerName: "Advocacy Tools" },
-    { field: "Area_advocated", filter: true, headerName: "Area Advocated" },
-    {
-      field: "Date_of_presentation",
-      filter: "agDateColumnFilter",
-      headerName: "Date of Presentation",
-      filterParams: filterParams,
-      valueFormatter: (params) => params.value?.split("T")[0],
-    },
-    { field: "Banking_research_status", filter: true, headerName: "Research Status" },
-    { field: "Coalation_Partner", filter: true, headerName: "Coalition Partner" },
-    { field: "Breif_Details", filter: true, headerName: "Brief Details" },
-    { field: "Issue_verification", filter: true, headerName: "Issue Verification" },
-  ]);
-
+    { field: "username", filter: true, headerName: "Email" },
+    { field: "Name_of_lead", filter: true, headerName: "Lead" },
+    { field: "Designation_of_lead", filter: true, headerName: "Designation" },
+    { field: "Department_of_lead", filter: true, headerName: "Department" },
+    { field: "Title", filter: true, headerName: "Title" },
+    { field: "Category", filter: true, headerName: "Category" },
+    { field: "Feild_of_use", filter: true, headerName: "Field of Use" },
+    { field: "Name_of_Forum", filter: true, headerName: "Forum Name" },
+    { field: "Detail_of_Forum", filter: true, headerName: "Forum Details" },
+    { field: "Financial_support", filter: true, headerName: "Financial Support" },
+    { field: "Nationality", filter: true, headerName: "Nationality" },
+    { field: "Status", filter: true, headerName: "Status" },
+])
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/stats/research-excellence-api/get_case_study');  
+      const response = await fetch('/api/stats/ip_and_commercialization/get_projects_deployed'); 
       const result = await response.json();
       setData(result);
     } catch (error) {

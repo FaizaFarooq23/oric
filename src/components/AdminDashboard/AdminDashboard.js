@@ -14,6 +14,7 @@ const statsCardData = [
     description: "Ongoing Researches ",
     key: "ongoing_researches",
     color: "#004b93",
+    funding: false,
   },
 
   {
@@ -22,6 +23,7 @@ const statsCardData = [
     description: "Funding",
     key: "funding",
     color: "#c9002b",
+    funding: true,
   },
   {
     icon: <IoCalendarOutline />,
@@ -29,6 +31,7 @@ const statsCardData = [
     description: "Yearly Researches",
     key: "yearly_researches",
     color: "#219ebc",
+    funding: false,
   },
   {
     icon: <MdOutlineQueryStats />,
@@ -36,6 +39,7 @@ const statsCardData = [
     description: "Popular Category",
     key: "popular_category",
     color: "#FFC42A",
+    funding: false,
   },
 ];
 export default function AdminDashboard() {
@@ -79,7 +83,7 @@ export default function AdminDashboard() {
     <div className=" overflow-hidden">
       <AdminLayout>
         <div className="flex flex-col w-full px-6 gap-y-8 py-6 ">
-          <div className="flex items-center justify-between gap-x-4  w-full">
+          <div className="flex items-center justify-between gap-x-4 w-full">
             {statsCardData.map((item, index) => (
               <StatCards
                 stats_data={statsData}
@@ -89,6 +93,7 @@ export default function AdminDashboard() {
                 color={item.color}
                 item_key={item.key}
                 key={index}
+                funding={item.funding}
               />
             ))}
           </div>

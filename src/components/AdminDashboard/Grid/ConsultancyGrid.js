@@ -2,7 +2,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useRouter } from "next/navigation";
-import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -39,6 +38,7 @@ export default function ConsultancyGrid() {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [colDefs] = useState([
+    { field: "username", filter: true, headerName: "Email" },
     { field: "Type_of_ConsultancyServices", filter: true, headerName: "Type of Consultancy Services" },
     { field: "Title", filter: true, headerName: "Title" },
     { field: "Name_of_Pi", filter: true, headerName: "Name of Pie" },

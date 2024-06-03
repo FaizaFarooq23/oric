@@ -2,7 +2,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useRouter } from "next/navigation";
-import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -34,31 +33,81 @@ var filterParams = {
 };
 
 // Create new GridExample component
-export default function CaseStudyGrid() {
+export default function LicensingGrid() {
   const gridRef = useRef();
   const router = useRouter();
   const [data, setData] = useState([]);
   const [colDefs] = useState([
-    { field: "username", filter: true, headerName: "Username" },
-    { field: "Name_of_Government_Body", filter: true, headerName: "Government Body" },
-    { field: "Advocacy_tools", filter: true, headerName: "Advocacy Tools" },
-    { field: "Area_advocated", filter: true, headerName: "Area Advocated" },
+    { field: "username", filter: true, headerName: "Email" },
     {
-      field: "Date_of_presentation",
+      field: "Name_of_leadInventor",
+      filter: true,
+      headerName: "Lead Inventor",
+    },
+    {
+      field: "Designation_of_leadInventor",
+      filter: true,
+      headerName: "Designation",
+    },
+    {
+      field: "Department_of_leadInventor",
+      filter: true,
+      headerName: "Department",
+    },
+    { field: "Title", filter: true, headerName: "Title" },
+    { field: "Category", filter: true, headerName: "Category" },
+    {
+      field: "Development_Status",
+      filter: true,
+      headerName: "Development Status",
+    },
+    { field: "KeyAspects", filter: true, headerName: "Key Aspects" },
+    {
+      field: "Status_of_Negotiations",
+      filter: true,
+      headerName: "Status of Negotiations",
+    },
+    {
+      field: "start_Date",
       filter: "agDateColumnFilter",
-      headerName: "Date of Presentation",
+      headerName: "Start Date",
       filterParams: filterParams,
       valueFormatter: (params) => params.value?.split("T")[0],
     },
-    { field: "Banking_research_status", filter: true, headerName: "Research Status" },
-    { field: "Coalation_Partner", filter: true, headerName: "Coalition Partner" },
-    { field: "Breif_Details", filter: true, headerName: "Brief Details" },
-    { field: "Issue_verification", filter: true, headerName: "Issue Verification" },
+    {
+      field: "end_Date",
+      filter: "agDateColumnFilter",
+      headerName: "End Date",
+      filterParams: filterParams,
+      valueFormatter: (params) => params.value?.split("T")[0],
+    },
+    { field: "Licensee_Name", filter: true, headerName: "Licensee Name" },
+    {
+      field: "Licensee_Organization",
+      filter: true,
+      headerName: "Licensee Organization",
+    },
+    { field: "Licensee_Type", filter: true, headerName: "Licensee Type" },
+    {
+      field: "Date_of_Agreement",
+      filter: "agDateColumnFilter",
+      headerName: "Date of Agreement",
+      filterParams: filterParams,
+      valueFormatter: (params) => params.value?.split("T")[0],
+    },
+    {
+      field: "Status_of_Licensee",
+      filter: true,
+      headerName: "Status of Licensee",
+    },
+    { field: "Nationality", filter: true, headerName: "Nationality" },
   ]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/stats/research-excellence-api/get_case_study');  
+      const response = await fetch(
+        "/api/stats/ip_and_commercialization/get_ip_liscensing"
+      );
       const result = await response.json();
       setData(result);
     } catch (error) {
@@ -67,7 +116,6 @@ export default function CaseStudyGrid() {
   };
 
   useEffect(() => {
-    
     fetchData();
   }, []);
 
@@ -78,7 +126,8 @@ export default function CaseStudyGrid() {
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].id : "";
-    const name = selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
+    const name =
+      selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
     router.push(`/project/${result}/${name}`);
   }, []);
 
@@ -94,7 +143,10 @@ export default function CaseStudyGrid() {
           Download CSV export file
         </button>
       </div>
-      <div className={"ag-theme-quartz"} style={{ width: "100%", height: "600px" }}>
+      <div
+        className={"ag-theme-quartz"}
+        style={{ width: "100%", height: "600px" }}
+      >
         <AgGridReact
           ref={gridRef}
           rowData={data}

@@ -150,14 +150,14 @@ export default function Register() {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-between">
+    <div className="w-screen h-screen flex flex-col justify-between ">
       <div className=" flex flex-col items-center">
         <div className="flex justify-between items-center px-10 ">
           <div className="flex justify-center ">
             <img src="images/white-logo.png" alt="logo" className="h-24" />
           </div>
         </div>
-        <div className="w-screen  pt-8 gap-x-16 border-t flex justify-between items-center pl-40 pr-20">
+        <div className="w-screen  pt-8 gap-x-16 border-t flex justify-between items-center pl-40 pr-20 pb-10">
           <div
             className={`w-[600px] bg-white py-10 px-10 flex flex-col gap-y-4 rounded-xl`}
           >

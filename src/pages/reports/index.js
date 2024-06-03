@@ -31,18 +31,8 @@ export default function Index() {
     <AdminLayout>
       <div className="flex flex-col py-8 gap-y-6">
       <div className="w-[90vw]">
-          {data ? (
+          {data && (
             <ResearchTabs data={data} />
-          ) : caseStudyData ? (
-            <ResearchTabs caseStudyData={caseStudyData} />
-          ) : liaisonData ? (
-            <ResearchTabs liaisonData={liaisonData} />
-          ) : linkageData ? (
-            <ResearchTabs linkageData={linkageData} />
-          ) : consultancyData ? (
-            <ResearchTabs consultancyData={consultancyData} />
-          ) : (
-            <p>Loading...</p>
           )}
         </div>
       </div>
