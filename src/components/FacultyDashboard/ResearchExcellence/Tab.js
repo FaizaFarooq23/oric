@@ -12,7 +12,7 @@ import Product_Displayed from "./components/Product_displaued/Product_Displayed"
 
 export default function Tabs() {
   const [selectionTab, setSelectionTab] = useState("");
-  const [showModal, setShowModal] = useState(true); // Set showModal to true by default
+  const [showModal, setShowModal] = useState(false); // Set showModal to true by default
   const [isIPMode, setIsIPMode] = useState(false); // State to manage IP mode
   const tabs = [
     {

@@ -1,3 +1,4 @@
+import Consultancy_data from "@/components/FacultyDashboard/ResearchExcellence/Forms/Consultancy_Contract/Consultancy_data";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
@@ -35,6 +36,10 @@ var filterParams = {
 // Create new GridExample component
 export default function ConsultancyGrid() {
   const gridRef = useRef();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+  const [selectedRow, setSelectedRow] = useState();
+
   const router = useRouter();
   const [data, setData] = useState([]);
   const [colDefs] = useState([
@@ -93,7 +98,8 @@ export default function ConsultancyGrid() {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
-    router.push(`/project/${result}/${name}`);
+    setSelectedRow(selectedRows[0]);
+    setIsModalOpen(true);
   }, []);
 
   // Container: Defines the grid's theme & dimensions.
@@ -116,9 +122,14 @@ export default function ConsultancyGrid() {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
+          onRowClicked={onSelectionChanged}
         />
       </div>
+
+      {
+        selectedRow &&
+        <Consultancy_data isOpen={isModalOpen} closeModal={closeModal} data={selectedRow} admin={true} />
+      }
     </div>
   );
 }

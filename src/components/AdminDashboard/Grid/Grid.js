@@ -1,3 +1,4 @@
+import Researchprojectdata from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchProjects/Researchprojectdata";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
@@ -34,6 +35,10 @@ var filterParams = {
 
 // Create new GridExample component
 export default function Grid({ data }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+  const [selectedRow, setSelectedRow] = useState();
+
   const gridRef = useRef();
   const router = useRouter();
   const [colDefs] = useState([
@@ -100,7 +105,9 @@ export default function Grid({ data }) {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].project_id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].title : "";
-    router.push(`/project/${result}/${name}`);
+    setIsModalOpen(true);
+    setSelectedRow(selectedRows[0]);
+
   }, []);
 
 
@@ -111,7 +118,7 @@ export default function Grid({ data }) {
       <div className="flex items-center justify-between ">
         <div className=" text-blue-900 font-bold text-2xl">
           {" "}
-          
+
         </div>
         <button
           className="bg-blue-900 hover:button-gradient hover:bg-gradient-to-r from-blue-900 to-[#3e92cc]  cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg "
@@ -131,8 +138,16 @@ export default function Grid({ data }) {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
+          onRowClicked={onSelectionChanged}
         />
+        {selectedRow &&
+          <Researchprojectdata
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            data={selectedRow}
+            admin={true}
+          />
+        }
       </div>
     </div>
   );

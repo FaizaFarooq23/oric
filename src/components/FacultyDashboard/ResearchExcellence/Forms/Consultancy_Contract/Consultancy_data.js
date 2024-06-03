@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
 import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
 
-const Consultancy_data = ({ isOpen, closeModal, data }) => {
+const Consultancy_data = ({ isOpen, closeModal, data, admin }) => {
   const formattedConsultancyDataStage1 = [
     { label: 'Title of Project', value: data.Title },
     { label: 'Type of Consultancy Services', value: data.Type_of_ConsultancyServices },
@@ -41,7 +41,7 @@ const Consultancy_data = ({ isOpen, closeModal, data }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Case Study Details"
-      className="flex gap-y-8 flex-col bg-white shadow-lg h-screen w-full pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10 "
+      className={`flex gap-y-8 flex-col bg-white shadow-lg pb-8 mb-4 mx-auto  overflow-y-auto mr-auto rounded-md  border-4 p-10  ${admin ? 'w-4/5 h-[85vh] mt-[80px]' : 'w-screen h-screen'}`}
     >
       <div className='m-4'>
         <div className="flex justify-end items-end gap-x-6">
