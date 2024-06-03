@@ -3,14 +3,15 @@ import prisma from "@/lib/prisma";
 export default async function handler(req, res) {
     // Update the profile  of the admin
 
-    const { username, designation, email, password} = req.body;
+    const { oldUsername, username, designation, email, password} = req.body;
 
     try {
         const user = await prisma.admin.update({
             where: {
-                username: username,
+                username: oldUsername,
             },
             data: {
+                username: username,
                 designation: designation,
                 email: email,
                 password: password,

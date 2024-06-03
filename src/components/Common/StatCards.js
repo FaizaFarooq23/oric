@@ -18,7 +18,7 @@ export default function StatCards({
             <span className="text-gray-600 text-lg">{description}</span>
             <span className="text-blue-900 text-2xl font-bold">
               {funding
-                ? stats_data && stats_data[item_key]+ " Rs"
+                ?  stats_data && "Rs." + stats_data[item_key]
                 : stats_data && stats_data[item_key]}
             </span>
           </div>{" "}
