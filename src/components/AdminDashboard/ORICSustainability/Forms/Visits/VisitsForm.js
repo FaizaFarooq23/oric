@@ -84,7 +84,7 @@ export default function VisitsForm({ children }) {
             setOpen(false);
           }} />
         </div>
-          <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+          <h1 className="text-blue-900   font-bold text-xl  border-black">
             Visitor Information
           </h1>
           <div>

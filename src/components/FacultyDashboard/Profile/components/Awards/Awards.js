@@ -266,7 +266,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
               <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                   Enter Infromation about National or International Honors or
                   Awards Won
                 </h1>
@@ -330,7 +330,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
               <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+                <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                   Enter Infromation about Winner
                 </h1>
               </div>
@@ -392,7 +392,7 @@ export default function AwardsModal({ children }) {
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
               <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
+                <h1 className="text-blue-900   font-bold text-xl  py-2 m-2 border-black">
                   Additional Details
                 </h1>
               </div>
@@ -459,7 +459,7 @@ export default function AwardsModal({ children }) {
         {stage === 4 && (
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                 Additional Details
               </h1>
               <label

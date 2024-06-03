@@ -390,7 +390,7 @@ function IPlicensingForm({ children }) {
         {stage === 1 && (
           <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
             <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                 IP Licensing Information
               </h1>
             </div>
@@ -505,7 +505,7 @@ function IPlicensingForm({ children }) {
         {stage === 2 && (
           <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
             <div>
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                 Details of Lead Inventor
               </h1>
             </div>
@@ -571,7 +571,7 @@ function IPlicensingForm({ children }) {
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 mt-4 ">
               <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
+                <h1 className="text-blue-900   font-bold text-xl  py-2 m-2 border-black">
                   Details of Licensee
                 </h1>
               </div>
@@ -602,7 +602,7 @@ function IPlicensingForm({ children }) {
                 </div>
               </div>
               <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl  py-2 m-2 border-black">
+                <h1 className="text-blue-900   font-bold text-xl  py-2 m-2 border-black">
                   Duration of Agreement
                 </h1>
               </div>
@@ -654,7 +654,7 @@ function IPlicensingForm({ children }) {
         {stage === 4 && (
           <>
             <div className="flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ml-auto mr-auto w-5/6 ">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                 Additional Details
               </h1>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16">
@@ -729,7 +729,7 @@ function IPlicensingForm({ children }) {
         {stage === 5 && (
           <>
             <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-              <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+              <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
                 Additional Details
               </h1>
            

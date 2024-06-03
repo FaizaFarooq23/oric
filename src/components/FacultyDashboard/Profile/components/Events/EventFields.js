@@ -27,7 +27,7 @@ export default function EventFields({ data,onDelete }) {
       </div>
   
       <div className="px-2">
-          <h1 className="text-blue-900 font-serif font-semibold text-lg border-black">
+          <h1 className="text-blue-900   font-semibold text-lg border-black">
             Event Information
           </h1>
           <div >

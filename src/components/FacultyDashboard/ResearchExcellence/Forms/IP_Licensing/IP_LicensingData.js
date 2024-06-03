@@ -68,7 +68,7 @@ const divClassName = data.Status_of_Licensee === "Signed" ? "grid-cols-2" : "";
         <div className="flex justify-end items-end gap-x-6">
           <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
         </div>
-        <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">IP Disclosures and Patent Information</h1>
+        <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">IP Disclosures and Patent Information</h1>
         <DataDisplayModal title="Invention Information" data={inventionData} gridClassName="grid-cols-2"  />
         {signedLicenseeData.length > 0 && <DataDisplayModal title="Licensee Information" data={signedLicenseeData} gridClassName="grid-cols-2" />}
         <DataDisplayModal title="Details of Inventor" data={inventorData} gridClassName="grid-cols-2" />

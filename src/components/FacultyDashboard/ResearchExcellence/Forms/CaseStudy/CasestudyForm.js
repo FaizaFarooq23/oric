@@ -200,7 +200,7 @@ function CasestudyForm({ children }) {
           </div>
           <div className="py-2 m-2 flex flex-col gap-y-8   ">
           <div>
-                <h1 className="text-blue-900 font-serif font-bold text-xl py-2  border-black">
+                <h1 className="text-blue-900   font-bold text-xl py-2  border-black">
                   Enter Details About Policy Advocacy
                 </h1>
               </div>

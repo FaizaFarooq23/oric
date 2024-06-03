@@ -48,7 +48,7 @@ const Product_to_Industrydata = ({ isOpen, closeModal, data, admin }) => {
         <div className="flex justify-end items-end gap-x-6">
           <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
         </div>
-        <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">
+        <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
           Research products / process / prototype gone into prefeasibility / industrial scale testing or prototype development
         </h1>
      

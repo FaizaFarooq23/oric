@@ -184,7 +184,7 @@ if (Status_of_Licensee==="Signed") {
                 >
                   <div className="flex gap-y-8 flex-col  px-10 py-8">
                     <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
-                      <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+                      <h1 className="text-blue-900   font-bold text-xl  border-black">
                         Update Information
                       </h1>
                       <div className="flex justify-end items-end gap-x-6">
