@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import Grid from "../AdminDashboard/Grid/Grid";
+import Grid from "../Grid/Grid";
+import CaseStudyGrid from "../Grid/CaseStudyGrid";
+import LiaisonGrid from "../Grid/LiaisonGrid";
+import LinkageGrid from "../Grid/LinkageGrid";
+import ConsultancyGrid from "../Grid/ConsultancyGrid";
 
-export default function ResearchTabs({ data }) {
+export default function ResearchTabs({ data, }) {
   const [ipActiveTab, setIpActiveTab] = useState(false);
   const [activeTab, setActiveTab] = useState("Research Project Reports");
-
   const researchTabs = [
     {
       tabTitle: "Research Project Reports",
@@ -12,19 +15,19 @@ export default function ResearchTabs({ data }) {
     },
     {
       tabTitle: "Case Studies",
-      component: null,
+      component: <CaseStudyGrid />,
     },
     {
-      tabTitle: "Liasen Development",
-      component: null,
+      tabTitle: "Liaison Development",
+      component: <LiaisonGrid />,
     },
     {
       tabTitle: "Research Links",
-      component: null,
+      component: <LinkageGrid/>,
     },
     {
       tabTitle: "Consaltancy Contracts",
-      component: null,
+      component: <ConsultancyGrid />,
     },
   ];
 

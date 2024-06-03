@@ -2,6 +2,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useRouter } from "next/navigation";
+import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -33,20 +34,21 @@ var filterParams = {
 };
 
 // Create new GridExample component
-export default function Grid({ data }) {
+export default function ConsultancyGrid() {
   const gridRef = useRef();
   const router = useRouter();
+  const [data, setData] = useState([]);
   const [colDefs] = useState([
-    { field: "Name_of_pi", filter: true, headerName: "Name of PI" },
-    { field: "title", filter: true, headerName: "Project Title" },
-    { field: "Thematic_Area", filter: true, headerName: "Thematic Area" },
-    { field: "funding_agency", filter: true, headerName: "Funding Agency" },
+    { field: "Type_of_ConsultancyServices", filter: true, headerName: "Type of Consultancy Services" },
+    { field: "Title", filter: true, headerName: "Title" },
+    { field: "Name_of_Pi", filter: true, headerName: "Name of Pie" },
     {
-      field: "funding_utilized",
-      headerName: "Funding Amount",
-      filter: "agNumberColumnFilter",
+      field: "Date_of_Execution",
+      filter: "agDateColumnFilter",
+      headerName: "Date of Execution",
+      filterParams: filterParams,
+      valueFormatter: (params) => params.value?.split("T")[0],
     },
-    { field: "category", filter: true, headerName: "Project Type" },
     {
       field: "start_Date",
       filter: "agDateColumnFilter",
@@ -61,36 +63,27 @@ export default function Grid({ data }) {
       filterParams: filterParams,
       valueFormatter: (params) => params.value?.split("T")[0],
     },
-    {
-      field: "Status_of_proposal",
-      filter: true,
-      headerName: "Proposal Status",
-    },
-    { field: "Status_of_project", filter: true, headerName: "Project Status" },
-    { field: "Department_of_Pi", filter: true, headerName: "Department" },
-    {
-      field: "Date_of_Submission",
-      filter: "agDateColumnFilter",
-      headerName: "Date of Submission",
-      filterParams: filterParams,
-      valueFormatter: (params) => params.value?.split("T")[0],
-    },
-    {
-      field: "funding_approved",
-      filter: "agNumberColumnFilter",
-      headerName: "Funding Approved",
-    },
-    {
-      field: "funding_utilized",
-      headerName: "Funding Utilized",
-      filter: "agNumberColumnFilter",
-    },
-    {
-      field: "funding_remaining",
-      headerName: "Funding Remaining",
-      filter: "agNumberColumnFilter",
-    },
+    { field: "Company_Name", filter: true, headerName: "Company Name" },
+    { field: "Company_Address", filter: true, headerName: "	Company Address" },
+    { field: "Contract_Value", filter: true, headerName: "Contract Value" },
+    { field: "ORIC_percentage", filter: true, headerName: "ORIC Percentage" },
   ]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/stats/research-excellence-api/get-consultancy-contract');  // Update with your API endpoint
+      const result = await response.json();
+      console.log(`Consultancy Contract: ${result}`);
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    
+    fetchData();
+  }, []);
 
   const onBtnExport = useCallback(() => {
     gridRef.current.api.exportDataAsCsv();
@@ -98,32 +91,24 @@ export default function Grid({ data }) {
 
   const onSelectionChanged = useCallback(() => {
     const selectedRows = gridRef.current.api.getSelectedRows();
-    const result = selectedRows.length === 1 ? selectedRows[0].project_id : "";
-    const name = selectedRows.length === 1 ? selectedRows[0].title : "";
+    const result = selectedRows.length === 1 ? selectedRows[0].id : "";
+    const name = selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
     router.push(`/project/${result}/${name}`);
   }, []);
 
-
-
   // Container: Defines the grid's theme & dimensions.
   return (
-    <div className="flex flex-col gap-y-8 ">
-      <div className="flex items-center justify-between ">
-        <div className=" text-blue-900 font-bold text-2xl">
-          {" "}
-          
-        </div>
+    <div className="flex flex-col gap-y-8">
+      <div className="flex items-center justify-between">
+        <div className="text-blue-900 font-bold text-2xl"></div>
         <button
-          className="bg-blue-900 hover:button-gradient hover:bg-gradient-to-r from-blue-900 to-[#3e92cc]  cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg "
+          className="bg-blue-900 hover:button-gradient hover:bg-gradient-to-r from-blue-900 to-[#3e92cc] cursor-pointer text-white font-semibold text-lg py-2 px-4 rounded-lg"
           onClick={onBtnExport}
         >
           Download CSV export file
         </button>
       </div>
-      <div
-        className={"ag-theme-quartz"}
-        style={{ width: "100%", height: "600px" }}
-      >
+      <div className={"ag-theme-quartz"} style={{ width: "100%", height: "600px" }}>
         <AgGridReact
           ref={gridRef}
           rowData={data}

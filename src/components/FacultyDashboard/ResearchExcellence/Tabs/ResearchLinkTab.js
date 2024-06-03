@@ -26,7 +26,7 @@ export default function ResearchLinkTab() {
           setresearch_linkageData(res.data);
         }
       } catch (error) {
-        console.error("Error fetching liasen information:", error);
+        console.error("Error fetching liaison information:", error);
       }
     };
 

@@ -140,7 +140,7 @@ model Education {
   account Account @relation(fields: [account_number], references: [account_number], onDelete: Cascade)
 }
 
-model liasen{
+model liaison{
   username String @db.VarChar(255)
   Liasen_id Int @id @default(autoincrement())
    Liasen_developed_with String @db.VarChar(255)

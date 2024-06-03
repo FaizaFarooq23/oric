@@ -8,8 +8,8 @@ import Liasendeveloped from '../Forms/Liasen/Liasendeveloped';
 import Liasenfeilds from '../Forms/Liasen/Liasenfeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
 
-export default function LiasenTab() {
-  const [liasenData, setLiasenData] = useState([]);
+export default function LiaisonTab() {
+  const [liaisonData, setLiasenData] = useState([]);
   const { open: openModal } = useModal("LiasendevelopedFormModal");
   const [isFormVisible, setFormVisibility] = useState(false);
   const { data: session } = useSession();
@@ -20,7 +20,7 @@ export default function LiasenTab() {
     const fetchLiasenData = async () => {
       try {
         if (session) {
-          const res = await axios.get(`/api/Research_projects/get_liasen`, {
+          const res = await axios.get(`/api/Research_projects/get_liaison`, {
             params: {
               username: session.user.username,
             }
@@ -28,7 +28,7 @@ export default function LiasenTab() {
           setLiasenData(res.data);
         }
       } catch (error) {
-        console.error("Error fetching liasen information:", error);
+        console.error("Error fetching liaison information:", error);
       }
     };
 
@@ -36,7 +36,7 @@ export default function LiasenTab() {
   }, [session]);
   const handleDeleteProject = async (Liasen_id) => {
     try {
-      await axios.delete(`/api/Research_projects/delete_liasen?Liasen_id=${Liasen_id}`);
+      await axios.delete(`/api/Research_projects/delete_liaison?Liasen_id=${Liasen_id}`);
       console.log('Project deleted successfully');
       setShowDeleteSuccessModal(true);     } catch (error) {
       console.error('Error deleting project:', error);
@@ -61,12 +61,12 @@ export default function LiasenTab() {
           )
         }
      
-     {liasenData.length === 0 ? (
+     {liaisonData.length === 0 ? (
         <div className="text-center text-gray-500 mt-8">
           No data exists at the moment.
         </div>
       ) : (
-        liasenData.map((data, index) => (
+        liaisonData.map((data, index) => (
           <div className="flex flex-col" key={index}>
             <Liasenfeilds data={data} onDelete={handleDeleteProject} />
           </div>

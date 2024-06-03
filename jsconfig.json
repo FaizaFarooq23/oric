@@ -1,3 +1,4 @@
+//json file to configure the path alias for the project
 {
   "compilerOptions": {
     "baseUrl": "./",
