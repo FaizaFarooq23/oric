@@ -64,7 +64,7 @@ export default function Trainings_EventsTab() {
           onClick={openModal}
         />
       </div>
-
+      <div className='h-[60vh] overflow-y-scroll no-scrollbar'>
     {isFormVisible && (
      <Trainings_EventsForm/>
     )}
@@ -86,7 +86,7 @@ export default function Trainings_EventsTab() {
         <TrainingEventsField key={index} data={Trainings_Events} onDelete={handleDeleteProject} />
           ))
       )}
-
+</div>
   
   </div>
   )

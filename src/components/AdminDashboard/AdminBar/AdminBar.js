@@ -1,21 +1,25 @@
 import { UserContext } from '@/context/UserContext/GlobalProvider'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaResearchgate } from 'react-icons/fa6'
 import { FaChartLine } from 'react-icons/fa';
 import { TbApps, TbReport } from 'react-icons/tb'
-import ResearchCallForm from '../ResearchCall/ResearchCallForm'
+import { useRouter } from 'next/router'
 
 export default function AdminBar() {
+
+const router = useRouter();
+console.log(router.pathname);
+
 const barData = [
 {
 icon: <TbApps />,
-url:" /dashboard"
+url:"/dashboard"
 },
 {
   icon: <TbReport  />,
-  url:" /reports",
+  url:"/reports",
   },  
 {
 icon: <FaResearchgate />,
@@ -23,7 +27,7 @@ url:"/generate-research-calls"
 },
 {
   icon:<FaChartLine /> ,
-  url:"ORIC_Sustainability"
+  url:"/oric-sustainability"
 }
 
 ]
@@ -44,7 +48,7 @@ const handleLogout = () => {
 
         {
           barData.map((item, index) => (
-            <li className="flex items-center justify-center py-3 text-xl cursor-pointer text-gray-700 hover:text-blue-900" key={index}>
+            <li className={ `flex items-center justify-center py-3 text-xl cursor-pointer  ${router.pathname===item.url?"text-blue-900":"text-gray-700"} hover:text-blue-900`}key={index}>
               <Link href={item.url}>
                 {item.icon}
               </Link>

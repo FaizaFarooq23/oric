@@ -16,7 +16,7 @@ export default function RevenueByHEIFields({ data, onDelete }) {
   };
 
   return (
-    <div className="flex flex-col bg-white shadow-lg rounded-md p-8 m-4">
+    <div className="flex flex-col bg-white shadow-lg rounded-md p-8 m-4 ">
       <div className="flex justify-end items-center mt-4">
         <button onClick={() => onDelete(data.id, `${data.Title_of_Invention}_AuditedStatement.png`)}>
           <RiDeleteBin6Line className="text-red-600 text-xl cursor-pointer" />

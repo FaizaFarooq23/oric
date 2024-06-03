@@ -68,7 +68,7 @@ export default function RevenueByORICTab() {
           onClick={openModal}
         />
       </div>
-<div className="">
+      <div className='h-[60vh] overflow-y-scroll no-scrollbar'>
       {isFormVisible && <RevenueByORICForm />}
       {showDeleteSuccessModal && (
         <SuccessModal

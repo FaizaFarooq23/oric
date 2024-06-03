@@ -65,7 +65,7 @@ export default function VisitsTab() {
           onClick={openModal}
         />
       </div>
-
+      <div className='h-[60vh] overflow-y-scroll no-scrollbar'>
     {isFormVisible && (
      <VisitsForm/>
     )}
@@ -87,7 +87,7 @@ export default function VisitsTab() {
         <VisitsFields key={index} data={Visits} onDelete={handleDeleteProject} />
           ))
       )}
-
+</div>
   
   </div>
   )
