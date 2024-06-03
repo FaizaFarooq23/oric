@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Casestudydata from "@/components/FacultyDashboard/ResearchExcellence/Forms/CaseStudy/Casestudydata";
 
 const today = new Date();
 
@@ -36,8 +37,13 @@ var filterParams = {
 // Create new GridExample component
 export default function CaseStudyGrid() {
   const gridRef = useRef();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
+
   const router = useRouter();
   const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState();
   const [colDefs] = useState([
     { field: "username", filter: true, headerName: "Username" },
     { field: "Name_of_Government_Body", filter: true, headerName: "Government Body" },
@@ -79,7 +85,8 @@ export default function CaseStudyGrid() {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].Name_of_Government_Body : "";
-    router.push(`/project/${result}/${name}`);
+    setSelectedRow(selectedRows[0]);
+    setIsModalOpen(true);
   }, []);
 
   // Container: Defines the grid's theme & dimensions.
@@ -102,9 +109,15 @@ export default function CaseStudyGrid() {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
+          onRowClicked={onSelectionChanged}
         />
       </div>
+
+
+      {
+        selectedRow &&
+        <Casestudydata isOpen={isModalOpen} closeModal={closeModal} data={selectedRow} admin={true} />
+      }
     </div>
   );
 }

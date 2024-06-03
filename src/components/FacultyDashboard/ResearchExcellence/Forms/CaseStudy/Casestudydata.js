@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa'; 
 import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
 import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
-const Casestudydata = ({ isOpen, closeModal, data }) => {
+const Casestudydata = ({ isOpen, closeModal, data, admin }) => {
   const formattedData = [
     { label: 'Government Body', value: data.Name_of_Government_Body },
     { label: 'Coalition Partners', value: data.Coalation_Partner },
@@ -27,7 +27,7 @@ const Casestudydata = ({ isOpen, closeModal, data }) => {
     isOpen={isOpen}
     onRequestClose={closeModal}
     contentLabel={"Case Study/Policy Advocacy Data"}
-    className="flex gap-y-8 flex-col bg-white w-screen max-h-screen shadow-lg ml-auto overflow-y-auto mr-auto rounded-md  w-4/5 border-4 p-10 "
+    className={`flex gap-y-8 flex-col bg-white  shadow-lg mx-auto overflow-y-auto mr-auto rounded-md border-4 p-10 ${admin ? 'w-4/5 h-[85vh] mt-[80px]' :'w-screen max-h-screen'} `}
   >
     <div className='flex  flex-col'>
             <div className="flex justify-end items-end gap-x-6">
