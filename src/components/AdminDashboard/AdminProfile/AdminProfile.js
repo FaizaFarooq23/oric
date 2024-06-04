@@ -13,6 +13,7 @@ export default function AdminProfile() {
   const [coverPhoto, setCoverPhoto] = useState(`/uploads/cover_${user.email}.png`);
 
   const initialProfile = {
+    oldUsername: user.username,
     username: user.username,
     designation: user.designation,
     email: user.email,

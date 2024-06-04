@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import RevenueByORICTab from '../Tabs/RevenueByORICTab'
+import React, { Component } from "react";
+import RevenueByORICTab from "../Tabs/RevenueByORICTab";
 
 export class RevenueByORIC extends Component {
   render() {
     return (
       <div>
-<RevenueByORICTab/>      
+        <RevenueByORICTab />
       </div>
-    )
+    );
   }
 }
 
-export default RevenueByORIC
+export default RevenueByORIC;

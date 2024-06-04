@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function index() {
   return (
-    <div className='flex flex-col justify-between items-center bg-blue-900 '>
+    <div className='flex flex-col overflow-y-scroll no-scrollbar justify-between items-center bg-blue-900 '>
     <div className='z-50'>
     <Register />
     </div>

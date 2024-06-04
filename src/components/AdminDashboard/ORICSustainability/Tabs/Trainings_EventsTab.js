@@ -57,10 +57,14 @@ export default function Trainings_EventsTab() {
   
   return (
     <div >
-    <div className='flex justify-end items-center gap-x-8 text-2xl'>
-      <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-    </div>
-
+   <div className="flex justify-end items-center gap-x-8 text-2xl mr-8">
+     <span className="text-lg font-semibold text-blue-900">Add Events</span>
+        <FiPlusCircle
+          className="text-blue-900 cursor-pointer"
+          onClick={openModal}
+        />
+      </div>
+      <div className='h-[60vh] overflow-y-scroll no-scrollbar'>
     {isFormVisible && (
      <Trainings_EventsForm/>
     )}
@@ -82,7 +86,7 @@ export default function Trainings_EventsTab() {
         <TrainingEventsField key={index} data={Trainings_Events} onDelete={handleDeleteProject} />
           ))
       )}
-
+</div>
   
   </div>
   )

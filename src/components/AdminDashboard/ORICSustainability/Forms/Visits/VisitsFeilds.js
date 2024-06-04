@@ -32,15 +32,15 @@ export default function VisitsFields({ data, onDelete }) {
   ];
 
   return (
-    <div className={`flex flex-col  shadow-lg rounded-md m-4`}>
-      <div className="flex justify-end items-center mr-6 mt-4">
+    <div className={`flex flex-col  shadow-lg rounded-md p-8 m-4`}>
+      <div className="flex justify-end items-center text-xl mt-4">
         <button onClick={() => onDelete(data.id)}>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
         </button>
       </div>
       <div>
         <div className="p-4">
-          <h1 className="text-blue-900 font-serif font-bold text-xl border-black">
+          <h1 className="text-blue-900  font-bold text-xl border-black">
             Visitor Information
           </h1>
           <DataDisplayModal data={formattedData} />

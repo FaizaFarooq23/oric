@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CsvExportModule } from "@ag-grid-community/csv-export";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Casestudydata from "@/components/FacultyDashboard/ResearchExcellence/Forms/CaseStudy/Casestudydata";
+import IPdata from "@/components/FacultyDashboard/ResearchExcellence/Forms/IPDisclosure/IPdata";
 
 const today = new Date();
 
@@ -35,36 +35,44 @@ var filterParams = {
 };
 
 // Create new GridExample component
-export default function CaseStudyGrid() {
+export default function IpDisclosureGrid() {
   const gridRef = useRef();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const closeModal = () => setIsModalOpen(false);
-
   const router = useRouter();
-  const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
   const [selectedRow, setSelectedRow] = useState();
+
+  const [data, setData] = useState([]);
   const [colDefs] = useState([
-    { field: "username", filter: true, headerName: "Username" },
-    { field: "Name_of_Government_Body", filter: true, headerName: "Government Body" },
-    { field: "Advocacy_tools", filter: true, headerName: "Advocacy Tools" },
-    { field: "Area_advocated", filter: true, headerName: "Area Advocated" },
+    { field: "username", filter: true, headerName: "Email" },
+    { field: "Name_of_leadInventor", filter: true, headerName: "Lead Inventor" },
+    { field: "Designation_of_leadInventor", filter: true, headerName: "Designation" },
+    { field: "Department_ofleadInventor", filter: true, headerName: "Department" },
+    { field: "Title_of_Invention", filter: true, headerName: "Title of Invention" },
+    { field: "Category", filter: true, headerName: "Category" },
+    { field: "Development_Status", filter: true, headerName: "Development Status" },
+    { field: "KeyAspects", filter: true, headerName: "Key Aspects" },
+    { field: "Commercial_partner", filter: true, headerName: "Commercial Partner" },
+    { field: "Name_of_patentdept", filter: true, headerName: "Patent Department" },
+    { field: "Detail_of_patentdept", filter: true, headerName: "Patent Department Details" },
+    { field: "Financial_support", filter: true, headerName: "Financial Support" },
     {
-      field: "Date_of_presentation",
+      field: "Date_of_disclosure",
       filter: "agDateColumnFilter",
-      headerName: "Date of Presentation",
+      headerName: "Date of Disclosure",
       filterParams: filterParams,
       valueFormatter: (params) => params.value?.split("T")[0],
     },
-    { field: "Banking_research_status", filter: true, headerName: "Research Status" },
-    { field: "Coalation_Partner", filter: true, headerName: "Coalition Partner" },
-    { field: "Breif_Details", filter: true, headerName: "Brief Details" },
-    { field: "Issue_verification", filter: true, headerName: "Issue Verification" },
+    { field: "Previous_disclosure", filter: true, headerName: "Previous Disclosure" },
+    { field: "Date_of_filing", filter: true, headerName: "Date of Filing" },
+    { field: "Nationality", filter: true, headerName: "Nationality" },
+    { field: "Status_of_patent", filter: true, headerName: "Patent Status" },
+    { field: "Type", filter: true, headerName: "Type" },
   ]);
-
+  
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/stats/research-excellence-api/get_case_study');  
+      const response = await fetch('/api/stats/ip_and_commercialization/get_ip_disclosure');  
       const result = await response.json();
       setData(result);
     } catch (error) {
@@ -113,10 +121,14 @@ export default function CaseStudyGrid() {
         />
       </div>
 
-
       {
         selectedRow &&
-        <Casestudydata isOpen={isModalOpen} closeModal={closeModal} data={selectedRow} admin={true} />
+        <IPdata
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          data={selectedRow}
+          admin={true}
+        />
       }
     </div>
   );

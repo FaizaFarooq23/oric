@@ -167,7 +167,7 @@ const updateinfo = async () => {
                   <div className="flex px-10 py-4  flex-col">
 
                   <div className="flex flex-row py-2 m-2 gap-x-10 ">
-                  <h1 className="text-blue-900 font-serif font-bold text-xl  border-black">
+                  <h1 className="text-blue-900   font-bold text-xl  border-black">
 
 Update Information
 

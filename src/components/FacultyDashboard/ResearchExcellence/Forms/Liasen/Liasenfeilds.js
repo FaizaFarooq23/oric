@@ -18,7 +18,7 @@ export default function Liasenfeilds({data,onDelete}) {
           </button>
         </div>
         <div className="p-4">
-          <h1 className="text-blue-900 font-serif font-bold text-xl border-black">
+          <h1 className="text-blue-900   font-bold text-xl border-black">
             Liasen Information
           </h1>
           <div >

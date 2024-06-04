@@ -4,6 +4,10 @@ import CaseStudyGrid from "../Grid/CaseStudyGrid";
 import LiaisonGrid from "../Grid/LiaisonGrid";
 import LinkageGrid from "../Grid/LinkageGrid";
 import ConsultancyGrid from "../Grid/ConsultancyGrid";
+import IpDisclosureGrid from "../Grid/IpDisclosureGrid";
+import DeployedProjectsGrid from "../Grid/DeployedProjectsGrid";
+import LicensingGrid from "../Grid/LicensingGrid";
+import IndustrialGrid from "../Grid/IndustrialGrid";
 
 export default function ResearchTabs({ data, }) {
   const [ipActiveTab, setIpActiveTab] = useState(false);
@@ -34,23 +38,19 @@ export default function ResearchTabs({ data, }) {
   const ipTabs = [
     {
       tabTitle: "IP Disclosures",
-      component: null,
+      component: <IpDisclosureGrid />,
     },
     {
-      tabTitle: "Projects Deployed",
-      component: null,
-    },
-    {
-      tabTitle: "Agreements Signed",
-      component: null,
+      tabTitle: "Product Displayed",
+      component: <DeployedProjectsGrid/>,
     },
     {
       tabTitle: "IP Licensing",
-      component: null,
+      component: <LicensingGrid />,
     },
     {
       tabTitle: "Industrial Products",
-      component: null,
+      component: <IndustrialGrid/>,
     },
   ];
 

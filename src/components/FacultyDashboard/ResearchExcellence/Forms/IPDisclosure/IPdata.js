@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
 import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
 
-const IPdata = ({ isOpen, closeModal, data }) => {
+const IPdata = ({ isOpen, closeModal, data, admin }) => {
   const generalData = [
     { label: 'Title of Invention', value: data.Title_of_Invention },
     { label: 'Type of IP', value: data.Type },
@@ -58,7 +58,7 @@ const IPdata = ({ isOpen, closeModal, data }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="IP Data"
-      className="flex gap-y-8 flex-col bg-white shadow-lg w-full  h-screen pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10"
+      className={`flex gap-y-8 flex-col bg-white shadow-lg  pb-8 max-h-screen overflow-y-auto mx-auto rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'} `}
     >
       <div>
         <div className="flex justify-end items-end gap-x-6">

@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
 import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
-const IPLicensingdata = ({ isOpen, closeModal, data }) => {
+const IPLicensingdata = ({ isOpen, closeModal, data, admin }) => {
   // Define the data for different sections
   const inventionData = [
     { label: 'Title of Invention', value: data.Title },
@@ -62,13 +62,13 @@ const divClassName = data.Status_of_Licensee === "Signed" ? "grid-cols-2" : "";
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="IP Licensing Data"
-      className="flex gap-y-8 flex-col bg-white shadow-lg w-full  h-screen pb-8 mb-4 ml-auto max-h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-10"
+      className={`flex gap-y-8 flex-col bg-white shadow-lg  pb-8 max-h-screen overflow-y-auto mx-auto rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'} `}
     >
       <div>
         <div className="flex justify-end items-end gap-x-6">
           <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
         </div>
-        <h1 className="text-blue-900 font-serif font-bold text-xl py-2 m-2 border-black">IP Disclosures and Patent Information</h1>
+        <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">IP Disclosures and Patent Information</h1>
         <DataDisplayModal title="Invention Information" data={inventionData} gridClassName="grid-cols-2"  />
         {signedLicenseeData.length > 0 && <DataDisplayModal title="Licensee Information" data={signedLicenseeData} gridClassName="grid-cols-2" />}
         <DataDisplayModal title="Details of Inventor" data={inventorData} gridClassName="grid-cols-2" />

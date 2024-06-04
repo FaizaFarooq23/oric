@@ -1,3 +1,4 @@
+import Linkdata from "@/components/FacultyDashboard/ResearchExcellence/Forms/ResearchLinkages/Linkdata";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
@@ -32,11 +33,14 @@ var filterParams = {
 };
 
 export default function LinkageGrid() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+  const [selectedRow, setSelectedRow] = useState();
   const [data, setData] = useState();
   const gridRef = useRef();
   const router = useRouter();
   const [colDefs] = useState([
-    { field: "username", filter: true, headerName: "Username" },
+    { field: "username", filter: true, headerName: "Email" },
     { field: "Type_of_Linkage", filter: true, headerName: "Type of Linkage" },
     { field: "Feild_of_Study", filter: true, headerName: "Field of Study" },
     { field: "Nationality", filter: true, headerName: "Nationality" },
@@ -79,7 +83,8 @@ export default function LinkageGrid() {
     const selectedRows = gridRef.current.api.getSelectedRows();
     const result = selectedRows.length === 1 ? selectedRows[0].id : "";
     const name = selectedRows.length === 1 ? selectedRows[0].username : "";
-    router.push(`/linkage/${result}/${name}`);
+    setSelectedRow(selectedRows[0]);
+    setIsModalOpen(true);
   }, [router]);
 
   return (
@@ -101,9 +106,11 @@ export default function LinkageGrid() {
           suppressExcelExport={true}
           rowSelection={"single"}
           suppressHorizontalScroll={true}
-          onSelectionChanged={onSelectionChanged}
+          onRowClicked={onSelectionChanged}
         />
       </div>
+
+      {selectedRow && <Linkdata isOpen={isModalOpen} closeModal={closeModal} data={selectedRow} admin={true} />}
     </div>
   );
 }

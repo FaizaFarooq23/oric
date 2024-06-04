@@ -4,7 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/Common/FeildsData';
 import ImageDisplay from '@/components/FacultyDashboard/Profile/components/Common/Imagedisplay';
 
-const Researchprojectdata = ({ isOpen, closeModal, data }) => {
+const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
   // Define data for different sections
   const projectDetails = [
     { label: 'Title of Research Project', value: data.title },
@@ -132,12 +132,12 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Research Project Details"
-      className="flex gap-y-8 flex-col bg-white shadow-lg ml-auto w-full h-screen overflow-y-auto mr-auto rounded-md w-4/5 border-4 p-12"
+      className={`flex gap-y-8 flex-col bg-white shadow-lg mx-auto  overflow-y-auto m-auto rounded-md border-4 p-12 ${admin ? 'w-4/5 h-[85vh] mt-[80px]' : 'w-full h-screen'}`}
     >
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
       </div>
-      <h1 className="text-blue-900 font-serif font-bold text-xl py-2 border-black">Research Project Details</h1>
+      <h1 className="text-blue-900   font-bold text-xl py-2 border-black">Research Project Details</h1>
       
       <DataDisplayModal title="Project Details" data={projectDetails} gridClassName="grid-cols-2" />
       {contractDetails.length > 0 && <DataDisplayModal title="Contract Details" data={contractDetails} gridClassName="grid-cols-2" />}

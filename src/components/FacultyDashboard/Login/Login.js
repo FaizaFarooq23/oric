@@ -100,7 +100,7 @@ export default function Login({ adminLogin, facultyLogin, setAdminLogin }) {
                   border-b-2 border-gray-300   py-2 text-white placeholder-gray-500 focus:z-10 focus:border-mustard-yellow  focus:ring-slate-100  focus:outline-none  sm:text-sm"
                 />
                   <div className=" flex justify-end py-2">
-              <a href="#" className="hover:text-mustard-yellow text-white">
+              <a href="/reset-password" className="hover:text-mustard-yellow text-white">
                 <span>Forgotten your username or password? </span>
               </a>
             </div>

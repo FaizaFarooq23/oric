@@ -4,7 +4,7 @@ const ImageDisplay = ({ title, data, gridClassName = '', divClassName = '' }) =>
   return (
     <div className=''>
       <div>
-        <h1 className='text-blue-900 font-serif  font-bold text-xl py-2 border-black'>{title}</h1>
+        <h1 className='text-blue-900    font-bold text-xl py-2 border-black'>{title}</h1>
       </div>
       <div className={`grid gap-y-8 gap-x-16 py-6 ${gridClassName}`}>
         {data.map((item, index) => (
