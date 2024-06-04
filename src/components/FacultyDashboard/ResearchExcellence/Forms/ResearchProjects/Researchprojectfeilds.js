@@ -242,7 +242,7 @@ else{
         {
           Status_of_project: Status_of_project,
           funding_realesed: fundingRealesed,
-          fundingUtilized: fundingUtilized,
+          funding_utilized: fundingUtilized,
           funding_agency: fundingagency,
           Date_of_Completion: new Date(DateofCompletion),
           delivery: delivery,

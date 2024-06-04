@@ -25,7 +25,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
     { label: 'Counter Parts from Industry', value: data.Counterparts }
   ] : [];
 
-  const submissionDetails = [
+  const submissionDetails = data.type_of_research === 'Contract' ? [
     { label: 'Date of Submission', value: data.Date_of_Submission.split("T")[0] },
     ...(data.Status_of_proposal === 'Approved' && data.Date_of_Approval ? [
       { label: 'Date of Approval', value: data.Date_of_Approval.split("T")[0] }
@@ -36,7 +36,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
     ...(data.Status_of_proposal === 'Approved' ? [
       { label: 'Status of Project', value: data.Status_of_project }
     ] : [])
-  ];
+  ]: [];
 
   const piDetails = [
     { label: 'Name of Pi', value: data.Name_of_pi },
@@ -112,7 +112,9 @@ const Researchprojectdata = ({ isOpen, closeModal, data }) => {
       });
     
   } 
-  if (data.reviwedbyIRB === "Yes") {
+  if (data.reviwedbyIRB === "Yes" &&
+ data.Status_of_proposal === "Submitted" &&
+  data.type_of_research !== "Contract Research") {
       imageData.push({
         label: 'Meeting Minutes Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_meetingminutes.png`

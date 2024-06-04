@@ -9,7 +9,6 @@ export default function Welcome() {
         <div className="flex flex-col" >
           
           <span className="text-2xl font-bold">Hello {user.name}!</span>
-          <span className="text-xl font-semibold">{user.designation}</span>
           
           <span>Its good to see you again.</span>
         </div>

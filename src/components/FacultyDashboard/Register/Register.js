@@ -24,6 +24,7 @@ export default function Register() {
   const validateForm = async () => {
     const newErrors = {};
     let isValid = true;
+  
     const requiredFields = [
       { field: "name", value: name, error: "Name is required" },
       { field: "email", value: email, error: "Email is required" },
@@ -61,52 +62,67 @@ export default function Register() {
       },
       { field: "cnic", value: cnic, error: "CNIC is required" },
     ];
-
+  
     requiredFields.forEach(({ field, value, error }) => {
       if (value.trim() === "") {
         newErrors[field] = error;
         isValid = false;
       }
     });
-
+  
     if (cnic && !/^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic)) {
       newErrors.cnic = "Invalid CNIC format.";
       isValid = false;
     }
-
+  
     if (password && confirmPassword && password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
       isValid = false;
     }
-
+  
     if (!isValid) {
       setErrors(newErrors);
       return false;
     }
+  
     try {
-      const response = await axios.post("/api/faculty/fieldscheck", {
-        name,
-        username,
-        email,
-        cnic,
-        phoneNumber,
+      const response = await axios.post('/api/faculty/feildscheck', {
+        username: username,
+        email: email,
+        cnic: cnic,
+        name: name,
       });
-      const existingFields = response.data;
+      console.log(response.data)
 
-      Object.entries(existingFields).forEach(([field, exists]) => {
-        if (exists) {
-          newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
-          isValid = false;
-        }
-      });
+      const data = response.data;
+      alert("Data from API:",data.username);
+
+      if (data.username) {
+        newErrors.username = 'Username already exists';
+        isValid = false;
+      }
+      if (data.email) {
+        newErrors.email = 'Email already exists';
+        isValid = false;
+      }
+      if (data.cnic) {
+        newErrors.cnic = 'CNIC already exists';
+        isValid = false;
+      }
+      if (data.name) {
+        newErrors.name = 'Name already exists';
+        isValid = false;
+      }
     } catch (error) {
-      console.error("Error checking existing fields:", error);
+      console.error('Error checking existing fields:', error);
+      newErrors.general = 'Error checking existing fields';
       isValid = false;
     }
 
-    setErrors(newErrors);
-    return isValid;
   };
+  
+
+ 
 
   const handleRegister = async () => {
     if (await validateForm()) {
