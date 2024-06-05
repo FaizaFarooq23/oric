@@ -43,7 +43,7 @@ export default function SuccessModal({ isOpen, onClose, p }) {
         <div className="bg-white rounded-lg p-6 flex flex-row items-center">
           <h1 className="text-lg font-semibold text-center">{p}</h1>
           <span className="checkmark-animation">
-            <RiCheckLine className="text-green-500 text-6xl mb-4" />
+            <RiCheckLine className="text-green-500 text-4xl mb-4" />
           </span>
         </div>
       </div>

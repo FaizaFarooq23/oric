@@ -70,7 +70,7 @@ export default function RevenueByHEITab() {
           onClick={openModal}
         />
       </div>
-      <div className='h-[60vh] overflow-y-scroll no-scrollbar'>
+      <div className='h-[70vh] overflow-y-scroll no-scrollbar'>
     {isFormVisible && (
      <ReveneueByHEIForm/>
     )}
