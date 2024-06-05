@@ -34,24 +34,7 @@ export default async function handler(req, res) {
     ]
 
     for (let i = 0; i < projects.length; i++) {
-        if (projects[i].Status_of_project === "Ongoing") {
-          ongoing_projects++;
-        } else {
-          complete_projects++;
-        }
-  
-        funding += parseFloat(projects[i].funding_approved);
-  
-        const start_date = new Date(projects[i].start_Date);
-        const currentYear = new Date().getFullYear();
-  
-        if (
-          (start_date.getMonth() >= 6 && start_date.getFullYear() === currentYear - 1) ||
-          (start_date.getMonth() < 6 && start_date.getFullYear() === currentYear)
-        ) {
-          research_in_a_fiscal_year++;
-        }
-  
+        
         const Date_of_Submission = new Date(projects[i].Date_of_Submission);
         if (Date_of_Submission) {
           const month = Date_of_Submission.getMonth();
@@ -68,10 +51,7 @@ export default async function handler(req, res) {
       }
   
       res.status(200).json({
-        ongoing_projects,
-        complete_projects,
-        funding,
-        research_in_a_fiscal_year,
+       
         month_researches,
       });
     } catch (error) {

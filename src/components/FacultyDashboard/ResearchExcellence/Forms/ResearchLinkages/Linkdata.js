@@ -19,8 +19,8 @@ const Linkdata = ({ isOpen, closeModal, data, admin }) => {
   ];
 
   const formattedLinkDataStage3 = [
-    { label: 'Collaborating Agency Name', value: data.Collaborating_Agency },
-    { label: 'Collaborating Agency Address', value: data.Collaborating_Agency_Address },
+    { label: 'Collaborating Agency Name', value: data.Collaborating_Agency?data.Collaborating_Agency:"N/A" },
+    { label: 'Collaborating Agency Address', value: data.Collaborating_Agency_Address?data.Collaborating_Agency_Address:"N/A" },
   ];
   const formattedLinkDataStage4 = [
     { label: 'Scope of Collaboration', value: data.Scope },

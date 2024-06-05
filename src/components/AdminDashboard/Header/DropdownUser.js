@@ -67,7 +67,7 @@ const DropdownUser = () => {
         </span>}
         <div className="flex items-center justify-center gap-x-2">
           <span className="h-12 w-12 rounded-full">
-            {userEmail ?
+            {userEmail ==="admin@email.com"?
               <img
                 src={`/uploads/${userEmail}.png`}
                 className="rounded-full"

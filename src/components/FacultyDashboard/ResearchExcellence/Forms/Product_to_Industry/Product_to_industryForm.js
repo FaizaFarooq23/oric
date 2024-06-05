@@ -443,7 +443,7 @@ function Product_to_IndustryForm({children}) {
               )}
            </div>
             </div>
-            <div>
+            <div className="flex flex-col"> 
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -488,7 +488,7 @@ function Product_to_IndustryForm({children}) {
             </h1>
             <div className="grid grid-cols-2 gap-x-3   text-black">
         <label className="text-base font-medium">
-      PdProof Copy</label>
+      PdProof Copy<span className="text-red-500">*</span></label>
       <input
     className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
     type="file"
@@ -500,18 +500,11 @@ function Product_to_IndustryForm({children}) {
     required
   />
   {errors.PdProof && (
-                <span className="text-red-500">{errors.P}</span>
+                <span className="text-red-500">{errors.PdProof}</span>
               )}
  
     </div>
-            <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-
-
-             
-            </div>
-            </div>
-           
+            <div className="flex flex-col">
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -526,6 +519,8 @@ function Product_to_IndustryForm({children}) {
               value={Remarks}
               onChange={handleRemarks}
             />
+            </div>
+            <div className="flex flex-col">
             <label
                 htmlFor="textarea"
                 className="text-base font-medium text-black"
@@ -544,6 +539,7 @@ function Product_to_IndustryForm({children}) {
                {errors.Keyaspects && (
               <span className="text-red-500">{errors.Keyaspects}</span>
             )}
+            </div>
 
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
               <button

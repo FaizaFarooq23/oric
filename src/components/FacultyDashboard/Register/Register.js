@@ -24,6 +24,7 @@ export default function Register() {
   const validateForm = async () => {
     const newErrors = {};
     let isValid = true;
+  
     const requiredFields = [
       { field: "name", value: name, error: "Name is required" },
       { field: "email", value: email, error: "Email is required" },
@@ -61,24 +62,24 @@ export default function Register() {
       },
       { field: "cnic", value: cnic, error: "CNIC is required" },
     ];
-
+  
     requiredFields.forEach(({ field, value, error }) => {
       if (value.trim() === "") {
         newErrors[field] = error;
         isValid = false;
       }
     });
-
+  
     if (cnic && !/^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic)) {
       newErrors.cnic = "Invalid CNIC format.";
       isValid = false;
     }
-
+  
     if (password && confirmPassword && password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
       isValid = false;
     }
-
+  
     if (!isValid) {
       setErrors(newErrors);
       return false;
@@ -104,9 +105,10 @@ export default function Register() {
     //   isValid = false;
     // }
 
-    setErrors(newErrors);
-    return isValid;
   };
+  
+
+ 
 
   const handleRegister = async () => {
     if (await validateForm()) {

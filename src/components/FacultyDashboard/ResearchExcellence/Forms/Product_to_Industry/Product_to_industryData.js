@@ -25,11 +25,12 @@ const Product_to_Industrydata = ({ isOpen, closeModal, data, admin }) => {
   ];
 
   const additionalData = [
-    { label: 'Fields of Use', value: data.Feild_of_use },
-    { label: 'Financial Support', value: data.Financial_support },
-    { label: 'Key Aspects', value: data.KeyAspects },
-    { label: 'Remarks', value: data.Remarks },
-  ];
+    { label: 'Fields of Use', value: data.Feild_of_use ? data.Feild_of_use : "N/A" },
+    { label: 'Financial Support', value: data.Financial_support ? data.Financial_support : "N/A" },
+    { label: 'Key Aspects', value: data.KeyAspects ? data.KeyAspects : "N/A" },
+    { label: 'Remarks', value: data.Remarks ? data.Remarks : "N/A" }
+];
+
   const imageData = [
     {
       label: 'PD Proof',
@@ -56,8 +57,7 @@ const Product_to_Industrydata = ({ isOpen, closeModal, data, admin }) => {
         <DataDisplayModal title="Details of Lead Inventor" data={leadInventorData} gridClassName="grid-cols-2"/>
         <DataDisplayModal title="Details of Collaborating Industry Partner" data={partnerData} gridClassName="grid-cols-2" />
         <DataDisplayModal title="Additional Details" data={additionalData} />
-
-        
+        <ImageDisplay title={"Pd Proof"} data={imageData}/>
       </div>
     </Modal>
   );

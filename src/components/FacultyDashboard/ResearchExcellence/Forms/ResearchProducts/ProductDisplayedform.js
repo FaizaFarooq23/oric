@@ -404,6 +404,7 @@ function Product_DisplayedForm({children}) {
               <span className="text-red-500">{errors.Name_of_Forum}</span>
             )}
             </div>
+            <div className="flex flex-col">
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -418,6 +419,7 @@ function Product_DisplayedForm({children}) {
               value={Detail_of_Forum}
               onChange={handleDetail_of_Forumchange}
             />
+            </div>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
               <button
                 onClick={prevStage}
@@ -439,7 +441,7 @@ function Product_DisplayedForm({children}) {
       {stage === 4 && (
         <>
           <div className="grid gap-y-8 grid-col bg-white shadow-lg rounded-md px-6 py-2 w-[60rem] mt-4 max-h-full">
-            <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
+            <h1 className="text-blue-900   font-bold text-xl py-2 border-black">
               Additional Details
             </h1>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">

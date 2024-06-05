@@ -224,6 +224,7 @@ function ConsultacyContract({ children }) {
     }
      catch (error) {
       console.error("Error inserting information:", error);
+      setSubmitting(false)
     }finally {
       setSubmitting(false);
     }

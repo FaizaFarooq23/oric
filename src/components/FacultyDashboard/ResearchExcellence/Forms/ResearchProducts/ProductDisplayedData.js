@@ -39,7 +39,7 @@ const Product_Displayeddata = ({ isOpen, closeModal, data, admin }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Product Display Data"
-      className={`flex gap-y-8 flex-col bg-white shadow-lg  pb-8 max-h-screen overflow-y-auto mx-auto rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'} `}
+      className={`flex gap-y-8 flex-col bg-white shadow-lg  pb-8 max-h-screen overflow-y-auto  rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'} `}
     >
       <div>
         <div className="flex justify-end items-end gap-x-6">
