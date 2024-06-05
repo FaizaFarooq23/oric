@@ -46,7 +46,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
   ];
 
   const copiDetails = data.type_of_research === 'Joint Research' ? [
-    { label: 'Name of CoPi', value: data.Name_of_CoPi },
+    { label: 'Name of CoPi', value: data.Name_of_Copi },
     { label: 'Department of CoPi', value: data.Department_of_CoPi },
     { label: 'Designation of CoPi', value: data.Designation_of_CoPi },
     { label: 'University of CoPi', value: data.University_of_CoPi }

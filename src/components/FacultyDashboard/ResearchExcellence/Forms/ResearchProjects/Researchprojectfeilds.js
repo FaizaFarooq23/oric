@@ -99,14 +99,17 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       if (!DateofApproval) {
         formErrors.DateofApproval = "Date of Approval is required";
       }
-      if((data.type_of_research === "Solo Project") && (data.category === "HEC") &&(!ORIC_overhead))
-     {
-      formErrors.ORIC_overhead = "ORIC Overhead is required";
+      if((data.type_of_research === "Solo Project")){
+        if( (data.category === "HEC") &&(!ORIC_overhead))
+          {
+           formErrors.ORIC_overhead = "ORIC Overhead is required";
+           }
+          else if(!numericPattern.test(ORIC_overhead)){
+             formErrors.ORIC_overhead="Feild must be in numeric"
+           }
+           
       }
-      else if(!numericPattern.test(ORIC_overhead)){
-        formErrors.ORIC_overhead="Feild must be in numeric"
-      }
-      
+     
       if (!fundingApproved) {
         formErrors.fundingApproved = "Funding Approved is required";
       }
@@ -172,14 +175,14 @@ export default function Researchprojectfeilds({ data, onDelete }) {
         formErrors.fundingUtilized = "Funding Utilized is required";
       }
       else if(!numericPattern.test(fundingUtilized)){
-        formErrors.fundingUtilized="Feild can't be in numeric"
+        formErrors.fundingUtilized="Feild must contain numerics"
         
       }
       if (!fundingRealesed) {
         formErrors.fundingRealesed = "Funding Released is required";
       }
       else if(!numericPattern.test(fundingRealesed)){
-        formErrors.fundingRealesed="Feild can't be in numeric"
+        formErrors.fundingRealesed="Feild  must contain numerics"
         
       }
       if (!delivery) {
@@ -194,6 +197,10 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       }else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
         formErrors.CompletionLetterCopy = "File formate not supported ";
       } 
+      else if(!textSymbolPattern.test(fundingagency)){
+        formErrors.fundingagency="Feild can't be in numeric"
+        
+      }
     }
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
@@ -432,7 +439,7 @@ else{
                             handleOptionChange={handleStatus_of_projectChange}
                             required
                           />
-                          { typeofresearch==="Contract Researches" || Status_of_proposal==="Approved" &&
+                          { data.typeofresearch==="Contract Researches" || Status_of_proposal==="Approved" &&
                           <div>
                             
                           <InputField
@@ -589,7 +596,7 @@ else{
                 isOpen={editingproject}
                 onRequestClose={() => setEditingproject(false)}
                 contentLabel="Edit Project Status"
-                className={`flex my-10 w-4/5  mx-auto   bg-white shadow-lg rounded-md p-4`}
+                className={`flex my-10 max-h-full overflow-y-scroll no-scrollbar w-4/5  mx-auto bg-white shadow-lg rounded-md p-4`}
               >
                 <div className="flex px-10 py-4  flex-col">
                   <div className="flex flex-row justify-between py-2 m-2 gap-x-10 ">
@@ -613,7 +620,7 @@ else{
                     </div>
                   </div>
 
-                  <div className="flex ">
+                  <div >
                     <div className="grid grid-cols-2 gap-x-16 gap-y-10 ">
                       <div>
                       <Dropdown
@@ -655,12 +662,21 @@ else{
                           />
                            {errors.Date_of_Completion && <p className="text-red-500">{errors.Date_of_Completion}</p>}
                           </div>
+                          <div>
+                          <InputField
+                              label={"Funding Agency/Body"}
+                              value={fundingagency}
+                              setVal={setfundingagency}
+                              required
+                            />
+                             {errors.funding_agency && <p className="text-red-500">{errors.funding_agency}</p>}
+                             </div>
                         </>
                       )}
                        {Status_of_project === "Completed" && (
                     <>
 
-                       {errors.delivery && <p className="text-red-500">{errors.delivery}</p>}
+                      
                       <div className="grid grid-cols-2 gap-x-3   text-black">
                         <label className="text-base font-medium">
                           Completion Letter Copy{" "}
@@ -680,23 +696,20 @@ else{
                       </div>
                     </>
                   )}
-                      {data.typeofresearch !== "Contract Research" &&
+                      
+                    </div>
+                    {data.typeofresearch !== "Contract Research" &&
                         Status_of_project === "Completed" && (
-                          <div>
-                            <InputField
-                              label={"Funding Agency/Body"}
-                              value={fundingagency}
-                              setVal={setfundingagency}
-                              required
-                            />
-                             {errors.funding_agency && <p className="text-red-500">{errors.funding_agency}</p>}
-                             <div className="flex -flex-cols">
+                          
+                           
+                      <div className="flex mt-2 flex-col">
                              <label
                         htmlFor="textarea"
                         className="text-base mt-2 font-medium text-black"
                       >
                         Write key project deliverables
                         <span className="text-red-500">*</span>
+                        {errors.delivery && <p className="text-red-500">{errors.delivery}</p>}
                       </label>
                       <textarea
                         className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
@@ -708,9 +721,8 @@ else{
                         onChange={handledeliverychange}
                       />
                       </div>
-                          </div>
+                        
                         )}
-                    </div>
                   </div>
                 
                 </div>
