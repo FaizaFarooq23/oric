@@ -48,13 +48,13 @@ export default function AwardsModal({ children }) {
     }
   };
   
+  const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+    const numericPattern = /\d/;
   
   const validateFormStage1 = async () => {
     let valid = true;
     const newErrors = {};
-    const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
-    const numericPattern = /\d/;
-  
+    
     if (title.trim() === "") {
       newErrors.title = "Title is required";
       valid = false;
@@ -142,6 +142,9 @@ export default function AwardsModal({ children }) {
   const validateFormStage3 = () => {
     let valid = true;
     const newErrors = {};
+  
+    const textPattern = /^[A-Za-z]+$/;
+    const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
   
     if (details.trim() === "") {
       newErrors.details = "Brief Detail of Work Honoured is required";
