@@ -457,7 +457,83 @@ function Researchprojectform({ children }) {
     return valid;
   };
 
-
+  const validateFormStage4 = () => {
+    let valid = true;
+    const newErrors = {};
+    const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  
+    if (
+      typeofresearch !== "Contract Research" &&
+      Status_of_project === "Completed" &&
+      fundingagency.trim() === ""
+    ) {
+      newErrors.fundingagency = "Funding agency is required";
+      valid = false;
+    } else if (fundingagency && !textAndSymbolPattern.test(fundingagency)) {
+      newErrors.fundingagency = "Funding agency must not contain numeric values";
+      valid = false;
+    } else {
+      newErrors.fundingagency = "";
+    }
+  
+    if (fundingRequested.trim() === "" && typeofresearch !== "Contract Research") {
+      newErrors.fundingRequested = "Funding Requested is required";
+      valid = false;
+    } else if (fundingRequested && !/^\d+$/.test(fundingRequested)) {
+      newErrors.fundingRequested = "Funding Requested must contain only numeric digits";
+      valid = false;
+    } else {
+      newErrors.fundingRequested = "";
+    }
+  
+    if (Status_of_proposal === "Approved" || typeofresearch === "Contract Research") {
+      if (fundingApproved.trim() === "") {
+        newErrors.fundingApproved = "Funding Approved is required";
+        valid = false;
+      } else if (!/^\d+$/.test(fundingApproved)) {
+        newErrors.fundingApproved = "Funding Approved must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingApproved = "";
+      }
+    }
+  
+    if (Status_of_project === "Completed" && typeofresearch !== "Contract Research") {
+      if (fundingUtilized.trim() === "") {
+        newErrors.fundingUtilized = "Funding Utilized is required";
+        valid = false;
+      } else if (fundingUtilized && !/^\d+$/.test(fundingUtilized)) {
+        newErrors.fundingUtilized = "Funding Utilized must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingUtilized = "";
+      }
+  
+      if (fundingRealesed.trim() === "") {
+        newErrors.fundingRealesed = "Funding Released is required";
+        valid = false;
+      } else if (fundingRealesed && !/^\d+$/.test(fundingRealesed)) {
+        newErrors.fundingRealesed = "Funding Released must contain only numeric digits";
+        valid = false;
+      } else {
+        newErrors.fundingRealesed = "";
+      }
+    }
+  
+    if (CollaboratingPartner && !textAndSymbolPattern.test(CollaboratingPartner)) {
+      newErrors.CollaboratingPartner = "Collaborating Partner must not contain numeric values";
+      valid = false;
+    }
+  
+    if (CofundingPartner && !textAndSymbolPattern.test(CofundingPartner)) {
+      newErrors.CofundingPartner = "Cofunding Partner must not contain numeric values";
+      valid = false;
+    }
+  
+    setErrors(newErrors);
+    return valid;
+  };
+  
   
 
   const validateFormStage5 = () => {
@@ -566,22 +642,26 @@ function Researchprojectform({ children }) {
     // Count the number of words
     const DeliverywordCount = deliveryWords.length;
 
-    if (delivery.trim() === "" && Status_of_project === "Completed") {
-      newErrors.delivery =
-        "Key Project Deleiverables are required  is required";
-      valid = false;
-    }
-    // Check if word count exceeds 1500
-    else if (DeliverywordCount > 1500) {
-      newErrors.delivery =
-        "Key Project Deliverables should contain no more than 1500 words";
-      valid = false;
-    }if (!textAndSymbolPattern.test(delivery) ) {
-      newErrors.delivery = "Key Project delievery must not contain numeric values";
-      valid = false;
-    } else {
-      newErrors.delivery = "";
-    }
+if(Status_of_project === "Completed"){
+  if (delivery.trim() === "" ) {
+    newErrors.delivery =
+      "Key Project Deleiverables are required  is required";
+    valid = false;
+  }
+  // Check if word count exceeds 1500
+  else if (DeliverywordCount > 1500) {
+    newErrors.delivery =
+      "Key Project Deliverables should contain no more than 1500 words";
+    valid = false;
+  }if (!textAndSymbolPattern.test(delivery) ) {
+    newErrors.delivery = "Key Project delievery must not contain numeric values";
+    valid = false;
+  } else {
+    newErrors.delivery = "";
+  }
+}
+
+    
     // Check if word count exceeds 1500
     const RemarksWords = Remarks.trim().split(/\s+/);
     // Count the number of words
@@ -1619,7 +1699,7 @@ function Researchprojectform({ children }) {
                     id="Textarea"
                     value={Remarks}
                     onChange={handleRemarkschange}
-                    required
+                   
                   />
                   {errors.Remarks && (
                     <span className="text-red-500">{errors.Remarks}</span>

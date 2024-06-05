@@ -113,13 +113,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     });
     
   } 
-  if (data.type_of_research === "Contract Research") {
-      imageData.push({
-        label: 'Contract Agreement Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.title}_ContractAgreementCopy.png`
-      });
-    
-  } 
+  
   if (data.reviwedbyIRB === "Yes") {
       imageData.push({
         label: 'Meeting Minutes Copy',
@@ -134,7 +128,13 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     });
   }
   }
- 
+  if (data.type_of_research === "Contract Research") {
+    imageData.push({
+      label: 'Contract Agreement Copy',
+      value: `/uploadFile/${data.username}/research_project/${data.title}_ContractAgreementCopy.png`
+    });
+  
+} 
   return (
     <Modal
       isOpen={isOpen}
@@ -155,7 +155,10 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       {sponsorDetails.length > 0 && <DataDisplayModal title="Details of Sponsoring Agency" data={sponsorDetails} gridClassName="grid-cols-2" />}
       <DataDisplayModal title="Details of IRB Review" data={irbDetails} gridClassName="grid-cols-2" />
       <DataDisplayModal title="Details of Funding (PKR Million)" data={fundingDetails} gridClassName="grid-cols-2" />
-      <DataDisplayModal title="Details of Partners" data={partnerDetails} gridClassName="grid-cols-2" />
+     {
+ data.type_of_research!=="Contract Research" &&
+ <DataDisplayModal title="Details of Partners" data={partnerDetails} gridClassName="grid-cols-2" />
+     }
       <DataDisplayModal title="Remarks" data={remarks}  />
       {deliverables.length > 0 && <DataDisplayModal title="Key Project Deliverables" data={deliverables}  />}
       {imageData.length > 0 && (

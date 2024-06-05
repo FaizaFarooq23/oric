@@ -103,15 +103,15 @@ export default function Researchprojectfeilds({ data, onDelete }) {
      {
       formErrors.ORIC_overhead = "ORIC Overhead is required";
       }
-      else if(!textSymbolPattern.test(title)){
-        formErrors.title="Feild can't be in numeric"
+      else if(!numericPattern.test(ORIC_overhead)){
+        formErrors.ORIC_overhead="Feild must be in numeric"
       }
       
       if (!fundingApproved) {
         formErrors.fundingApproved = "Funding Approved is required";
       }
-      else if(!textSymbolPattern.test(title)){
-        formErrors.title="Feild can't be in numeric"
+      else if(!numericPattern.test(fundingApproved)){
+        formErrors.fundingApproved="Feild must be in numerics";
         
       }
       if (!fundingagency) {
@@ -432,7 +432,9 @@ else{
                             handleOptionChange={handleStatus_of_projectChange}
                             required
                           />
+                          { typeofresearch==="Contract Researches" || Status_of_proposal==="Approved" &&
                           <div>
+                            
                           <InputField
                             label={"Total Funding Approved(PKR)"}
                             value={fundingApproved}
@@ -441,6 +443,7 @@ else{
                           />
                            {errors.fundingApproved && <p className="text-red-500">{errors.fundingApproved}</p>}
                            </div>
+}
                           {data.typeofresearch !== "Contract Research" && (
                             <div>
                               <InputField
