@@ -39,7 +39,7 @@ export default function SuccessModal({ isOpen, onClose, p }) {
       overlayClassName="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 p-2 z-50"
     >
       <style>{animationStyles}</style>
-      <div className="flex flex-row bg-white rounded-lg p-4">
+      <div className="flex flex-row items-center bg-white rounded-lg p-4">
         <div className="bg-white rounded-lg p-6 flex flex-row items-center">
           <h1 className="text-lg font-semibold text-center">{p}</h1>
           <span className="checkmark-animation">

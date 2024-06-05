@@ -9,7 +9,7 @@ export default function RightPanel() {
     console.log(session);
   }, [session]);
   return (
-    <div className='flex flex-col  mt-8 gap-y-4 pr-6'>
+    <div className='flex flex-col mt-4 gap-y-4 pr-6'>
         <Search/>
         <PersonalData username={session.user.username} />
         <Chart/>

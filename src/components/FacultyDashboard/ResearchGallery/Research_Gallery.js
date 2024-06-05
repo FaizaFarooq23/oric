@@ -34,7 +34,7 @@ function Research_Gallery() {
       </div>
       <div>
       <hr className="my-4 border-t-2 color-black border-black-300 " />
-      <div className="text-2xl m-2 items-center text-center font-base  justify-center align-center italic font-sans ">
+      <div className="text-2xl m-2 items-center text-center font-bold text-blue-900 justify-center align-center   ">
         <h1>Research Projects</h1>
       </div>
       </div>

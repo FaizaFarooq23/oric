@@ -64,7 +64,7 @@ export default function Login({ adminLogin, facultyLogin, setAdminLogin }) {
                   htmlFor="username"
                   className="block text-sm font-medium text-white"
                 >
-                  Username
+                  Email
                 </label>
                 <input
                   onChange={(e) => {

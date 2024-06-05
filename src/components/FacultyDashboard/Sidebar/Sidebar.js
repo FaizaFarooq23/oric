@@ -32,7 +32,7 @@ export default function Sidebar() {
   };
 
   const handleSettingsClick = () => {
-    router.push("/settings");
+    router.push("/guidelines");
   };
 
   const handleLogout = () => {
@@ -87,7 +87,7 @@ export default function Sidebar() {
               className="h-6 w-6 text-white cursor-pointer"
             />
           )}
-          {router.pathname !== "/settings" ? (
+          {router.pathname !== "/guidelines" ? (
             <IoDocumentTextOutline className="h-6 w-6 text-white cursor-pointer"
             onClick={handleSettingsClick}
 

@@ -36,6 +36,8 @@ export default function SustainabilityTabs() {
 
   return (
     <>
+  
+     
       <div className="grid grid-cols-2 h-[60vh] text-base font-semibold  gap-y-10   px-4 pb-10 pt-5 rounded-[10px] w-full my-10">
         <div className="flex flex-col justify-start gap-y-10 pt-10 pl-6 ">
           {tabs.map((tab, index) => (
