@@ -72,6 +72,10 @@ const DropdownUser = () => {
                 src={`/uploads/${userEmail}.png`}
                 className="rounded-full"
                 alt="User"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/images/profile.png";
+                }}
               /> : <img
                 src="/images/profile.png"
                 className="rounded-full"

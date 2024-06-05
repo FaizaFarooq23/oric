@@ -371,7 +371,7 @@ model Training_Events {
 model Research_Calls {
   id                   Int       @id @default(autoincrement())
   Thematic_Area        String?   @db.VarChar(255)
-  Deadline             DateTime? @db.DateTime(6)
+  Deadline             String?   @db.VarChar(255)
   Research_link        String?   @db.VarChar(255)
   Contact_Details      String?   @db.VarChar(255)
   Mailing_Address      String?   @db.VarChar(2500)
