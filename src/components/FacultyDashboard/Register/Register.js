@@ -104,7 +104,7 @@ export default function Register() {
     //   console.error("Error checking existing fields:", error);
     //   isValid = false;
     // }
-
+      return isValid;
   };
   
 

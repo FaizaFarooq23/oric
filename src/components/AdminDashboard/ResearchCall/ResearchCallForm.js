@@ -18,6 +18,8 @@ export default function ResearchCallForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const result = confirm("Are you sure you want to submit?");
+    if (!result) return;
 
     if (
       !formData.thematicArea ||
