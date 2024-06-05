@@ -32,9 +32,9 @@ function UserSupport() {
 
   return (
     <>
-      <div className="text-2xl m-4 items-center flex flex-row  text-center font-base  justify-center align-center  font-sans ">
-        <h1 className="text-3xl">ORIC :</h1>
-        <h1 className="italic">
+      <div className="text-2xl  items-center flex flex-row  text-center   justify-center align-center  ">
+        <h1 className="text-3xl text-blue-900 font-bold">ORIC :</h1>
+        <h1 className="font-bold text-blue-900">
           {" "}
           Office of Research, Innovation And Commercialization
         </h1>

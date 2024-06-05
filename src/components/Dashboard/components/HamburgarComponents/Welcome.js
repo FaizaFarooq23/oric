@@ -5,8 +5,9 @@ export default function Welcome({ notice }) {
   const { user } = useContext(UserContext);
   return (
     <div>
-      <div className="flex justify-between items-center w-50% bg-red-200 p-2 mt-8 rounded-lg">
-        {notice &&
+      {notice &&
+        <div className="flex justify-between items-center w-50% bg-red-200 p-2 mt-8 rounded-lg">
+
           <div className="flex flex-col" >
             <span className="text-xl font-bold">Highlights</span>
             <span className="text-sm font-semibold">
@@ -15,8 +16,9 @@ export default function Welcome({ notice }) {
               For more details, please contact {notice.Mailing_Address} or {notice.Contact_Details}.
             </span>
           </div>
-        }
-      </div>
+
+        </div>
+      }
       <div className="flex justify-between items-center w-50% bg-div-gray px-4 mt-8 rounded-lg">
         {user &&
           <div className="flex flex-col" >

@@ -11,7 +11,7 @@ export default function index() {
     <Baselayout >
     
     <div className='flex justify-center flex-col gap-x-6 px-8' >
-      <div className='text-2xl m-2 items-center text-center font-base  justify-center align-center italic font-sans '>
+      <div className='text-2xl m-2 items-center text-center font-bold  justify-center align-center text-blue-900 '>
   <h1> Research Gallery
     </h1>
        </div>
