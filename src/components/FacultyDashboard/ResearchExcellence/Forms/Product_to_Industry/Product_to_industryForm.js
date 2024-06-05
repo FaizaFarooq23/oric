@@ -443,7 +443,7 @@ function Product_to_IndustryForm({children}) {
               )}
            </div>
             </div>
-            <div className="flex fex-col"> 
+            <div className="flex flex-col"> 
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -500,14 +500,11 @@ function Product_to_IndustryForm({children}) {
     required
   />
   {errors.PdProof && (
-                <span className="text-red-500">{errors.P}</span>
+                <span className="text-red-500">{errors.PdProof}</span>
               )}
  
     </div>
-            <div className="grid grid-cols-2 w-auto gap-y-8 gap-x-16 ">
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-            </div>
-            </div>
+            <div className="flex flex-col">
             <label
               htmlFor="textarea"
               className="text-base font-medium text-black"
@@ -522,6 +519,8 @@ function Product_to_IndustryForm({children}) {
               value={Remarks}
               onChange={handleRemarks}
             />
+            </div>
+            <div className="flex flex-col">
             <label
                 htmlFor="textarea"
                 className="text-base font-medium text-black"
@@ -540,6 +539,7 @@ function Product_to_IndustryForm({children}) {
                {errors.Keyaspects && (
               <span className="text-red-500">{errors.Keyaspects}</span>
             )}
+            </div>
 
             <div className="grid grid-cols-2 gap-y-8 gap-x-16">
               <button

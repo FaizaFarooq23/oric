@@ -52,7 +52,7 @@ function Research_Gallery() {
                 <h3 className="text-lg font-semibold">Title: {item.title}</h3>
                 <hr className="border-t-2 border-blue-900" />
                 <h3 className="text-base">
-                  Thematic Area : {item.thematic_area}
+                  Thematic Area : {item.Thematic_Area}
                 </h3>
                 <h3 className="text-base">
                   Department : {item.Department_of_Pi}

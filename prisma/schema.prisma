@@ -201,7 +201,7 @@ model Awards{
    Title_of_award String @db.VarChar(255)
    Name_of_organization String @db.VarChar(255)
   Relevant_Award String? @db.VarChar(255)
-  Breif_Details String? @db.VarChar(255)
+  Breif_Details String? @db.VarChar(2500)
   Amount_of_prize  String? @db.VarChar(255)
   Name_of_winner String @db.VarChar(255)
   Designation_of_winner String? @db.VarChar(255)

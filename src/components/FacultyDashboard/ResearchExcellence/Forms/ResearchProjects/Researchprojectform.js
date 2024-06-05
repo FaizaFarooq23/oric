@@ -195,100 +195,128 @@ function Researchprojectform({ children }) {
     TitleofResearch,
     '/api/Research_projects/get_research_project'
   );
-  
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+    const percentagePattern = /^100%?$|^(\d{1,2}(\.\d+)?%)$/;
+    const numericPattern = /\d/;
   const validateFormStage1 = async () => {
     let valid = true;
     const newErrors = {};
-
+    
     if (TitleofResearch.trim() === "") {
       newErrors.TitleofResearch = "Title of Research Proposal is required";
       valid = false;
     } else if (isExistingProject) {
       newErrors.TitleofResearch = "A Project with this title already exists for you";
       valid = false;
+    } else if (!textAndSymbolPattern.test(TitleofResearch)) {
+      newErrors.TitleofResearch = "Title of Research Proposal can only contain letters and symbols";
+      valid = false;
     } else {
-      newErrors.TitleofResearch= "";
+      newErrors.TitleofResearch = "";
     }
+  
     if (ThematicArea.trim() === "") {
       newErrors.ThematicArea = "Thematic Area is required";
+      valid = false;
+    } else if (!textAndSymbolPattern.test(ThematicArea)) {
+      newErrors.ThematicArea = "Title of Research Proposal can only contain letters and symbols";
       valid = false;
     } else {
       newErrors.ThematicArea = "";
     }
-
     if (
-      ORIC_overhead.trim() === "" &&
       typeofresearch === "Solo Project" &&
       category === "HEC" &&
       Status_of_proposal === "Approved"
     ) {
-      newErrors.ORIC_overhead = "Oric Overhead is required";
-      valid = false;
-    } else {
-      newErrors.ORIC_overhead = "";
+      if (ORIC_overhead.trim() === "") {
+        newErrors.ORIC_overhead = "Oric Overhead is required";
+        valid = false;
+      } else if (!numericPattern.test(ORIC_overhead)) {
+        newErrors.ORIC_overhead = "ORIC Overhead must be a valid percentage (e.g., 15% or 100%)";
+        valid = false;
+      } else {
+        newErrors.ORIC_overhead = "";
+      }
     }
-    if (Counterparts.trim() === "" && typeofresearch === "Contract Research") {
-      newErrors.Counterparts = "Counter Parts from Industry is required";
-      valid = false;
+  
+    if (typeofresearch !== "Contract Research") {
+      if (NameResearchGrant.trim() === "") {
+        newErrors.NameResearchGrant = "Name of Research Grant is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(NameResearchGrant)) {
+        newErrors.NameResearchGrant = "Name of Research Grant can only contain letters and symbols";
+        valid = false;
+      } else {
+        newErrors.NameResearchGrant = "";
+      }
     } else {
-      newErrors.Counterparts = "";
+      if (Counterparts.trim() === "") {
+        newErrors.Counterparts = "Counter Parts from Industry is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(Counterparts)) {
+        newErrors.Counterparts = "Counter Parts from Industry can only contain letters and symbols";
+        valid = false;
+      } else {
+        newErrors.Counterparts = "";
+      }
     }
-    if (NameResearchGrant.trim() === "") {
-      newErrors.NameResearchGrant = "Name of Research Grant  is required";
-      valid = false;
-    } else {
-      newErrors.NameResearchGrant = "";
-    }
+  
+    
+  
     setErrors(newErrors);
     return valid;
   };
-  
   const validateFormStage2 = () => {
     let valid = true;
     const newErrors = {};
-    if (
-      DateofContractSigned.trim() === "" &&
-      typeofresearch === "Contract Research"
-    ) {
-      newErrors.DateofContractSigned = "Date of contract signed is required";
-      valid = false;
-    } else {
-      newErrors.DateofContractSigned = "";
+    if(typeofresearch==="Contract Research"){
+      if (
+        DateofContractSigned.trim() === "" 
+      ) {
+        newErrors.DateofContractSigned = "Date of contract signed is required";
+        valid = false;
+      } else {
+        newErrors.DateofContractSigned = "";
+      }
+      if (
+        DateofContract.trim() === "" &&
+        typeofresearch === "Contract Research"
+      ) {
+        newErrors.DateofContract = "Date of contract  is required";
+        valid = false;
+      } else {
+        newErrors.DateofContract = "";
+      }
     }
-    if (
-      DateofContract.trim() === "" &&
-      typeofresearch === "Contract Research"
-    ) {
-      newErrors.DateofContract = "Date of contract  is required";
-      valid = false;
-    } else {
-      newErrors.DateofContract = "";
+    else{
+      if (
+        DateofSubmission.trim() === "" &&
+        typeofresearch !== "Contract Research"
+      ) {
+        newErrors.DateofSubmission = "Date of Submission  is required";
+        valid = false;
+      } else {
+        newErrors.DateofSubmission = "";
+      }
+      if (DateofCompletion.trim() === "" && Status_of_project === "Completed") {
+        newErrors.DateofCompletion = "Date of Completion  is required";
+        valid = false;
+      } else {
+        newErrors.DateofCompletion = "";
+      }
+      if (
+        DateofApproval.trim() === "" &&
+        Status_of_proposal === "Approved" &&
+        typeofresearch !== "Contract Research"
+      ) {
+        newErrors.DateofApproval = "Date of Approval  is required";
+        valid = false;
+      } else {
+        newErrors.DateofApproval = "";
+      }
     }
-    if (
-      DateofSubmission.trim() === "" &&
-      typeofresearch !== "Contract Research"
-    ) {
-      newErrors.DateofSubmission = "Date of Submission  is required";
-      valid = false;
-    } else {
-      newErrors.DateofSubmission = "";
-    }
-    if (DateofCompletion.trim() === "" && Status_of_project === "Completed") {
-      newErrors.DateofCompletion = "Date of Completion  is required";
-      valid = false;
-    } else {
-      newErrors.DateofCompletion = "";
-    }
-    if (
-      DateofApproval.trim() === "" &&
-      Status_of_proposal === "Approved" &&
-      typeofresearch !== "Contract Research"
-    ) {
-      newErrors.DateofApproval = "Date of Approval  is required";
-      valid = false;
-    } else {
-      newErrors.DateofApproval = "";
-    }
+   
     if (startDate.trim() === "") {
       newErrors.startDate = "Start Date is required";
       valid = false;
@@ -323,137 +351,114 @@ function Researchprojectform({ children }) {
     if (Nameofpi.trim() === "") {
       newErrors.Nameofpi = "Name of Pi is required";
       valid = false;
-    } else {
+    }else if (!textAndSymbolPattern.test(Nameofpi)) {
+      newErrors.Nameofpi = "Name of Pi must not contain numeric values";
+      valid = false;
+    }  else {
       newErrors.Nameofpi = "";
     }
     if (DepartmentofPi.trim() === "") {
       newErrors.DepartmentofPi = "Department of Pi is required";
       valid = false;
+    } 
+    else if (!textAndSymbolPattern.test(DepartmentofPi)) {
+      newErrors.DepartmentofPi = "Department of Pi must not contain numeric values";
+      valid = false;
     } else {
       newErrors.DepartmentofPi = "";
     }
+
     if (DesignationofPi.trim() === "") {
       newErrors.DesignationofPi = "Designation of Pi is required";
       valid = false;
-    } else {
+    } 
+    else if (!textAndSymbolPattern.test(DesignationofPi)) {
+      newErrors.DesignationofPi = "DesignationofPi must not contain numeric values";
+      valid = false;
+    } 
+    else {
       newErrors.DesignationofPi = "";
     }
-    if (typeofresearch === "Joint Research" && NameofCopi.trim() === "") {
-      newErrors.NameofCopi = "Name of CoPi is required";
-      valid = false;
-    } else {
-      newErrors.NameofCopi = "";
+    if (typeofresearch === "Joint Research") {
+      if (NameofCopi.trim() === "") {
+        newErrors.NameofCopi = "Name of CoPi is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(NameofCopi)) {
+        newErrors.NameofCopi = "Name of CoPi must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.NameofCopi = "";
+      }
+  
+      if (DepartmentofCoPi.trim() === "") {
+        newErrors.DepartmentofCoPi = "Department of CoPi is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(DepartmentofCoPi)) {
+        newErrors.DepartmentofCoPi = "Department of CoPi must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.DepartmentofCoPi = "";
+      }
+      if (UniversityofCoPi.trim() === "") {
+        newErrors.UniversityofCoPi = "University of CoPi is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(UniversityofCoPi)) {
+        newErrors.UniversityofCoPi = "University of CoPi must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.DesignationofCoPi = "";
+      }
+      if (DesignationofCoPi.trim() === "") {
+        newErrors.DesignationofCoPi = "Designation of CoPi is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(DesignationofCoPi)) {
+        newErrors.DesignationofCoPi = "Designation of CoPi must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.DesignationofCoPi = "";
+      }
     }
-    if (typeofresearch === "Joint Research" && DepartmentofCoPi.trim() === "") {
-      newErrors.DepartmentofCoPi = "Department of CoPi is required";
-      valid = false;
-    } else {
-      newErrors.DepartmentofCoPi = "";
+  
+   
+  
+    if (typeofresearch === "Contract Research") {
+      if (SponceringAgencyName.trim() === "") {
+        newErrors.SponceringAgencyName = "Name of Sponcering Agency is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(SponceringAgencyName)) {
+        newErrors.SponceringAgencyName = "Name of Sponcering Agency must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.SponceringAgencyName = "";
+      }
+  
+      if (SponceringAgencyAddress.trim() === "") {
+        newErrors.SponceringAgencyAddress = "Name of Sponcering Address is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(SponceringAgencyAddress)) {
+        newErrors.SponceringAgencyAddress = "Name of Sponcering Address must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.SponceringAgencyAddress = "";
+      }
+      if (Sponcering_Agency_Country.trim() === "") {
+        newErrors.Sponcering_Agency_Country = "Name of Sponcering country is required";
+        valid = false;
+      } else if (!textAndSymbolPattern.test(Sponcering_Agency_Country)) {
+        newErrors.Sponcering_Agency_Country = "Name of Sponcering country must not contain numeric values";
+        valid = false;
+      } else {
+        newErrors.Sponcering_Agency_Country = "";
+      }
+     
     }
-    if (
-      typeofresearch === "Joint Research" &&
-      DesignationofCoPi.trim() === ""
-    ) {
-      newErrors.DesignationofCoPi = "Designation of CoPi is required";
-      valid = false;
-    } else {
-      newErrors.DesignationofCoPi = "";
-    }
-    if (
-      typeofresearch === "Contract Research" &&
-      SponceringAgencyName.trim() === ""
-    ) {
-      newErrors.SponceringAgencyName = "Name of Sponcering Agency is required";
-      valid = false;
-    } else {
-      newErrors.SponceringAgencyName = "";
-    }
-    if (
-      typeofresearch === "Contract Research" &&
-      SponceringAgencyAddress.trim() === ""
-    ) {
-      newErrors.SponceringAgencyAddress =
-        "Name of Sponcering Address is required";
-      valid = false;
-    } else {
-      newErrors.SponceringAgencyAddress = "";
-    }
-    if (
-      typeofresearch === "Contract Research" &&
-      Sponcering_Agency_Country.trim() === ""
-    ) {
-      newErrors.Sponcering_Agency_Country =
-        "Name of Sponcering AgCountry is required";
-      valid = false;
-    } else {
-      newErrors.Sponcering_Agency_Country = "";
-    }
+  
     setErrors(newErrors);
     return valid;
   };
-  const validateFormStage4 = () => {
-    let valid = true;
-    const newErrors = {};
 
 
-    if (
-      typeofresearch !== "Contract Research" &&
-      Status_of_project === "Completed" &&
-      fundingagency.trim() === ""
-    ) {
-      newErrors.fundingagency = "Funding agency is required";
-      valid = false;
-    } else {
-      newErrors.fundingagency = "";
-    }
-
-    if (fundingRequested.trim() === "") {
-      newErrors.fundingRequested = "Funding Requested is required";
-      valid = false;
-    } else if (!/^\d+$/.test(fundingRequested)) {
-      newErrors.fundingRequested = "Funding Requested must contain only numeric digits";
-      valid = false;
-    } else {
-      newErrors.fundingRequested = "";
-    }
   
-    if (Status_of_proposal === "Approved") {
-      if (fundingApproved.trim() === "") {
-        newErrors.fundingApproved = "Funding Approved is required";
-        valid = false;
-      } else if (!/^\d+$/.test(fundingApproved)) {
-        newErrors.fundingApproved = "Funding Approved must contain only numeric digits";
-        valid = false;
-      } else {
-        newErrors.fundingApproved = "";
-      }
-    }
-  
-    if (Status_of_project === "Completed") {
-      if (fundingUtilized.trim() === "") {
-        newErrors.fundingUtilized = "Funding Utilized is required";
-        valid = false;
-      } else if (!/^\d+$/.test(fundingUtilized)) {
-        newErrors.fundingUtilized = "Funding Utilized must contain only numeric digits";
-        valid = false;
-      } else {
-        newErrors.fundingUtilized = "";
-      }
-  
-      if (fundingRealesed.trim() === "") {
-        newErrors.fundingRealesed = "Funding Released is required";
-        valid = false;
-      } else if (!/^\d+$/.test(fundingRealesed)) {
-        newErrors.fundingRealesed = "Funding Released must contain only numeric digits";
-        valid = false;
-      } else {
-        newErrors.fundingRealesed = "";
-      }
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
 
   const validateFormStage5 = () => {
     let valid = true;
@@ -499,41 +504,43 @@ function Researchprojectform({ children }) {
   const validateFormStage6 = () => {
     let valid = true;
     const newErrors = {};
-  
-    if (!SubmissionEmailCopy) {
-      newErrors.SubmissionEmailCopy = "Email Copy is required";
-      valid = false;
-    } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(SubmissionEmailCopy.type)) {
-      newErrors.SubmissionEmailCopy = "Only jpg, jpeg, and png files are allowed";
-      valid = false;
-    } else {
-      newErrors.SubmissionEmailCopy = "";
-    }
-  
-    if (Status_of_proposal !== "Submitted") {
-      if (!AwardLetterCopy) {
-        newErrors.AwardLetterCopy = "Award Letter is required";
+    if(typeofresearch!=="Contract Research"){
+      if (!SubmissionEmailCopy) {
+        newErrors.SubmissionEmailCopy = "Email Copy is required";
         valid = false;
-      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
-        newErrors.AwardLetterCopy = "Only jpg, jpeg, and png files are allowed";
+      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(SubmissionEmailCopy.type)) {
+        newErrors.SubmissionEmailCopy = "Only jpg, jpeg, and png files are allowed";
         valid = false;
       } else {
-        newErrors.AwardLetterCopy = "";
+        newErrors.SubmissionEmailCopy = "";
       }
-    }
-  
-    if (Status_of_project === "Completed") {
-      if (!CompletionLetterCopy) {
-        newErrors.CompletionLetterCopy = "Completion Letter is required";
-        valid = false;
-      } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
-        newErrors.CompletionLetterCopy = "Only jpg, jpeg, and png files are allowed";
-        valid = false;
-      } else {
-        newErrors.CompletionLetterCopy = "";
+    
+      if (Status_of_proposal !== "Submitted") {
+        if (!AwardLetterCopy) {
+          newErrors.AwardLetterCopy = "Award Letter is required";
+          valid = false;
+        } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(AwardLetterCopy.type)) {
+          newErrors.AwardLetterCopy = "Only jpg, jpeg, and png files are allowed";
+          valid = false;
+        } else {
+          newErrors.AwardLetterCopy = "";
+        }
       }
+    
+      if (Status_of_project === "Completed") {
+        if (!CompletionLetterCopy) {
+          newErrors.CompletionLetterCopy = "Completion Letter is required";
+          valid = false;
+        } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(CompletionLetterCopy.type)) {
+          newErrors.CompletionLetterCopy = "Only jpg, jpeg, and png files are allowed";
+          valid = false;
+        } else {
+          newErrors.CompletionLetterCopy = "";
+        }
+      }
+
     }
-  
+   else{
     if (typeofresearch === "Contract Research") {
       if (!ContractAgreementCopy) {
         newErrors.ContractAgreementCopy = "Contract Agreement is required";
@@ -545,7 +552,8 @@ function Researchprojectform({ children }) {
         newErrors.ContractAgreementCopy = "";
       }
     }
-  
+
+   }
     setErrors(newErrors);
     return valid;
   };
@@ -568,6 +576,9 @@ function Researchprojectform({ children }) {
       newErrors.delivery =
         "Key Project Deliverables should contain no more than 1500 words";
       valid = false;
+    }if (!textAndSymbolPattern.test(delivery) ) {
+      newErrors.delivery = "Key Project delievery must not contain numeric values";
+      valid = false;
     } else {
       newErrors.delivery = "";
     }
@@ -578,7 +589,11 @@ function Researchprojectform({ children }) {
     if (RemarkswordCount > 1500) {
       newErrors.Remarks = "Remarks should contain no more than 1500 words";
       valid = false;
-    } else {
+    }if (!textAndSymbolPattern.test(Remarks) ) {
+      newErrors.Ramarks = "Remarks must not contain numeric values";
+      valid = false;
+    }
+     else {
       newErrors.delivery = "";
     }
 
@@ -586,43 +601,7 @@ function Researchprojectform({ children }) {
     return valid;
   };
   const UploadFile = async () => {
-    if (Status_of_proposal === "Approved" || Status_of_project == "Completed") {
-      try {
-        if (AwardLetterCopy) {
-          await uploadFile(
-            AwardLetterCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_AwardLetterCopy`,
-            "research_project"
-          );
-        } else {
-          alert("Please upload Award Letter  Copy");
-        }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-        setSubmitting(false);
-      }
-    } else if (Status_of_project == "Completed") {
-      try {
-        if (CompletionLetterCopy) {
-          await uploadFile(
-            CompletionLetterCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_CompletionLetterCopy`,
-            "research_project"
-          );
-        } else {
-          alert("Please upload Completion letter Copy");
-        }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-        setSubmitting(false);
-      }
-    } else if (typeofresearch == "Contract Research") {
+  if (typeofresearch == "Contract Research") {
       try {
         if (ContractAgreementCopy) {
           await uploadFile(
@@ -641,45 +620,86 @@ function Researchprojectform({ children }) {
         alert("error");
         setSubmitting(false);
       }
-    } 
-    else if (reviwedbyIRB == "Yes") {
-      try {
-        if (meetingminutes) {
-          await uploadFile(
-            meetingminutes,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_meetingminutes`,
-            "research_project"
-          );
-        } else {
-          alert("Please upload meeting minutes Copy");
+    }
+    else {
+      if (Status_of_proposal === "Approved" || Status_of_project == "Completed") {
+        try {
+          if (AwardLetterCopy) {
+            await uploadFile(
+              AwardLetterCopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_AwardLetterCopy`,
+              "research_project"
+            );
+          } else {
+            alert("Please upload Award Letter  Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
         }
-      }
-       catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-        setSubmitting(false);
-      }
-    } 
+      } else if (Status_of_project == "Completed") {
+        try {
+          if (CompletionLetterCopy) {
+            await uploadFile(
+              CompletionLetterCopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_CompletionLetterCopy`,
+              "research_project"
+            );
+          } else {
+            alert("Please upload Completion letter Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
+        }
+      } 
+      else if (reviwedbyIRB == "Yes") {
+        try {
+          if (meetingminutes) {
+            await uploadFile(
+              meetingminutes,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_meetingminutes`,
+              "research_project"
+            );
+          } else {
+            alert("Please upload meeting minutes Copy");
+          }
+        }
+         catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
+        }
+      } 
+      
+        try {
+          if (SubmissionEmailCopy) {
+            await uploadFile(
+              SubmissionEmailCopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_SubmissionEmailcopy`,
+              "research_project"
+            );
+          } else {
+            alert("Please upload CaseStudy Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
+        }
+        
+    }
     
-      try {
-        if (SubmissionEmailCopy) {
-          await uploadFile(
-            SubmissionEmailCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_SubmissionEmailcopy`,
-            "research_project"
-          );
-        } else {
-          alert("Please upload CaseStudy Copy");
-        }
-      } catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-        setSubmitting(false);
-      }
     
   };
   const handleSubmit = async () => {
@@ -837,7 +857,9 @@ function Researchprojectform({ children }) {
                       )}
                     </div>
                   )}
-                <div>
+                  {
+                    typeofresearch!=="Contract Research" &&
+                    <div>
                   <InputField
                     label={"Name of Research Grant"}
                     value={NameResearchGrant}
@@ -850,14 +872,10 @@ function Researchprojectform({ children }) {
                     </span>
                   )}
                 </div>
+                  }
+                
 
-                <Dropdown
-                  label={"Status_of_proposal"}
-                  dropdownOptions={["Submitted", "Approved"]}
-                  value={Status_of_proposal}
-                  handleOptionChange={handleStatus_of_proposalChange}
-                  required
-                />
+                
                 {typeofresearch === "Solo Project" && (
                   <Dropdown
                     label={"category"}
@@ -867,14 +885,31 @@ function Researchprojectform({ children }) {
                     required
                   />
                 )}
-                {Status_of_proposal === "Approved" && (
+                { typeofresearch!=="Contract Research" && (
+                  <>
                   <Dropdown
-                    label={"Status of project"}
-                    dropdownOptions={["Ongoing", "Delayed", "Completed"]}
-                    value={Status_of_project}
-                    handleOptionChange={handleProjectStatus}
-                    required
-                  />
+                  label={"Status_of_proposal"}
+                  dropdownOptions={["Submitted", "Approved"]}
+                  value={Status_of_proposal}
+                  handleOptionChange={handleStatus_of_proposalChange}
+                  required
+
+                />
+                {
+                  Status_of_proposal === "Approved" &&
+                  <Dropdown
+                  label={"Status of project"}
+                  dropdownOptions={["Ongoing", "Delayed", "Completed"]}
+                  value={Status_of_project}
+                  handleOptionChange={handleProjectStatus}
+                  required
+                />
+                }
+
+                
+                  </>
+                  
+                  
                 )}
                 <Dropdown
                   label={"Nationality"}
@@ -1005,7 +1040,7 @@ function Researchprojectform({ children }) {
                     <span className="text-red-500">{errors.endDate}</span>
                   )}
                 </div>
-                {Status_of_project === "Completed" && (
+                {Status_of_project === "Completed" && typeofresearch!=="Contract Research" (
                   <div>
                     <InputField
                       label={"Date of Completion"}
@@ -1120,6 +1155,7 @@ function Researchprojectform({ children }) {
                         </span>
                       )}
                     </div>
+                    <div>
                     <InputField
                       label={"Designation of CoPi"}
                       value={DesignationofCoPi}
@@ -1131,12 +1167,20 @@ function Researchprojectform({ children }) {
                         {errors.DesignationofCoPi}
                       </span>
                     )}
+                     </div>
+                     <div>
                     <InputField
                       label={"University of CoPi"}
                       value={UniversityofCoPi}
                       setVal={setUniversityofCoPi}
                       required
                     />
+                    {errors.UniversityofCoPi && (
+                      <span className="text-red-500">
+                        {errors.UniversityofCoPi}
+                      </span>
+                    )}
+                   </div>
                   </div>
                 </>
               )}
@@ -1168,9 +1212,9 @@ function Researchprojectform({ children }) {
                         setVal={setSponceringAgencyCountry}
                         required
                       />
-                      {errors.SponceringAgencyCountry && (
+                      {errors.Sponcering_Agency_Country && (
                         <span className="text-red-500">
-                          {errors.SponceringAgencyCountry}
+                          {errors.Sponcering_Agency_Country}
                         </span>
                       )}
                     </div>
@@ -1216,7 +1260,8 @@ function Researchprojectform({ children }) {
 
               <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
                 {typeofresearch !== "Contract Research" &&
-                  Status_of_project === "Completed" && (
+                <>
+                { Status_of_project === "Completed" && (
                     <div>
                       <InputField
                         label={"Funding Agency/Body"}
@@ -1244,21 +1289,6 @@ function Researchprojectform({ children }) {
                     </span>
                   )}
                 </div>
-                {Status_of_proposal === "Approved" && (
-                  <div>
-                    <InputField
-                      label={"Total Funding Approved(PKR)"}
-                      value={fundingApproved}
-                      setVal={setFundingApproved}
-                      required
-                    />
-                    {errors.fundingApproved && (
-                      <span className="text-red-500">
-                        {errors.fundingApproved}
-                      </span>
-                    )}
-                  </div>
-                )}
                 {Status_of_project == "Completed" && (
                   <>
                     <div>
@@ -1289,6 +1319,24 @@ function Researchprojectform({ children }) {
                     </div>
                   </>
                 )}
+</>
+          }
+                {Status_of_proposal === "Approved" || typeofresearch==="Contract Research" && (
+                  <div>
+                    <InputField
+                      label={"Total Funding Approved(PKR)"}
+                      value={fundingApproved}
+                      setVal={setFundingApproved}
+                      required
+                    />
+                    {errors.fundingApproved && (
+                      <span className="text-red-500">
+                        {errors.fundingApproved}
+                      </span>
+                    )}
+                  </div>
+                )}
+               
               </div>
               <div>
                 <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
@@ -1296,17 +1344,28 @@ function Researchprojectform({ children }) {
                 </h1>
               </div>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                <div>
                 <InputField
                   label={"Collaborating Partners(if any)"}
                   value={CollaboratingPartner}
                   setVal={setCollaboratingPartner}
                 />
-
+<span className="text-red-500">
+                      {errors.CollaboratingPartner}
+                    </span>
+                    </div>
+                    <div>
                 <InputField
                   label={"Co-funding Partners(if any)"}
                   value={CofundingPartner}
                   setVal={setCofundingPartner}
                 />
+                {
+                  <span className="text-red-500">
+                  {errors.CofundingPartner}
+                </span>
+                }
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-y-8 gap-x-16">
                 <button

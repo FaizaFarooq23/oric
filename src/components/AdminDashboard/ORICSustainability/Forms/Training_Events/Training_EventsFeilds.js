@@ -33,14 +33,34 @@ export default function TrainingEventsField({ data, onDelete }) {
         </div>
 
         <div className="grid grid-cols-2 items-center">
-          <div className="flex items-start justify-start">
-            <span className="text-gray-500 font-medium">Title of Training</span>
-          </div>
-          <div className="flex items-end justify-center">
-            <span className="text-black text-base font-semibold">
-              {`${data.Title_of_Training.split(" ").slice(0, 4).join(" ")}...`}
-            </span>
-          </div>
+        {
+    data.Category === "Trainings / Workshops / Seminars / Conferences" ? (
+        <>
+            <div className="flex items-start justify-start">
+                <span className="text-gray-500 font-medium">Title of Training</span>
+            </div>
+            <div className="flex items-end justify-center">
+                <span className="text-black text-base font-semibold">
+                    {`${data.Title_of_Training.split(" ").slice(0, 4).join(" ")}...`}
+                </span>
+            </div>
+        </>
+    ) : (
+        <>
+            <div className="flex items-start justify-start">
+                <span className="text-gray-500 font-medium">Type of Event</span>
+            </div>
+            <div className="flex items-end justify-center">
+                <span className="text-black text-base font-semibold">
+                    {`${data.Type_of_Event.split(" ").slice(0, 4).join(" ")}...`}
+                </span>
+            </div>
+        </>
+    )
+}
+
+        
+          
         </div>
 
         <div className="grid grid-cols-2 items-center">

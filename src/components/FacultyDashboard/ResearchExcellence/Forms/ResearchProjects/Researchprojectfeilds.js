@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Modal from "react-modal";
@@ -90,7 +91,8 @@ export default function Researchprojectfeilds({ data, onDelete }) {
     setfundingagency("");
     setDateofCompletion("");
   };
-
+  const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const numericPattern = /\d/;
   const validateForm = () => {
     let formErrors = {};
     if (Status_of_proposal === "Approved") {
@@ -100,12 +102,24 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       if((data.type_of_research === "Solo Project") && (data.category === "HEC") &&(!ORIC_overhead))
      {
       formErrors.ORIC_overhead = "ORIC Overhead is required";
-                        }
+      }
+      else if(!textSymbolPattern.test(title)){
+        formErrors.title="Feild can't be in numeric"
+      }
+      
       if (!fundingApproved) {
         formErrors.fundingApproved = "Funding Approved is required";
       }
+      else if(!textSymbolPattern.test(title)){
+        formErrors.title="Feild can't be in numeric"
+        
+      }
       if (!fundingagency) {
         formErrors.fundingagency = "Funding Agency is required";
+      }
+      else if(!textSymbolPattern.test(fundingagency)){
+        formErrors.fundingagency="Feild can't be in numeric"
+        
       }
       if (!AwardLetterCopy) {
         formErrors.AwardLetterCopy = "Award Letter Copy is required";
@@ -120,11 +134,23 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       if (!fundingUtilized) {
         formErrors.fundingUtilized = "Funding Utilized is required";
       }
+      else if(!numericPattern.test(fundingUtilized)){
+        formErrors.fundingUtilized="Feild can't be in numeric"
+        
+      }
       if (!fundingRealesed) {
         formErrors.fundingRealesed = "Funding Released is required";
       }
+      else if(!numericPattern.test(fundingRealesed)){
+        formErrors.fundingRealesed="Feild can't be in numeric"
+        
+      }
       if (!delivery) {
         formErrors.delivery = "Project deliverables are required";
+      }
+      else if(!textSymbolPattern.test(delivery)){
+        formErrors.delivery="Feild can't be in numeric"
+        
       }
       if ((!CompletionLetterCopy)) {
         formErrors.CompletionLetterCopy = "Completion Letter Copy is required";
@@ -145,11 +171,23 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       if (!fundingUtilized) {
         formErrors.fundingUtilized = "Funding Utilized is required";
       }
+      else if(!numericPattern.test(fundingUtilized)){
+        formErrors.fundingUtilized="Feild can't be in numeric"
+        
+      }
       if (!fundingRealesed) {
         formErrors.fundingRealesed = "Funding Released is required";
       }
+      else if(!numericPattern.test(fundingRealesed)){
+        formErrors.fundingRealesed="Feild can't be in numeric"
+        
+      }
       if (!delivery) {
         formErrors.delivery = "Project deliverables are required";
+      }
+      else if(!textSymbolPattern.test(delivery)){
+        formErrors.delivery="Feild can't be in numeric"
+        
       }
       if ((!CompletionLetterCopy)) {
         formErrors.CompletionLetterCopy = "Completion Letter Copy is required";
@@ -194,7 +232,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
             Date_of_Approval: new Date(DateofApproval),
             funding_approved: fundingApproved,
             funding_realesed: fundingRealesed,
-            fundingUtilized: fundingUtilized,
+            funding_utilized: fundingUtilized,
             funding_agency: fundingagency,
             Date_of_Completion: new Date(DateofCompletion),
           }
@@ -300,7 +338,7 @@ else{
     <div className={`flex justify-between px-4 py-4 `}>
       <div className="flex flex-col w-52 gap-y-4  ">
         <div className=" flex  items-start justify-start ">
-          <span className="text-gray-500  font-medium">Title</span>
+          <span className="text-gray-500  font-medium">Feild</span>
         </div>
         <div className="flex  items-end justify-start ">
           <span className="text-black ">{`${data.title
@@ -317,7 +355,10 @@ else{
           <span className="text-black ">{data.Thematic_Area}</span>
         </div>
       </div>
-      <div className={`flex flex-col w-48 gap-y-4 gap-x-8 `}>
+      {
+        data.type_of_research!=="Contract Research"&&
+        <>
+         <div className={`flex flex-col w-48 gap-y-4 gap-x-8 `}>
         <div className=" flex items-start justify-start">
           <span className="">
             {editing ? (
@@ -537,16 +578,6 @@ else{
           <span className="text-black ">{data.Name_of_Research_Grant}</span>
         </div>
       </div>
-
-      <div className={`flex flex-col gap-y-4  w-48  gap-x-8`}>
-        <div className=" flex items-start justify-start">
-          <span className="text-gray-500  font-medium">Type of Research</span>
-        </div>
-
-        <div className="flex justify-start ">
-          <span className="text-black ">{data.type_of_research}</span>
-        </div>
-      </div>
       <div className={`flex flex-col w-48 gap-y-4  gap-x-8 `}>
         <div className=" flex items-start justify-start">
           <span className="">
@@ -623,38 +654,9 @@ else{
                           </div>
                         </>
                       )}
-                      {data.typeofresearch !== "Contract Research" &&
-                        Status_of_project === "Completed" && (
-                          <div>
-                            <InputField
-                              label={"Funding Agency/Body"}
-                              value={fundingagency}
-                              setVal={setfundingagency}
-                              required
-                            />
-                             {errors.funding_agency && <p className="text-red-500">{errors.funding_agency}</p>}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                  {Status_of_project === "Completed" && (
+                       {Status_of_project === "Completed" && (
                     <>
-                      <label
-                        htmlFor="textarea"
-                        className="text-base mt-2 font-medium text-black"
-                      >
-                        Write key project deliverables
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <textarea
-                        className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-                        rows="5"
-                        cols="50"
-                        id="Textarea"
-                        value={delivery}
-                        required
-                        onChange={handledeliverychange}
-                      />
+
                        {errors.delivery && <p className="text-red-500">{errors.delivery}</p>}
                       <div className="grid grid-cols-2 gap-x-3   text-black">
                         <label className="text-base font-medium">
@@ -675,6 +677,39 @@ else{
                       </div>
                     </>
                   )}
+                      {data.typeofresearch !== "Contract Research" &&
+                        Status_of_project === "Completed" && (
+                          <div>
+                            <InputField
+                              label={"Funding Agency/Body"}
+                              value={fundingagency}
+                              setVal={setfundingagency}
+                              required
+                            />
+                             {errors.funding_agency && <p className="text-red-500">{errors.funding_agency}</p>}
+                             <div className="flex -flex-cols">
+                             <label
+                        htmlFor="textarea"
+                        className="text-base mt-2 font-medium text-black"
+                      >
+                        Write key project deliverables
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
+                        rows="5"
+                        cols="50"
+                        id="Textarea"
+                        value={delivery}
+                        required
+                        onChange={handledeliverychange}
+                      />
+                      </div>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                
                 </div>
               </Modal>
             ) : (
@@ -713,6 +748,20 @@ else{
          
         </div>
       </div>
+        </>
+      }
+     
+
+      <div className={`flex flex-col gap-y-4  w-48  gap-x-8`}>
+        <div className=" flex items-start justify-start">
+          <span className="text-gray-500  font-medium">Type of Research</span>
+        </div>
+
+        <div className="flex justify-start ">
+          <span className="text-black ">{data.type_of_research}</span>
+        </div>
+      </div>
+      
     </div>
 
     <div className="flex justify-end mr-6">

@@ -11,13 +11,13 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     { label: 'Thematic Area', value: data.Thematic_Area },
     { label: 'Type of Research', value: data.type_of_research },
     ...(data.type_of_research === 'Solo Project' ? [{ label: 'Category', value: data.category }] : []),
-    { label: 'Name of Research Grant', value: data.Name_of_Research_Grant },
+    ...(data.type_of_research !== "Contract Research" ? [{ label: 'Name of Research Grant', value: data.Name_of_Research_Grant }] : []),
     { label: 'Nationality', value: data.Nationality },
-    { label: 'Status of Proposal', value: data.Status_of_proposal },
+    ...(data.type_of_research !== "Contract Research" ? [{ label: 'Status of Proposal', value: data.Status_of_proposal }] : []),
     ...(data.Status_of_project === 'Completed' ? [{ label: 'Date of Completion', value: data.Date_of_Completion.split("T")[0] || 'Nill' }] : []),
     { label: 'Start Date', value: data.start_Date.split("T")[0] },
     { label: 'End Date', value: data.end_Date.split("T")[0] }
-  ];
+  ]
 
   const contractDetails = data.type_of_research === 'Contract' ? [
     { label: 'Date of contract signed', value: data.Date_of_ContractSigned.split("T")[0] },
@@ -25,64 +25,71 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     { label: 'Counter Parts from Industry', value: data.Counterparts }
   ] : [];
 
-  const submissionDetails = data.type_of_research === 'Contract' ? [
+  const submissionDetails =data.type_of_research!=="Contract Research"? [
     { label: 'Date of Submission', value: data.Date_of_Submission.split("T")[0] },
     ...(data.Status_of_proposal === 'Approved' && data.Date_of_Approval ? [
       { label: 'Date of Approval', value: data.Date_of_Approval.split("T")[0] }
     ] : []),
-    ...(data.Status_of_proposal === 'Approved' && data.type_of_research === 'Solo Project' && data.category === 'Non-HEC' ? [
-      { label: 'ORIC Overhead', value: data.ORIC_Overhead }
-    ] : []),
+    
     ...(data.Status_of_proposal === 'Approved' ? [
       { label: 'Status of Project', value: data.Status_of_project }
     ] : [])
-  ]: [];
+  ]:[];
 
   const piDetails = [
     { label: 'Name of Pi', value: data.Name_of_pi },
     { label: 'Department of Pi', value: data.Department_of_Pi },
-    { label: 'Designation of Pi', value: data.Designation_of_Pi }
+    { label: 'Designation of Pi', value: data.Designation_of_Pi },
+    ...((data.Status_of_proposal !== 'Submitted') && (data.type_of_research === 'Solo Project') && (data.category === 'Non-HEC') ? [
+      { label: 'ORIC Overhead', value: data.ORIC_Overhead }
+    ] : []),
   ];
 
   const copiDetails = data.type_of_research === 'Joint Research' ? [
     { label: 'Name of CoPi', value: data.Name_of_CoPi },
     { label: 'Department of CoPi', value: data.Department_of_CoPi },
-    { label: 'Designation of CoPi', value: data.Designation_of_CoPi }
+    { label: 'Designation of CoPi', value: data.Designation_of_CoPi },
+    { label: 'University of CoPi', value: data.University_of_CoPi }
   ] : [];
 
   const sponsorDetails = data.type_of_research === 'Contract Research' ? [
-    { label: 'Name of Sponsoring Agency', value: data.Name_of_Sponcering_Agency },
+    { label: 'Name of Sponsoring Agency', value: data.Sponcering_Agency_Name },
     { label: 'Sponsoring Agency Country', value: data.Sponcering_Agency_Country },
     { label: 'Sponsoring Agency Address', value: data.Sponcering_Agency_Address }
   ] : [];
 
-  const irbDetails = [
+  const irbDetails = data.type_of_research!=="Contract Research "?[
     { label: 'Reviewed By IRB', value: data.reviwedbyIRB },
     ...(data.reviwedbyIRB === 'Yes' ? [
       { label: 'Date of Review', value: data.Date_of_review.split("T")[0] },
       { label: 'Meeting Decision', value: data.meetingdecision }
     ] : [])
-  ];
+  ]:[]
 
   const fundingDetails = [
-    { label: 'Total Funding Requested', value: data.funding_requested },
-    ...(data.Status_of_proposal === 'Approved' ? [
+    ...(data.type_of_research !== 'Contract Research' ? [
+      { label: 'Total Funding Requested', value: data.funding_requested }
+    ] : []),
+    ...(data.Status_of_proposal === 'Approved' || data.type_of_research==="Contract Research" ? [
       { label: 'Total Funding Approved', value: data.funding_approved }
     ] : []),
     ...(data.Status_of_project === 'Completed' ? [
-      { label: 'Total Funding Utilized', value: data.funding_utilized }
+      { label: 'Total Funding Utilized', value: data.funding_utilized?data.funding_utilized:"N/A" }
+    ] : []),
+    ...(data.Status_of_project === 'Completed' ? [
+      { label: 'Total Funding Realesed', value: data.funding_realesed }
     ] : [])
   ];
 
-  const partnerDetails = [
-    { label: 'Collaborating Partner', value: data.Collaborating_Partner },
-    { label: 'Co-funding Partner', value: data.Cofunding_Partner }
-  ];
+  const partnerDetails = data.type_of_research!=="Contract Research"? [
+    { label: 'Collaborating Partner', value: data.Collaborating_Partner ?data.Collaborating_Partner:"N/A"},
+    { label: 'Co-funding Partner', value: data.Cofunding_Partner ?data.Cofunding_Partner:"N/A"}
+  ]:[];
 
 
 
   const remarks = [
-    { label: 'Remarks', value: data.Remarks }
+    { label: 'Remarks', value: data.Remarks?data.Remarks:"N/A" }
   ];
 
   const deliverables = data.Status_of_project === 'Completed' ? [
@@ -90,7 +97,8 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
   ] : [];
 
   const imageData = [];
-  if (data.Status_of_proposal === "Approved") {
+  if(data.type_of_research!=="Contract Research"){
+    if (data.Status_of_proposal === "Approved") {
       imageData.push({
         label: 'Award Letter Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_AwardLetterCopy.png`
@@ -112,9 +120,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       });
     
   } 
-  if (data.reviwedbyIRB === "Yes" &&
- data.Status_of_proposal === "Submitted" &&
-  data.type_of_research !== "Contract Research") {
+  if (data.reviwedbyIRB === "Yes") {
       imageData.push({
         label: 'Meeting Minutes Copy',
         value: `/uploadFile/${data.username}/research_project/${data.title}_meetingminutes.png`
@@ -127,12 +133,14 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       value: `/uploadFile/${data.username}/research_project/${data.title}_SubmissionEmailcopy.png`
     });
   }
+  }
+ 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Research Project Details"
-      className={`flex gap-y-8 flex-col bg-white shadow-lg mx-auto  overflow-y-auto m-auto rounded-md border-4 p-12 ${admin ? 'w-4/5 h-[85vh] mt-[80px]' : 'w-full h-screen'}`}
+      className={`flex gap-y-8 flex-col bg-white shadow-lg  overflow-y-auto  rounded-md border-4 p-12 ${admin ? 'w-4/5 h-[85vh] mt-[80px]' : 'w-full h-screen'}`}
     >
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />

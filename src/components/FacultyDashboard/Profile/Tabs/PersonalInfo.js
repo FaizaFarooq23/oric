@@ -46,7 +46,10 @@ export default function PersonalInfo() {
         label: "CNIC",
         value: user.cnic,
       },
-
+{
+  label :"Phone no",
+  value:user.contact_number,
+}
 
     ]
 
@@ -55,10 +58,7 @@ export default function PersonalInfo() {
 
     const contact_data = [
 
-      {
-        label: "Phone",
-        value: user.contact_number,
-      },
+     
       {
         label: "Address",
         value: user.address,

@@ -49,14 +49,19 @@ export default function AwardsModal({ children }) {
   };
   
   
-  const validateFormStage1 =async () => {
+  const validateFormStage1 = async () => {
     let valid = true;
     const newErrors = {};
-
+    const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+    const numericPattern = /\d/;
+  
     if (title.trim() === "") {
       newErrors.title = "Title is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(title)){
+      newErrors.title="Title can't be in numeric"
+      valid = false;
+    }else {
       // Check if an award with the same title already exists for the user
       const isExistingAward = await checkExistingAward();
   
@@ -67,31 +72,43 @@ export default function AwardsModal({ children }) {
         newErrors.title = "";
       }
     }
+  
     if (organization_name.trim() === "") {
-      newErrors.organization_name= "Organiation is required";
+      newErrors.organization_name = "Organization name is required";
+      valid = false;
+    } else if (!textSymbolPattern.test(organization_name)) {
+      newErrors.organization_name = "Organization name shouldn't contain numbers";
       valid = false;
     } else {
-      newErrors.organization_name= "";
+      newErrors.organization_name = "";
     }
+  
     if (amount.trim() === "") {
-      newErrors.amount= "Amount of Prize is required";
+      newErrors.amount = "Amount of Prize is required";
       valid = false;
-    }else if (!/^\d+$/.test(amount)) {
+    } else if (!/^\d+$/.test(amount)) {
       newErrors.amount = "Amount must contain only numeric digits";
       valid = false;
     } else {
-      newErrors.amount= "";
+      newErrors.amount = "";
     }
-   
+  
     setErrors(newErrors);
     return valid;
   };
+  
   const validateFormStage2 = () => {
     let valid = true;
     const newErrors = {};
   
+    const textPattern = /^[A-Za-z]+$/;
+    const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
+  
     if (name_of_winner.trim() === "") {
       newErrors.name_of_winner = "Name is required";
+      valid = false;
+    } else if (!textPattern.test(name_of_winner) && !symbolPattern.test(name_of_winner)) {
+      newErrors.name_of_winner = "Name shouldn't contain numbers";
       valid = false;
     } else {
       newErrors.name_of_winner = "";
@@ -100,12 +117,18 @@ export default function AwardsModal({ children }) {
     if (department_of_winner.trim() === "") {
       newErrors.department_of_winner = "Department is required";
       valid = false;
+    } else if (!textPattern.test(department_of_winner) && !symbolPattern.test(department_of_winner)) {
+      newErrors.department_of_winner = "Department shouldn't contain numbers";
+      valid = false;
     } else {
       newErrors.department_of_winner = "";
     }
   
     if (Designation_of_winner.trim() === "") {
       newErrors.Designation_of_winner = "Designation is required";
+      valid = false;
+    } else if (!textPattern.test(Designation_of_winner) && !symbolPattern.test(Designation_of_winner)) {
+      newErrors.Designation_of_winner = "Designation shouldn't contain numbers";
       valid = false;
     } else {
       newErrors.Designation_of_winner = "";
@@ -115,12 +138,16 @@ export default function AwardsModal({ children }) {
     return valid;
   };
   
+  
   const validateFormStage3 = () => {
     let valid = true;
     const newErrors = {};
   
     if (details.trim() === "") {
       newErrors.details = "Brief Detail of Work Honoured is required";
+      valid = false;
+    } else if (!textPattern.test(details) && !symbolPattern.test(details)) {
+      newErrors.details = "Details shouldn't contain numbers";
       valid = false;
     } else {
       newErrors.details = "";

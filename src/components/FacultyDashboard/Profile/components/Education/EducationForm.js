@@ -80,14 +80,20 @@ export default function EducationFormModal({ children }) {
       newErrors.institute = "Institute is required";
       isValid = false;
     }
-
+    
     if (!registrationNumber.trim()) {
       newErrors.registrationNumber = "Registration Number is required";
+      isValid = false;
+    } else if (!/^\d+$/.test(registrationNumber)) {
+      newErrors.registrationNumber = "Registration Number must contain only numerics";
       isValid = false;
     }
 
     if (!cgpa.trim()) {
       newErrors.cgpa = "CGPA is required";
+      isValid = false;
+    } else if (parseFloat(cgpa) > 4) {
+      newErrors.cgpa = "CGPA cannot be greater than 4";
       isValid = false;
     }
 
