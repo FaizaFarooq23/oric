@@ -84,40 +84,26 @@ export default function Register() {
       setErrors(newErrors);
       return false;
     }
-  
-    try {
-      const response = await axios.post('/api/faculty/feildscheck', {
-        username: username,
-        email: email,
-        cnic: cnic,
-        name: name,
-      });
-      console.log(response.data)
+    // try {
+    //   const response = await axios.post("/api/faculty/fieldscheck", {
+    //     name,
+    //     username,
+    //     email,
+    //     cnic,
+    //     phoneNumber,
+    //   });
+    //   const existingFields = response.data;
 
-      const data = response.data;
-      alert("Data from API:",data.username);
-
-      if (data.username) {
-        newErrors.username = 'Username already exists';
-        isValid = false;
-      }
-      if (data.email) {
-        newErrors.email = 'Email already exists';
-        isValid = false;
-      }
-      if (data.cnic) {
-        newErrors.cnic = 'CNIC already exists';
-        isValid = false;
-      }
-      if (data.name) {
-        newErrors.name = 'Name already exists';
-        isValid = false;
-      }
-    } catch (error) {
-      console.error('Error checking existing fields:', error);
-      newErrors.general = 'Error checking existing fields';
-      isValid = false;
-    }
+    //   Object.entries(existingFields).forEach(([field, exists]) => {
+    //     if (exists) {
+    //       newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+    //       isValid = false;
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.error("Error checking existing fields:", error);
+    //   isValid = false;
+    // }
 
   };
   
@@ -313,7 +299,7 @@ export default function Register() {
             <div className="w-full flex justify-center items-center mt-4">
               <button
                 onClick={handleRegister}
-                className="flex w-[60%] justify-center border border-transparent bg-mustard-yellow py-2 px-4 text-sm font-medium text-blue-900 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="flex w-[60%] justify-center  border border-transparent bg-mustard-yellow py-2 px-4 text-sm font-medium text-blue-900 hover:bg-blue-900 focus:outline-none hover:text-white"
               >
                 Register
               </button>

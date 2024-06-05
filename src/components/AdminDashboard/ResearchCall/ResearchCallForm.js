@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ResearchCallForm() {
   const [formData, setFormData] = useState({
-    thematicArea: '',
-    researchLink: '',
-    researchStartDate: '',
-    researchEndDate: ''
+    thematicArea: "",
+    researchLink: "",
+    researchStartDate: "",
+    researchEndDate: "",
   });
 
   const handleChange = (e) => {
@@ -18,12 +18,17 @@ export default function ResearchCallForm() {
   };
 
   return (
-
-        <div className="w-1/2 my-8 bg-white p-8 border border-gray-200 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-blue-900">Generate Research Call</h2>
+    <div className="w-1/2 my-8 bg-white p-8 border border-gray-200 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-blue-900">
+        Generate Research Call
+      </h2>
       <form onSubmit={handleSubmit}>
+     <div className="grid grid-cols-2 gap-x-5">
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="thematicArea">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="thematicArea"
+          >
             Thematic Area
           </label>
           <input
@@ -37,7 +42,10 @@ export default function ResearchCallForm() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="researchLink">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
             Research Link
           </label>
           <input
@@ -50,23 +58,86 @@ export default function ResearchCallForm() {
             required
           />
         </div>
+        </div>
+        <div className="grid grid-cols-2 gap-x-5">
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="researchStartDate">
-            Research Start Date
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
+            Mailing Address
           </label>
           <input
-            type="date"
-            name="researchStartDate"
-            id="researchStartDate"
-            value={formData.researchStartDate}
+            type="email"
+            name="researchLink"
+            id="researchLink"
+            value={formData.researchLink}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md outline-blue-900"
+            className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="researchEndDate">
-            Research End Date
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
+            Contact Details
+          </label>
+          <input
+            type="number"
+            name="researchLink"
+            id="researchLink"
+            value={formData.researchLink}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
+            required
+          />
+        </div>
+        </div>
+        <div className="grid grid-cols-2 gap-x-5">
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
+            Funding required
+          </label>
+          <input
+            type="number"
+            name="researchLink"
+            id="researchLink"
+            value={formData.researchLink}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
+            Donor Agency
+          </label>
+          <input
+            type="text"
+            name="researchLink"
+            id="researchLink"
+            value={formData.researchLink}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
+            required
+          />
+        </div>
+        </div>
+        <div className="grid grid-cols-2 gap-x-5">
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchEndDate"
+          >
+            Deadline
           </label>
           <input
             type="date"
@@ -77,6 +148,24 @@ export default function ResearchCallForm() {
             className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
             required
           />
+        </div>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 font-bold mb-2"
+            htmlFor="researchLink"
+          >
+            Eligibility criteria
+          </label>
+          <input
+            type="text"
+            name="researchLink"
+            id="researchLink"
+            value={formData.researchLink}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 outline-blue-900 rounded-md"
+            required
+          />
+        </div>
         </div>
         <button
           type="submit"
