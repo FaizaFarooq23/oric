@@ -48,13 +48,13 @@ export default function AwardsModal({ children }) {
     }
   };
   
-  const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
-    const numericPattern = /\d/;
-  
+
   const validateFormStage1 = async () => {
     let valid = true;
     const newErrors = {};
-    
+    const textSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+    const numericPattern = /\d/;
+  
     if (title.trim() === "") {
       newErrors.title = "Title is required";
       valid = false;
@@ -96,13 +96,15 @@ export default function AwardsModal({ children }) {
     setErrors(newErrors);
     return valid;
   };
+  //symbols and text patterns
+  const textPattern = /^[A-Za-z]+$/;
+  const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
   
   const validateFormStage2 = () => {
     let valid = true;
     const newErrors = {};
   
-    const textPattern = /^[A-Za-z]+$/;
-    const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
+   
   
     if (name_of_winner.trim() === "") {
       newErrors.name_of_winner = "Name is required";
@@ -143,8 +145,6 @@ export default function AwardsModal({ children }) {
     let valid = true;
     const newErrors = {};
   
-    const textPattern = /^[A-Za-z]+$/;
-    const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
   
     if (details.trim() === "") {
       newErrors.details = "Brief Detail of Work Honoured is required";
