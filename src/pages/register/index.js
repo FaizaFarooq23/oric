@@ -7,7 +7,7 @@ export default function index() {
     <div className='z-50'>
     <Register />
     </div>
-    <img src="images/rectangle.svg" alt="" className="absolute bottom-0 right-0 h-96 z-10 " />
+    <img src="images/rectangle_box.svg" alt="" className="absolute bottom-0 right-0 h-96 z-10 " />
 
   </div>
   )
