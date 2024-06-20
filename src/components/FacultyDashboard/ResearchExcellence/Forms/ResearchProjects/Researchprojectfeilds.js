@@ -269,7 +269,7 @@ else{
           CompletionLetterCopy,
           session.user.username,
           `/api/Imagesfeilds/fileupload`,
-          `${data.title}_Completionlettercopy`,
+          `${data.title}_CompletionLetterCopy`,
           "research_project"
         );
       } else {
