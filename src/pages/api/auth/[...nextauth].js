@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 
 
 export default NextAuth({
@@ -32,8 +33,10 @@ export default NextAuth({
                     }
                 })
                 if (user !== null && user !== undefined && user.length !== 0) {
-                    //Compare the hash
-                    if (password === user.password) {
+                    //Compare the hash using crypto
+                    const matched = await bcrypt.compare(password, user.password);
+
+                    if (matched) {
                         const res = await prisma.AccessLogs.create(
                             {
                                 data: {
