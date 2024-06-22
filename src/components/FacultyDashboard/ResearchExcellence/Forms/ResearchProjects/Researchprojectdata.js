@@ -117,6 +117,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     
   } 
  
+ 
   
   if (data.reviwedbyIRB === "Yes") {
       imageData.push({
@@ -138,6 +139,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       value: `/uploadFile/${data.username}/research_project/${data.id}_ContractAgreementCopy.png`
     });
     
+    
   
 } 
   return (
@@ -145,7 +147,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Research Project Details"
-      className={`flex gap-y-8 flex-col bg-white shadow-lg  overflow-y-auto  rounded-md border-4 p-12 ${admin ? 'w-4/5 h-[85vh] mt-[80px]' : 'w-full h-screen'}`}
+      className={`flex gap-y-8 flex-col bg-white shadow-lg  overflow-y-auto  rounded-md border-4 p-12 ${admin ? 'w-4/5 h-[85vh] mt-[80px] ml-[5%]' : 'w-full h-screen'}`}
     >
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />

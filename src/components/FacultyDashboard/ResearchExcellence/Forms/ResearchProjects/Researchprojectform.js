@@ -680,9 +680,9 @@ if(Status_of_project === "Completed"){
     setErrors(newErrors);
     return valid;
   };
-  const UploadFile = async (id) => {
-    try {
-      if (typeofresearch === "Contract Research") {
+  const UploadFile = async () => {
+  if (typeofresearch == "Contract Research") {
+      try {
         if (ContractAgreementCopy) {
           await uploadFile(
             ContractAgreementCopy,
@@ -745,30 +745,34 @@ if(Status_of_project === "Completed"){
             return;
           }
         }
-  
-        if (SubmissionEmailCopy) {
-          await uploadFile(
-            SubmissionEmailCopy,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${id}_SubmissionEmailcopy`,
-            "research_project"
-          );
-          fileUploaded = true;
-        } else {
-          alert("Please upload CaseStudy Copy");
-          return;
+         catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
         }
-  
-        if (!fileUploaded) {
-          alert("No file was uploaded. Please ensure you have the necessary files.");
+      } 
+      
+        try {
+          if (SubmissionEmailCopy) {
+            await uploadFile(
+              SubmissionEmailCopy,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${TitleofResearch}_SubmissionEmailcopy`,
+              "research_project"
+            );
+          } else {
+            alert("Please upload CaseStudy Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+          setSubmitting(false);
         }
-      }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("Error uploading file. Please try again.");
-      setSubmitting(false);
+        
     }
+    
+    
   };
   
   const handleSubmit = async () => {

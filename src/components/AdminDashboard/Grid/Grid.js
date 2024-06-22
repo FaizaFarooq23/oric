@@ -140,7 +140,7 @@ export default function Grid({ data }) {
           suppressHorizontalScroll={true}
           onRowClicked={onSelectionChanged}
         />
-        {selectedRow &&
+      {selectedRow &&
           <Researchprojectdata
             isOpen={isModalOpen}
             closeModal={closeModal}
@@ -148,6 +148,7 @@ export default function Grid({ data }) {
             admin={true}
           />
         }
+      
       </div>
     </div>
   );

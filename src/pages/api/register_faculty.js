@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-
+import bcrypt from "bcrypt";
 // pages/api/register.js
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -27,12 +27,13 @@ export default async function handler(req, res) {
   
       // TODO: Add your registration logic here
       // Example: Save user data to a database
+      const hashed_password = await bcrypt.hash(password, 10)
       const result = await prisma.Faculty.create(
         {
           data: {
             name: name,
             email: email,
-            password: password,
+            password: hashed_password,
             contact_number: phoneNumber,
             username: username,
             department: department,

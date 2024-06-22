@@ -31,7 +31,7 @@ export default function Welcome({ notice }) {
         }
         <div className="mr-4">
           <img
-            src="images/illustration.svg"
+            src="images/illustration_logo.svg"
             alt="logo"
             className="h-32 z-10 -mt-6 "
           />
