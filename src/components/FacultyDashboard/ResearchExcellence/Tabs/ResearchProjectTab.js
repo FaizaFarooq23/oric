@@ -5,12 +5,13 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import Researchprojectfeilds from '../Forms/ResearchProjects/Researchprojectfeilds';
 import SuccessModal from '../components/UI/SuccessMessage';
-import { deleteFile ,deleteFiles } from '../Utility/Deleteimage';
+import { deleteFile, deleteFiles } from '../Utility/Deleteimage';
+
 export default function ResearchProjectTab() {
   const { open: openModal } = useModal("ResearchProjectFormModal");
   const { data: session } = useSession();
   const [showDeleteSuccessDialog, setShowDeleteSuccessDialog] = useState(false);
-  const [research_projectData, setresearch_projectData] = useState([]);
+  const [research_projectData, setResearch_projectData] = useState([]);
   const [filterOption, setFilterOption] = useState('all'); // Default filter option is 'all'
   const [researchTypeOption, setResearchTypeOption] = useState('all'); // Default research type option is 'all'
 
@@ -23,21 +24,21 @@ export default function ResearchProjectTab() {
               username: session.user.username,
             }
           });
-          setresearch_projectData(res.data);
+          setResearch_projectData(res.data);
         }
       } catch (error) {
-        console.error("Error fetching Research Project  information:", error);
+        console.error("Error fetching Research Project information:", error);
       }
     };
 
     fetchResearch_ProjectData();
   }, [session]);
+
   const handleDeleteProject = async (project_id, filenames) => {
     try {
       const username = session.user.username;
       console.log(filenames);
       await deleteFiles(username, "research_project", filenames, `/api/Imagesfeilds/multiplefilesdelete`);
-  
 
       // Proceed with deleting the project once all files are deleted
       await axios.delete(`/api/Research_projects/delete_research_project?projectId=${project_id}`);
@@ -50,79 +51,80 @@ export default function ResearchProjectTab() {
       console.error('Error deleting project:', error);
     }
   };
-  
-  
+
   // Filter function based on the selected options
-  const filterData = (data) => {
-    const statusFilter =
-      filterOption === 'all' || data.Status_of_proposal === filterOption;
+  const filterData = () => {
+    return research_projectData.filter(data => {
+      const statusFilter =
+        filterOption === 'all' || data.Status_of_proposal === filterOption;
 
-    const researchTypeFilter =
-      researchTypeOption === 'all' ||
-      data.category === researchTypeOption ||
-      data.type_of_research === researchTypeOption;
+      const researchTypeFilter =
+        researchTypeOption === 'all' ||
+        data.category === researchTypeOption ||
+        data.type_of_research === researchTypeOption;
 
-    return statusFilter && researchTypeFilter;
+      return statusFilter && researchTypeFilter;
+    });
   };
+
+  const filteredData = filterData();
 
   return (
     <div>
       <div className='grid grid-cols-2'>
-      {/* Dropdown for filter options */}
-      <div className="flex py-6 ">
-        <div className="mr-4 ">
-          <select
-            value={filterOption}
-            onChange={(e) => setFilterOption(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black"
-          >
-            <option value="all">Show All</option>
-            <option value="Submitted">Submitted</option>
-            <option value="Approved">Approved</option>
-            {/* Add more filter options as needed */}
-          </select>
-        </div>
-       
-        <div>
-          <select
-            value={researchTypeOption}
-            onChange={(e) => setResearchTypeOption(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black"
-          >
-            <option value="all">All Research Types</option>
-            <option value="Solo Project">Solo</option>
-            <option value="Joint Research">Joint</option>
-            <option value="Contract Research">Contract</option>
-            {/* Add more research type options as needed */}
-          </select>
-        </div>
+        {/* Dropdown for filter options */}
+        <div className="flex py-6 ">
+          <div className="mr-4 ">
+            <select
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black"
+            >
+              <option value="all">Show All</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Approved">Approved</option>
+              {/* Add more filter options as needed */}
+            </select>
+          </div>
 
+          <div>
+            <select
+              value={researchTypeOption}
+              onChange={(e) => setResearchTypeOption(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black"
+            >
+              <option value="all">All Research Types</option>
+              <option value="Solo Project">Solo</option>
+              <option value="Joint Research">Joint</option>
+              <option value="Contract Research">Contract</option>
+              {/* Add more research type options as needed */}
+            </select>
+          </div>
+        </div>
+        <div className='flex justify-end items-center gap-x-8 text-2xl m-4'>
+          <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
+        </div>
       </div>
- <div className='flex justify-end items-center gap-x-8 text-2xl m-4'>
-        <FiPlusCircle className='text-blue-900 cursor-pointer' onClick={openModal} />
-      </div>
-      </div>
-      {research_projectData.length === 0 ? (
+      {filteredData.length === 0 ? (
         <div className="text-center text-gray-500 mt-8">
           No research project data exists at the moment.
         </div>
       ) : (
-        research_projectData.map((data, index) => (
+        filteredData.map((data, index) => (
           <div className="flex flex-col" key={index}>
             <Researchprojectfeilds data={data} onDelete={handleDeleteProject} />
           </div>
         ))
       )}
 
-  
       {
-          showDeleteSuccessDialog &&
-          (
-            <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={()=>{
-              setShowDeleteSuccessDialog(false)
-            }}/>
-          )
-        }
+        showDeleteSuccessDialog &&
+        (
+          <SuccessModal isOpen={showDeleteSuccessDialog} p={`Your Data has been deleted `} onClose={() => {
+            setShowDeleteSuccessDialog(false)
+          }} />
+        )
+      }
     </div>
   );
 }

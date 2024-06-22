@@ -32,33 +32,35 @@ const IPdata = ({ isOpen, closeModal, data, admin }) => {
   ];
 
   const additionalData = [
-        { label: 'Financial Support', value: data.Financial_support },
-    { label: 'Commercial Partner', value: data.Commercial_partner },
+    { label: 'Financial Support', value: data.Financial_support ? data.Financial_support : "N/A" },
+    { label: 'Commercial Partner', value: data.Commercial_partner ? data.Commercial_partner : "N/A" },
     { label: 'Key Aspects', value: data.KeyAspects },
   ];
 
-  const imageData =data.Type !== "IP disclosures" ? [
+  const imageData = data.Type !== "IP disclosures" ? [
     {
       label: 'Filing Copy',
-      value: `/uploadFile/${data.username}/ipandpatent/${data.Title_of_Invention}_filingcopy.png`,
+      value: `/uploadFile/${data.username}/ipandpatent/${data.id}_filingcopy.png`,
     },
     {
       label: 'Granting Copy',
-      value: `/uploadFile/${data.username}/ipandpatent/${data.Title_of_Invention}_grantingcopy.png`,
+      value: `/uploadFile/${data.username}/ipandpatent/${data.id}_GrantingCopy.png`,
     },
-  ]: [];
-  const DisclosureimageData =data.Type === "IP disclosures" ? [
-    { label: 'Disclosure Copy', 
-    value: `/uploadFile/${data.username}/ipandpatent/${data.Title_of_Invention}_Disclosurecopy.png`,   
-    },
-   
   ] : [];
+
+  const DisclosureimageData = data.Type === "IP disclosures" ? [
+    {
+      label: 'Disclosure Copy',
+      value: `/uploadFile/${data.username}/ipandpatent/${data.id}_Disclosurecopy.png`,
+    },
+  ] : [];
+
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="IP Data"
-      className={`flex gap-y-8 flex-col bg-white shadow-lg  pb-8 max-h-screen overflow-y-auto mx-auto rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'} `}
+      className={`flex gap-y-8 flex-col bg-white shadow-lg pb-8 max-h-screen overflow-y-auto mx-auto rounded-md border-4 p-10 ${admin ? 'h-[85vh] w-4/5 mt-[80px]' : 'h-screen w-screen'}`}
     >
       <div>
         <div className="flex justify-end items-end gap-x-6">
@@ -70,11 +72,9 @@ const IPdata = ({ isOpen, closeModal, data, admin }) => {
         <DataDisplayModal title="Details of Inventor" data={inventorData} gridClassName="grid-cols-2" />
         <DataDisplayModal title="Details of Patent Authority or Department" data={patentAuthorityData} />
         <DataDisplayModal title="Additional Details" data={additionalData} />
-        {patentData.length > 0 && <ImageDisplay title="Patent Documents" data={imageData} />}
-        {disclosureData.length>0 && <ImageDisplay title="IP Disclosure Documents" data={DisclosureimageData} />}
-
+        {patentData.length > 0 && <ImageDisplay title="Patent Documents" gridClassName="grid-cols-2" data={imageData} />}
+        {disclosureData.length > 0 && <ImageDisplay title="IP Disclosure Documents" data={DisclosureimageData} />}
       </div>
-   
     </Modal>
   );
 }

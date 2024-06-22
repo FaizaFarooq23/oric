@@ -106,6 +106,11 @@ function IPandPatentForm({ children }) {
     TitleofInvention,
     '/api/IPandPatent/get_ipandpatent'
   );
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
@@ -115,6 +120,9 @@ function IPandPatentForm({ children }) {
       valid = false;
     } else if (isExistingProject) {
       newErrors.TitleofInvention = "A Project with this title already exists for you";
+      valid = false;
+    }else if(numericPattern.test(TitleofInvention)){
+      newErrors.TitleofInvention = "Invalid Format(Shouldn't contain Numerics)";
       valid = false;
     } else {
       newErrors.TitleofInvention= "";
@@ -133,7 +141,14 @@ function IPandPatentForm({ children }) {
         newErrors.Date_of_Filing = "";
       }
     }
-
+    if (type === "IP disclosures") {
+      if (numericPattern.test(Previous_disclosure)) {
+        newErrors.Previous_disclosure= "Invalid Format(Shouldn't contain Numerics)";
+        valid = false;
+      } else {
+        newErrors.Previous_disclosure = "";
+      }
+    }
     setErrors(newErrors);
     return valid;
   };
@@ -144,17 +159,26 @@ function IPandPatentForm({ children }) {
     if (Name_of_leadInventor.trim() === "") {
       newErrors.Name_of_leadInventor = "Name of Lead Inventor is required";
       valid = false;
+    } else if(!textAndSymbolPattern.test(Name_of_leadInventor)){
+      newErrors.Name_of_leadInventor = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
     } else {
       newErrors.Name_of_leadInventor = "";
     }
     if (Designation_of_leadInventor.trim() === "") {
       newErrors.Designation_of_leadInventor = "Designation  is required";
       valid = false;
-    } else {
+    }else if(!textAndSymbolPattern.test(Designation_of_leadInventor)){
+      newErrors.Designation_of_leadInventor = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
+    }  else {
       newErrors.Designation_of_leadInventor = "";
     }
     if (Department_of_leadInventor.trim() === "") {
       newErrors.Department_of_leadInventor = "Department  is required";
+      valid = false;
+    } else if(!textAndSymbolPattern.test(Department_of_leadInventor)){
+      newErrors.Department_of_leadInventor = "Invalid Format(Shouldn't contain Numerics)";
       valid = false;
     } else {
       newErrors.Department_of_leadInventor = "";
@@ -171,10 +195,16 @@ function IPandPatentForm({ children }) {
       newErrors.Name_of_patentdept =
         "Name of Patent Department or Authority is required";
       valid = false;
+    } else if(numericPattern.test(Name_of_patentdept)){
+      newErrors.Name_of_patentdept = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
     } else {
       newErrors.Name_of_patentdept = "";
     }
-
+     if(numericPattern.test(Detail_of_patentdept)){
+      newErrors.Detail_of_patentdept = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
+    } 
     setErrors(newErrors);
     return valid;
   };
@@ -227,14 +257,21 @@ function IPandPatentForm({ children }) {
     if (Keyaspects.trim() === "") {
       newErrors.Keyaspects = "Key Aspects is required";
       valid = false;
+    }  if(numericPattern.test(Keyaspects)){
+      newErrors.Keyaspects = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
     } else {
       newErrors.Keyaspects = "";
     }
-
+   
+   if(numericPattern.test(Commercial_partner)){
+      newErrors.Commercial_partner = "Invalid Format(Shouldn't contain Numerics)";
+      valid = false;
+    } 
     setErrors(newErrors);
     return valid;
   };
-  const UploadFile = async () => {
+  const UploadFile = async (id) => {
     if (type==="IP disclosures") {
       try {
         if (DisclosureCopy) {
@@ -242,7 +279,7 @@ function IPandPatentForm({ children }) {
             DisclosureCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${TitleofInvention}_Disclosurecopy`,
+            `${id}_Disclosurecopy`,
             "ipandpatent"
           );
         } else {
@@ -261,7 +298,7 @@ function IPandPatentForm({ children }) {
               Filingcopy,
               session.user.username,
               `/api/Imagesfeilds/fileupload`,
-              `${TitleofInvention}_filingcopy`,
+              `${id}_filingcopy`,
               "ipandpatent"
             );
           } else {
@@ -272,14 +309,14 @@ function IPandPatentForm({ children }) {
           alert("error");
         }
       } 
-      if (Status_of_patent == "Granting") {
+      if ((Status_of_patent == "Granted") &&(type!=="IP disclosures")) {
         try {
           if (GrantingCopy) {
             await uploadFile(
               GrantingCopy,
               session.user.username,
               `/api/Imagesfeilds/fileupload`,
-              `${TitleofResearch}_grantingCopy`,
+              `${id}_GrantingCopy`,
               "ipandpatent"
             );
           } else {
@@ -338,7 +375,7 @@ function IPandPatentForm({ children }) {
         signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
-await UploadFile();
+
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -366,6 +403,13 @@ await UploadFile();
 
       // Make the POST request to save the data
       const res = await axios.post(`/api/IPandPatent/insert_ipandpatent`, data);
+      const { id } = res.data;
+      if(id){
+        // Destructure the response correctly
+        await UploadFile(id);
+        setSubmitting(false);
+      }
+     
       resetFields();
       setOpen(false);
       console.log(res);
@@ -460,12 +504,20 @@ await UploadFile();
                         </span>
                       )}
                     </div>
+                    <div>
                     <InputField
                       label={"Previous Disclosure"}
                       value={Previous_disclosure}
                       setVal={setPrevious_disclosure}
                     />
+                     {errors.Previous_disclosure && (
+                        <span className="text-red-500">
+                          {errors.Previous_disclosure}
+                        </span>
+                      )}
+                      </div>
                   </>
+                  
                 )}{" "}
                 <Dropdown
                   label={"Nationality"}
@@ -612,6 +664,11 @@ await UploadFile();
                   >
                     Detail of Patent Department or Patent Authority
                   </label>
+                  {errors.Detail_of_patentdept && (
+                    <span className="text-red-500">
+                      {errors.Detail_of_patentdept}
+                    </span>
+                  )}
                   <textarea
                     className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
                     rows="4"
@@ -740,16 +797,30 @@ await UploadFile();
                   Additional Details
                 </h1>
                 <div className="grid grid-cols-2 gap-y-8 gap-x-16">
+                  <div>
                   <InputField
                     label={"Financial Support"}
                     value={Financial_support}
                     setVal={setFinancial_support}
                   />
+                  {errors.Financial_support && (
+                    <span className="text-red-500">
+                      {errors.Financial_support}
+                    </span>
+                  )}
+                  </div>
+                  <div>
                   <InputField
                     label={"Commercial Partners"}
                     value={Commercial_partner}
                     setVal={setCommercial_partner}
                   />
+                  {errors.Commercial_partner && (
+                    <span className="text-red-500">
+                      {errors.Commercial_partner}
+                    </span>
+                  )}
+                  </div>
                 </div>
                 <label
                   htmlFor="textarea"

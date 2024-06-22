@@ -28,7 +28,6 @@ function Product_to_IndustryForm({children}) {
   const [PdProof, setPdProof] = useState("");
   const [stage, setStage] = useState(1)
   const [submitting, setSubmitting] = useState(false);
-
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
   const handlecategoryChange = (e) => {
     setcategory(e.target.value);
@@ -59,6 +58,11 @@ function Product_to_IndustryForm({children}) {
   const handleDetail_of_Partnerchange = (e) => {
     setDetail_of_Partner(e.target.value);
   };
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
@@ -68,16 +72,25 @@ function Product_to_IndustryForm({children}) {
     } else if (isExistingProject) {
       newErrors.Title_of_Invention = "A Project with this title already exists for you";
       valid = false;
-    } else {
+    } 
+    else if(numericPattern.test(Title_of_Invention)){
+      newErrors.Title_of_Invention = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }
+    else {
       newErrors.Title_of_Invention= "";
     }
    
     if (Feild_of_use.trim() === "") {
       newErrors.Feild_of_use = "Feild of Use is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Feild_of_use)){
+      newErrors.Feild_of_use = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }else {
       newErrors.Feild_of_use = "";
     }
+    
     setErrors(newErrors);
     return valid;
   }
@@ -88,19 +101,28 @@ function Product_to_IndustryForm({children}) {
     if (Name_of_leadInventor.trim() === "") {
       newErrors.Name_of_leadInventor = "Name of Lead Inventor is required";
       valid = false;
+    }else if(!textAndSymbolPattern.test(Name_of_leadInventor)){
+      newErrors.Name_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
     } else {
       newErrors.Name_of_leadInventor = "";
     }
     if (Designation_of_leadInventor.trim() === "") {
       newErrors.Designation_of_leadInventor = "Designation  is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Designation_of_leadInventor)){
+      newErrors.Designation_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }else {
       newErrors.Designation_of_leadInventor = "";
     }
     if (Department_of_leadInventor.trim() === "") {
       newErrors.Department_of_leadInventor = "Department  is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Department_of_leadInventor)){
+      newErrors.Department_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }else {
       newErrors.Department_of_leadInventor = "";
     }
 
@@ -114,11 +136,17 @@ function Product_to_IndustryForm({children}) {
     if (Name_of_Partner.trim() === "") {
       newErrors.Name_of_Partner = "Name of Partner is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Name_of_Partner)){
+      newErrors.Name_of_Partner = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }else {
       newErrors.Name_of_Partner = "";
     }
     if (Detail_of_Partner.trim() === "") {
       newErrors.Detail_of_Partner = "Detail of partner  is required";
+      valid = false;
+    }else if(numericPattern.test(Detail_of_Partner)){
+      newErrors.Detail_of_Partner = "Invalid Fomat(Shouldn't contain numbers)";
       valid = false;
     } else {
       newErrors.Detail_of_Partner= "";
@@ -132,10 +160,17 @@ function Product_to_IndustryForm({children}) {
     if (KeyAspects.trim() === "") {
       newErrors.Keyaspects = "Key Aspects is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(KeyAspects)){
+      newErrors.Keyaspects = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }else {
       newErrors.Keyaspects = "";
     }
-    if (!PdProof.trim() === "") {
+    if(numericPattern.test(Remarks)){
+      newErrors.Remarks = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }
+    if (!PdProof) {
       newErrors.PdProof = "PdProof is required";
       valid = false;
     } 
@@ -209,37 +244,16 @@ function Product_to_IndustryForm({children}) {
       return;
     }
     setSubmitting(true);
+    if (validateFormStage4() ) {
+    
     try {
-      // Validate required fields
-      if (!validateFormStage4 ) {
-        alert("Please fill all the required fields");
-        setSubmitting(false)
-        return;
-      }
       // Check if the user is authenticated
       if (!session || !session.user || !session.user.username) {
         alert("Please log in to continue");
         signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
-      try {
-        if (PdProof) {
-          await uploadFile(
-            PdProof,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${Title_of_Invention}_PdProof`,
-            "product_to_industry"
-          );
-        }
-        else{
-          alert("Please upload Pdprof")
-        }
-  
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("error")
-    }
+      
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -262,16 +276,45 @@ function Product_to_IndustryForm({children}) {
 
       // Make the POST request to save the data
       const res = await axios.post(`/api/Product_to_Industry/Insert_Product`, data);
+      const {id}=res.data;
+if(id){
+  try {
+    if (PdProof) {
+      await uploadFile(
+        PdProof,
+        session.user.username,
+        `/api/Imagesfeilds/fileupload`,
+        `${id}_PdProof`,
+        "product_to_industry"
+      );
+    }
+    else{
+      alert("Please upload Pdprof")
+      setSubmitting(false)
+    }
 
+} catch (error) {
+  console.error("Error saving image:", error);
+  alert("error")
+}
+}
+else{
+  setSubmitting(false)
+}
       setOpen(false);
       resetInventionFormFields()
       setshowSuccessSuccessModal(true)
       console.log(res);
-    } catch (error) {
+   }  catch (error) {
       console.error("Error inserting information:", error);
     }finally {
       setSubmitting(false);
     }
+  }
+  else{
+    alert("Please fill all the fields");
+    setSubmitting(false)
+  }
   };
 
   return (

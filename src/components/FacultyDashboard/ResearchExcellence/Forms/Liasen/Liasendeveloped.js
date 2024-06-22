@@ -19,11 +19,14 @@ function Liasendeveloped({ children }) {
     const [Liasendeveloped, setLiasendeveloped] = useState("");
     const [DateofExecution, setDateofExecution] = useState("");
     const handleSubmit = async () => {
-       
+      const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
         try {
           if (Liasendeveloped === "" || DateofExecution === "" ) {
             alert("Please fill all the fields");
             return;
+          }
+          else if(!textAndSymbolPattern){
+            alert("Please Enter Valid Value")
           }
           if (session.user.username === "") {
             alert("Please login to continue");

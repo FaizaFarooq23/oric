@@ -68,6 +68,11 @@ function IPlicensingForm({ children }) {
   const handleDetail_of_patentdeptchange = (e) => {
     setDetail_of_patentdept(e.target.value);
   };
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
@@ -78,12 +83,20 @@ function IPlicensingForm({ children }) {
     } else if (isExistingProject) {
       newErrors.TitleofInvention = "A Project with this title already exists for you";
       valid = false;
-    } else {
+    } 
+    else if(numericPattern.test(TitleofInvention)){
+      newErrors.TitleofInvention = "Invalid Fomat(Title of Invention should not contain numbers)";
+      valid = false;
+    }
+    else {
       newErrors.TitleofInvention= "";
     }
     if (Status_of_Licensee === "Negotiations Initiated") {
       if (Status_of_Negotiations.trim() === "") {
         newErrors.Status_of_Negotiations = "Status of Negotiations is required";
+        valid = false;
+      } else if(!textAndSymbolPattern.test(Status_of_Negotiations)){
+        newErrors.Status_of_Negotiations = "Invalid Fomat(Shouldn't contain numbers)";
         valid = false;
       } else {
         newErrors.Status_of_Negotiations = "";
@@ -100,6 +113,9 @@ function IPlicensingForm({ children }) {
     if (Feild_of_use.trim() === "") {
       newErrors.Feild_of_use = "Feild of Use is required";
       valid = false;
+    } else if(!textAndSymbolPattern.test(Feild_of_use)){
+      newErrors.Feild_of_use = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
     } else {
       newErrors.Feild_of_use = "";
     }
@@ -113,17 +129,26 @@ function IPlicensingForm({ children }) {
     if (Name_of_leadInventor.trim() === "") {
       newErrors.Name_of_leadInventor = "Name of Lead Inventor is required";
       valid = false;
-    } else {
+    }else if(!textAndSymbolPattern.test(Name_of_leadInventor)){
+      newErrors.Name_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }  else {
       newErrors.Name_of_leadInventor = "";
     }
     if (Designation_of_leadInventor.trim() === "") {
       newErrors.Designation_of_leadInventor = "Designation  is required";
+      valid = false;
+    } else if(!textAndSymbolPattern.test(Designation_of_leadInventor)){
+      newErrors.Designation_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
       valid = false;
     } else {
       newErrors.Designation_of_leadInventor = "";
     }
     if (Department_of_leadInventor.trim() === "") {
       newErrors.Department_of_leadInventor = "Department  is required";
+      valid = false;
+    } else if(!textAndSymbolPattern.test(Department_of_leadInventor)){
+      newErrors.Department_of_leadInventor = "Invalid Fomat(Shouldn't contain numbers)";
       valid = false;
     } else {
       newErrors.Department_of_leadInventor = "";
@@ -138,11 +163,17 @@ function IPlicensingForm({ children }) {
     if (Licensee_Name.trim() === "") {
       newErrors.Licensee_Name = "Name of Licensee is required";
       valid = false;
+    } else if(numericPattern.test(Licensee_Name)){
+      newErrors.Licensee_Name = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
     } else {
       newErrors.Licensee_Name = "";
     }
     if (Licensee_Organization.trim() === "") {
       newErrors.Licensee_Organization = "Organization of Licensee is required";
+      valid = false;
+    } else if(numericPattern.test(Licensee_Organization)){
+      newErrors.Licensee_Organization = "Invalid Fomat(Shouldn't contain numbers)";
       valid = false;
     } else {
       newErrors.Licensee_Organization = "";
@@ -212,7 +243,10 @@ function IPlicensingForm({ children }) {
     if (Keyaspects.trim() === "") {
       newErrors.Keyaspects = "Key Aspects is required";
       valid = false;
-    } else {
+    }else if(numericPattern.test(Keyaspects)){
+      newErrors.Keyaspects = "Invalid Fomat(Shouldn't contain numbers)";
+      valid = false;
+    }  else {
       newErrors.Keyaspects = "";
     }
     setErrors(newErrors);
@@ -278,7 +312,7 @@ function IPlicensingForm({ children }) {
     setStage(1);
   }
   
-  const UploadFile = async () => {
+  const UploadFile = async (id) => {
    
       try {
         if (Negotiationcopy) {
@@ -286,7 +320,7 @@ function IPlicensingForm({ children }) {
             Negotiationcopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${TitleofInvention}_NegotationCopy`,
+            `${id}_NegotationCopy`,
             "ip_licensing"
           );
         } else {
@@ -304,7 +338,7 @@ function IPlicensingForm({ children }) {
             AgreementCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${TitleofInvention}_LicenseAgreementCopy`,
+            `${id}_LicenseAgreementCopy`,
             "ip_licensing"
           );
         } else {
@@ -325,8 +359,9 @@ function IPlicensingForm({ children }) {
     setSubmitting(true);
     try {
       // Validate required fields
-      if (!validateFormStage5) {
+      if (!validateFormStage5()) {
         alert("Please fill all the required fields");
+        setSubmitting(false)
         return;
       }
 
@@ -337,7 +372,7 @@ function IPlicensingForm({ children }) {
         return;
       }
 
-      await UploadFile()
+      
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -366,7 +401,14 @@ function IPlicensingForm({ children }) {
 
       // Make the POST request to save the data
       const res = await axios.post(`/api/IPLicensing/insert_IPLicensing`, data);
-
+      const {id}=res.data;
+      if(id){
+        await UploadFile(id)
+        
+      }
+      else{
+        setSubmitting(false)
+      }
       setOpen(false);
     resetFormFields()
       console.log(res);

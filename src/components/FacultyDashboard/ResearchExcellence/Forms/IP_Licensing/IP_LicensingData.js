@@ -43,16 +43,16 @@ const IPLicensingdata = ({ isOpen, closeModal, data, admin }) => {
   const imageData = data.Status_of_Licensee === "Signed"?[
     {
       label: 'Licensee Agreement Copy',
-      value: `/uploadFile/${data.username}/ip_licensing/${data.Title}_LicenseAgreementCopy.png`,
+      value: `/uploadFile/${data.username}/ip_licensing/${data.id}_LicenseAgreementCopy.png`,
     },
     {
       label: 'Neogitation Copy',
-      value: `/uploadFile/${data.username}/ip_licensing/${data.Title}_NegotationCopy.png`,
+      value: `/uploadFile/${data.username}/ip_licensing/${data.id}_NegotationCopy.png`,
     },
   ]:[
     {
       label: 'Neogitation Copy',
-      value: `/uploadFile/${data.username}/ip_licensing/${data.Title}_NegotationCopy.png`,
+      value: `/uploadFile/${data.username}/ip_licensing/${data.id}_NegotationCopy.png`,
     },
   ];
 // Determine divClassName based on Status_of_Licensee
@@ -75,7 +75,7 @@ const divClassName = data.Status_of_Licensee === "Signed" ? "grid-cols-2" : "";
         <DataDisplayModal title="Details of Licensee" data={licenseeData} gridClassName="grid-cols-2" />
         <DataDisplayModal title="Duration of Agreement" data={durationData} gridClassName="grid-cols-2" />
         <DataDisplayModal title="Additional Details" data={additionalData} />
-        <ImageDisplay title="Documents Copy " data={imageData} divClassName={divClassName}
+        <ImageDisplay title="Documents Copy " data={imageData} divClassName={divClassName} gridClassName="grid-cols-2"
            />
       
         

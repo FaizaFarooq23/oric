@@ -44,7 +44,11 @@ export default async function handler(req, res) {
         Type :Type,
       },
     });
-    res.status(200).json(ipdisclosure_patent);
+    res.status(200).json({ 
+      message: "Ip disclosure created successfully", 
+ipdisclosure_patent,
+      id:ipdisclosure_patent.id // Explicitly include the id in the response
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Error occurred while saving information" });

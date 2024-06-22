@@ -18,7 +18,7 @@ export default function RevenueByHEIFields({ data, onDelete }) {
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-md p-8 m-4 ">
       <div className="flex justify-end items-center mt-4">
-        <button onClick={() => onDelete(data.id, `${data.Title_of_Invention}_AuditedStatement.png`)}>
+        <button onClick={() => onDelete(data.id, `${data.id}_AuditedStatement.png`)}>
           <RiDeleteBin6Line className="text-red-600 text-xl cursor-pointer" />
         </button>
       </div>
@@ -57,7 +57,7 @@ export default function RevenueByHEIFields({ data, onDelete }) {
             <span className="text-gray-500 font-medium">Royalty Share %</span>
           </div>
           <div className="flex items-end justify-center">
-            <span className="text-black text-base font-semibold">{data.Fee_Royalty_Share_Percentages}</span>
+            <span className="text-black text-base font-semibold">{data.Fee_Royalty_Share_Percentages}%</span>
           </div>
         </div>
 
@@ -66,7 +66,7 @@ export default function RevenueByHEIFields({ data, onDelete }) {
             <span className="text-gray-500 font-medium">ORIC Approved Share</span>
           </div>
           <div className="flex items-end justify-center">
-            <span className="text-black text-base font-semibold">{data.ORIC_Approved_Share}</span>
+            <span className="text-black text-base font-semibold">{data.ORIC_Approved_Share}%</span>
           </div>
         </div>
       </div>

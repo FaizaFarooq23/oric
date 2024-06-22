@@ -56,6 +56,10 @@ export default function Trainings_EventsForm({ children }) {
     setCategory("");
     setErrors({});
   };
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -64,12 +68,18 @@ export default function Trainings_EventsForm({ children }) {
       if (Title_of_Training.trim() === "") {
         newErrors.Title_of_Training = "Title of Training is required";
         valid = false;
+      }else if(numericPattern.test(Title_of_Training)){
+        newErrors.Title_of_Training = "Inavlid Format";
+        valid = false;
       }
     }
 
     if (Category === "Exhibitions / Showcasing Events / Industry Linkages Fair") {
       if (Type_of_Event.trim() === "") {
         newErrors.Type_of_Event = "Type of Event is required";
+        valid = false;
+      }else if(numericPattern.test(Type_of_Event)){
+        newErrors.Type_of_Event = "Inavlid Format";
         valid = false;
       }
     }
@@ -78,9 +88,15 @@ export default function Trainings_EventsForm({ children }) {
       newErrors.Arranged_by = "Arranged By is required";
       valid = false;
     }
-
+    else if(numericPattern.test(Arranged_by)){
+      newErrors.Arranged_by = "Inavlid Format";
+      valid = false;
+    }
     if (Arranged_by === "Other HEIs" && Organizer.trim() === "") {
       newErrors.Organizer = "Organizer is required";
+      valid = false;
+    }else if(numericPattern.test(Organizer)){
+      newErrors.Organizer = "Inavlid Format";
       valid = false;
     }
 
@@ -101,9 +117,15 @@ export default function Trainings_EventsForm({ children }) {
       newErrors.Audience_Type = "Audience Type is required";
       valid = false;
     }
-
-    if (Audience_Type === "ORIC Personal" && Name_of_ORICPersonal.trim() === "") {
+    else if(numericPattern.test(Audience_Type)){
+      newErrors.Audience_Type = "Inavlid Format";
+      valid = false;
+    }
+    if (Audience_Type === "ORIC Personal" && Name_of_ORICPerosnal.trim() === "") {
       newErrors.Name_of_ORICPersonal = "Name of ORIC Personal is required";
+      valid = false;
+    }else if(numericPattern.test(Name_of_ORICPerosnal)){
+      newErrors.Name_of_ORICPersonal = "Inavlid Format";
       valid = false;
     }
 
@@ -166,7 +188,7 @@ if(validateForm()){
         isOpen={isOpen}
         setOpen={setOpen}
       >
-        <div className="grid gap-y-8 grid-col bg-white h-screen overflow-y-auto shadow-lg rounded-md px-6 py-2 mt-">
+        <div className="grid gap-y-8 grid-col bg-white w-screen h-screen overflow-y-auto shadow-lg rounded-md px-6 py-2 ">
           <div className="flex justify-end items-end  gap-x-6">
             <FaTimes
               className="text-red-500 text-xl cursor-pointer"
@@ -350,7 +372,7 @@ if(validateForm()){
           <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    className="w-full bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
                     {submitting ? "Saving..." : "Save"}
                   </button>
           </div>

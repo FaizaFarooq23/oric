@@ -10,6 +10,7 @@ import useFieldCheck from "../../Utility/CheckExsistingFeilds";
 import RadioButtonGroup from "@/components/FacultyDashboard/Profile/components/Common/Radiobutton";
 function Researchprojectform({ children }) {
   const [isOpen, setOpen] = useModalState();
+  
   const [TitleofResearch, setTitleofResearch] = useState("");
   const [ThematicArea, setThematicArea] = useState("");
   const [NameResearchGrant, setNameResearchGrant] = useState("");
@@ -56,7 +57,7 @@ function Researchprojectform({ children }) {
   const [meetingdecision, setmeetingdecision] = useState("Approved");
   const [meetingminutes, setmeetingminutes] = useState("");
   const [errors, setErrors] = useState({});
-  const [showSuccessModal, setshowSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility // State to control SuccessModal visibility
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
   useEffect(() => {
@@ -133,7 +134,6 @@ function Researchprojectform({ children }) {
     
   };
 
-  // Define a function to handle moving to the previous stage
   const prevStage = () => {
     setStage(stage - 1);
     if (stage === 0) {
@@ -187,7 +187,7 @@ function Researchprojectform({ children }) {
     setDate_of_review("");
     setmeetingdecision("");
     setmeetingminutes("");
-    showSuccessModal(true);
+    
   };
   const { isExisting: isExistingProject, loading: loadingProjectCheck } = useFieldCheck(
     session?.user?.username,
@@ -641,7 +641,7 @@ function Researchprojectform({ children }) {
     const deliveryWords = delivery.trim().split(/\s+/);
     // Count the number of words
     const DeliverywordCount = deliveryWords.length;
-
+{
 if(Status_of_project === "Completed"){
   if (delivery.trim() === "" ) {
     newErrors.delivery =
@@ -660,7 +660,7 @@ if(Status_of_project === "Completed"){
     newErrors.delivery = "";
   }
 }
-
+}
     
     // Check if word count exceeds 1500
     const RemarksWords = Remarks.trim().split(/\s+/);
@@ -680,108 +680,97 @@ if(Status_of_project === "Completed"){
     setErrors(newErrors);
     return valid;
   };
-  const UploadFile = async () => {
-  if (typeofresearch == "Contract Research") {
-      try {
+  const UploadFile = async (id) => {
+    try {
+      if (typeofresearch === "Contract Research") {
         if (ContractAgreementCopy) {
           await uploadFile(
             ContractAgreementCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${TitleofResearch}_ContractAgreementCopy`,
+            `${id}_ContractAgreementCopy`,
             "research_project"
           );
         } else {
           alert("Please upload Contract Agreement Copy");
+          return;
         }
-      }
-       catch (error) {
-        console.error("Error saving image:", error);
-        alert("error");
-        setSubmitting(false);
-      }
-    }
-    else {
-      if (Status_of_proposal === "Approved" || Status_of_project == "Completed") {
-        try {
+      } else {
+        let fileUploaded = false;
+  
+        if (Status_of_proposal === "Approved" || Status_of_project === "Completed") {
           if (AwardLetterCopy) {
             await uploadFile(
               AwardLetterCopy,
               session.user.username,
               `/api/Imagesfeilds/fileupload`,
-              `${TitleofResearch}_AwardLetterCopy`,
+              `${id}_AwardLetterCopy`,
               "research_project"
             );
+            fileUploaded = true;
           } else {
-            alert("Please upload Award Letter  Copy");
+            alert("Please upload Award Letter Copy");
+            return;
           }
-        } catch (error) {
-          console.error("Error saving image:", error);
-          alert("error");
-          setSubmitting(false);
         }
-      } else if (Status_of_project == "Completed") {
-        try {
+  
+        if (Status_of_project === "Completed") {
           if (CompletionLetterCopy) {
             await uploadFile(
               CompletionLetterCopy,
               session.user.username,
               `/api/Imagesfeilds/fileupload`,
-              `${TitleofResearch}_CompletionLetterCopy`,
+              `${id}_CompletionLetterCopy`,
               "research_project"
             );
+            fileUploaded = true;
           } else {
-            alert("Please upload Completion letter Copy");
+            alert("Please upload Completion Letter Copy");
+            return;
           }
-        } catch (error) {
-          console.error("Error saving image:", error);
-          alert("error");
-          setSubmitting(false);
         }
-      } 
-      else if (reviwedbyIRB == "Yes") {
-        try {
+  
+        if (reviwedbyIRB === "Yes") {
           if (meetingminutes) {
             await uploadFile(
               meetingminutes,
               session.user.username,
               `/api/Imagesfeilds/fileupload`,
-              `${TitleofResearch}_meetingminutes`,
+              `${id}_meetingminutes`,
               "research_project"
             );
+            fileUploaded = true;
           } else {
             alert("Please upload meeting minutes Copy");
+            return;
           }
         }
-         catch (error) {
-          console.error("Error saving image:", error);
-          alert("error");
-          setSubmitting(false);
+  
+        if (SubmissionEmailCopy) {
+          await uploadFile(
+            SubmissionEmailCopy,
+            session.user.username,
+            `/api/Imagesfeilds/fileupload`,
+            `${id}_SubmissionEmailcopy`,
+            "research_project"
+          );
+          fileUploaded = true;
+        } else {
+          alert("Please upload CaseStudy Copy");
+          return;
         }
-      } 
-      
-        try {
-          if (SubmissionEmailCopy) {
-            await uploadFile(
-              SubmissionEmailCopy,
-              session.user.username,
-              `/api/Imagesfeilds/fileupload`,
-              `${TitleofResearch}_SubmissionEmailcopy`,
-              "research_project"
-            );
-          } else {
-            alert("Please upload CaseStudy Copy");
-          }
-        } catch (error) {
-          console.error("Error saving image:", error);
-          alert("error");
-          setSubmitting(false);
+  
+        if (!fileUploaded) {
+          alert("No file was uploaded. Please ensure you have the necessary files.");
         }
-        
+      }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("Error uploading file. Please try again.");
+      setSubmitting(false);
     }
-    
-    
   };
+  
   const handleSubmit = async () => {
     if (submitting) {
       return;
@@ -800,7 +789,7 @@ if(Status_of_project === "Completed"){
         signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
-      await UploadFile();
+      
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -858,10 +847,17 @@ if(Status_of_project === "Completed"){
       );
 
       console.log(res);
-
+const {id}=res.data;
+if(id){
+  await UploadFile();
+}
+else{
+  console.log("Error in saving data");
+  setSubmitting(false);
+}
       handlestate();
       setOpen(false);
-      setshowSuccessModal(true);
+      setshowSuccessSuccessModal(true)
     } catch (error) {
       console.error("Error inserting information:", error);
     }finally {
@@ -1120,7 +1116,7 @@ if(Status_of_project === "Completed"){
                     <span className="text-red-500">{errors.endDate}</span>
                   )}
                 </div>
-                {Status_of_project === "Completed" && typeofresearch!=="Contract Research" (
+                {Status_of_project === "Completed" && typeofresearch!=="Contract Research" && (
                   <div>
                     <InputField
                       label={"Date of Completion"}
@@ -1401,21 +1397,22 @@ if(Status_of_project === "Completed"){
                 )}
 </>
           }
-                {Status_of_proposal === "Approved" || typeofresearch==="Contract Research" && (
-                  <div>
-                    <InputField
-                      label={"Total Funding Approved(PKR)"}
-                      value={fundingApproved}
-                      setVal={setFundingApproved}
-                      required
-                    />
-                    {errors.fundingApproved && (
-                      <span className="text-red-500">
-                        {errors.fundingApproved}
-                      </span>
-                    )}
-                  </div>
-                )}
+              {((Status_of_proposal === "Approved") || (typeofresearch === "Contract Research")) && (
+  <div>
+    <InputField
+      label={"Total Funding Approved(PKR)"}
+      value={fundingApproved}
+      setVal={setFundingApproved}
+      required
+    />
+    {errors.fundingApproved && (
+      <span className="text-red-500">
+        {errors.fundingApproved}
+      </span>
+    )}
+  </div>
+)}
+
                
               </div>
               <div>
@@ -1699,7 +1696,7 @@ if(Status_of_project === "Completed"){
                     id="Textarea"
                     value={Remarks}
                     onChange={handleRemarkschange}
-                   
+                    required
                   />
                   {errors.Remarks && (
                     <span className="text-red-500">{errors.Remarks}</span>
@@ -1754,15 +1751,15 @@ if(Status_of_project === "Completed"){
           />
         )}
       </Modal>
-      {showSuccessModal && (
-        <SuccessModal
-          isOpen={showSuccessModal}
-          p={`Your Data has been Saved `}
-          onClose={() => {
-            setshowSuccessModal(false);
-          }}
-        />
-      )}
+      {
+            showSuccessModal &&
+            (
+          
+              <SuccessModal isOpen={showSuccessModal} p={`Your Data has been Saved `} onClose={()=>{
+                setshowSuccessSuccessModal(false)
+              }}/>
+            )
+          }
     </>
   );
 }

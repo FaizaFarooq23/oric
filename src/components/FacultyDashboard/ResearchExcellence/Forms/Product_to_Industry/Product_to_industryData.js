@@ -21,7 +21,7 @@ const Product_to_Industrydata = ({ isOpen, closeModal, data, admin }) => {
 
   const partnerData = [
     { label: 'Name of Partner', value: data.Name_of_partner },
-    { label: 'Details of Partner', value: data.Detail_of_partner },
+    { label: 'Details of Partner', value: data.Detail_of_partner?data.Detail_of_partner:"N/A" },
   ];
 
   const additionalData = [
@@ -34,7 +34,7 @@ const Product_to_Industrydata = ({ isOpen, closeModal, data, admin }) => {
   const imageData = [
     {
       label: 'PD Proof',
-      value: `/uploadFile/${data.username}/product_to_industry/${data.Title_of_Invention}_PdProof.png`,
+      value: `/uploadFile/${data.username}/product_to_industry/${data.id}_PdProof.png`,
     },
   ];
 

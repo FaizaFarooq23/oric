@@ -20,7 +20,7 @@ export default function ConsultacyContractfield({ data, onDelete }) {
     <div className="flex flex-col bg-white shadow-lg m-4  h-48 rounded-md   ">
       
       <div className="flex justify-end items-center mr-6 mt-2">
-        <button onClick={() => onDelete(data.id,`${data.Title}_Contractcopy.png`)}>
+        <button onClick={() => onDelete(data.id,`${data.id}_Contractcopy.png`)}>
           <RiDeleteBin6Line className="text-red-600 cursor-pointer" />
         </button>
       </div>

@@ -17,7 +17,7 @@ function Product_DisplayedForm({children}) {
     useState("");
     const [submitting, setSubmitting] = useState(false);
   const [Title, setTitle] = useState("");
-  const [category, setcategory] = useState("Product");
+  const [category, setcategory] = useState("Design Product");
   const [Status, setStatus] = useState("");
   const [Nationality, setNationality] = useState("National");
   const [Feild_of_use, setFeild_of_use] = useState("");
@@ -48,6 +48,11 @@ function Product_DisplayedForm({children}) {
   const handleDetail_of_Forumchange = (e) => {
     setDetail_of_Forum(e.target.value);
   };
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
@@ -58,13 +63,22 @@ function Product_DisplayedForm({children}) {
     } else if (isExistingProject) {
       newErrors.Title = "A Project with this title already exists for you";
       valid = false;
-    } else {
+    } else if(numericPattern.test(Title)){
+      newErrors.Title = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }
+      else {
       newErrors.Title= "";
     }
     if (Status.trim() === "") {
       newErrors.Status= "Status is required";
       valid = false;
-    } else {
+    } 
+    else if(!textAndSymbolPattern.test(Status)){
+      newErrors.Status = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }
+    else {
       newErrors.Status= "";
     }
     setErrors(newErrors);
@@ -77,17 +91,26 @@ function Product_DisplayedForm({children}) {
     if (Name_of_lead.trim() === "") {
       newErrors.Name_of_lead = "Name of Lead  is required";
       valid = false;
-    } else {
+    }  else if(!textAndSymbolPattern.test(Name_of_lead)){
+      newErrors.Name_of_lead = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Name_of_lead = "";
     }
     if (Designation_of_lead.trim() === "") {
       newErrors.Designation_of_lead = "Designation  is required";
       valid = false;
-    } else {
+    }  else if(!textAndSymbolPattern.test(Designation_of_lead)){
+      newErrors.Designation_of_lead = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Designation_of_lead = "";
     }
     if (Department_of_lead.trim() === "") {
       newErrors.Department_of_lead = "Department  is required";
+      valid = false;
+    } else if(!textAndSymbolPattern.test(Department_of_lead)){
+      newErrors.Department_of_lead = "Invalid Format(Shouldn't contain numeric)";
       valid = false;
     } else {
       newErrors.Department_of_lead = "";
@@ -103,10 +126,16 @@ function Product_DisplayedForm({children}) {
     if (Name_of_Forum.trim() === "") {
       newErrors.Name_of_Forum = "Name of Forum is required";
       valid = false;
-    } else {
+    }  else if(!textAndSymbolPattern.test(Name_of_Forum)){
+      newErrors.Name_of_Forum = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Name_of_Forum = "";
     }
-
+     if(numericPattern.test(Detail_of_Forum)){
+      newErrors.Detail_of_Forum = "Invalid Format(Shouldn't contain numeric)";
+      valid = false;
+    }
     setErrors(newErrors);
     return valid;
   };
@@ -201,24 +230,7 @@ function Product_DisplayedForm({children}) {
         signOut({ callbackUrl: "http://localhost:3000/" });;
         return;
       }
-      try {
-        if (Breif) {
-          await uploadFile(
-            Breif,
-            session.user.username,
-            `/api/Imagesfeilds/fileupload`,
-            `${Title}_BreifCopy`,
-            "product_displayed"
-          );
-        }
-        else{
-          alert("Please upload Breif copy")
-        }
-  
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("error")
-    }
+    
       // Construct the data object based on the conditions
       const data = {
         username: session.user.username,
@@ -242,6 +254,32 @@ function Product_DisplayedForm({children}) {
       const res = await axios.post(`/api/Research_products/Insert_product_displayed`, data);
 
       setOpen(false);
+      const {id}=res.data;
+      if(id){
+
+        try {
+          if (Breif) {
+            await uploadFile(
+              Breif,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${id}_BreifCopy`,
+              "product_displayed"
+            );
+          }
+          else{
+            alert("Please upload Breif copy")
+          }
+    
+      } catch (error) {
+        console.error("Error saving image:", error);
+        alert("error")
+      }
+      }
+      else{
+        setSubmitting(false)
+        
+      }
       resetFormFields();
       setshowSuccessSuccessModal(true)
       console.log(res);
@@ -266,7 +304,7 @@ function Product_DisplayedForm({children}) {
         <div className=" flex gap-y-8 flex-col bg-white shadow-lg rounded-md px-10 py-8 ">
           <div>
             <h1 className="text-blue-900   font-bold text-xl py-2 m-2 border-black">
-             Enter Infromation of  Product Displayed or Represented At National or Internation level
+             Enter Infromation of  Science / Arts Products or Any Creative Activity Performed /  Represented At National or Internation level
             </h1>
           </div>
           <div>
@@ -299,7 +337,7 @@ function Product_DisplayedForm({children}) {
             />
             <Dropdown
               label={"Category"}
-              dropdownOptions={["Product", "Process", "Technology", "Others"]}
+              dropdownOptions={["Design Product", "Science", "Arts","Exhibition", "Others"]}
               value={category}
               handleOptionChange={handlecategoryChange}
               required

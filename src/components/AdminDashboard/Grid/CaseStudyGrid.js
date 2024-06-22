@@ -60,6 +60,9 @@ export default function CaseStudyGrid() {
     { field: "Coalation_Partner", filter: true, headerName: "Coalition Partner" },
     { field: "Breif_Details", filter: true, headerName: "Brief Details" },
     { field: "Issue_verification", filter: true, headerName: "Issue Verification" },
+    { field: "Name_of_Pi", filter: true, headerName: "Name of Pi" },
+    { field: "Department_of_Pi", filter: true, headerName: "Department of Pi" },
+    { field: "Designation_of_Pi", filter: true, headerName: "Designation of Pi" },
   ]);
 
   const fetchData = async () => {

@@ -71,7 +71,7 @@ if (Status_of_Licensee==="Signed") {
         AgreementCopy,
         session.user.username,
         `/api/Imagesfeilds/fileupload`,
-        `${data.Title}_LicenseAgreementCopy`,
+        `${data.id}_LicenseAgreementCopy`,
         "ip_licensing"
       );
     } else {
@@ -118,10 +118,10 @@ if (Status_of_Licensee==="Signed") {
   const getFilenamesToDelete = (data) => {
     let filenames = [];
     if (data.Status_of_Licensee ==="Granted") {
-      filenames.push(`${data.Title}_LicenseAgreementCopy.png`);
+      filenames.push(`${data.id}_LicenseAgreementCopy.png`);
     }
     if(data.Status_of_Licensee ==="Granted"||data.Status_of_Licensee==="Negotiations Initiated") {
-      filenames.push(`${data.Title}_NegotationCopy.png`);
+      filenames.push(`${data.id}_NegotationCopy.png`);
     }
     
     return filenames;

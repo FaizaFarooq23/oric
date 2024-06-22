@@ -15,13 +15,17 @@ export default function VisitsForm({ children }) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
- 
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
 
     if (Name_of_Visitor.trim() === "") {
       newErrors.Name_of_Visitor = "Name of Visitor is required";
+      valid = false;
+    }else if(!textAndSymbolPattern.test(Name_of_Visitor)){
+      newErrors.Name_of_Visitor = "Inavlid Format";
       valid = false;
     }
     if (Date_of_Visit.trim() === "") {
@@ -78,7 +82,7 @@ export default function VisitsForm({ children }) {
         isOpen={isOpen}
         setOpen={setOpen}
       >
-        <div className="grid gap-y-8 grid-col bg-white h-screen overflow-y-auto shadow-lg rounded-md px-6 py-2 mt-">
+        <div className="grid gap-y-8 grid-col w-screen bg-white h-screen overflow-y-auto shadow-lg rounded-md px-6 py-2 mt-">
         <div className="flex justify-end items-end  gap-x-6">
           <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={()=>{
             setOpen(false);
@@ -129,7 +133,7 @@ export default function VisitsForm({ children }) {
           <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    className="ml-auto bg-blue-900 w-full text-white px-4 py-2 rounded-md mt-4 ">
                     {submitting ? "Saving..." : "Save"}
                   </button>
           </div>

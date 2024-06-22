@@ -28,21 +28,32 @@ function ResearchLinkageForm({ children }) {
   const [submitting, setSubmitting] = useState(false);
 
   const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateFormStage1 = () => {
     let valid = true;
     const newErrors = {};
-  
-
     if (FeildofStudy.trim() === "") {
       newErrors.FeildofStudy = "Feild of Study is required";
       valid = false;
-    } else {
+    }else if (!textAndSymbolPattern.test(FeildofStudy)) {
+      newErrors.FeildofStudy = "Invalid Format (Shouln't contain numerics";
+      valid = false;
+    } 
+     else {
       newErrors.FeildofStudy = "";
     }
     if (NameResearchGrant.trim() === "") {
       newErrors.NameResearchGrant = "Name of Research Grant  is required";
       valid = false;
-    } else {
+    } else if (numericPattern.test(NameResearchGrant)) {
+      newErrors.NameResearchGrant = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    } 
+    else {
       newErrors.NameResearchGrant = "";
     }
     if (DateofAgreement.trim() === "") {
@@ -62,11 +73,18 @@ function ResearchLinkageForm({ children }) {
     if (NameofHostInstitute.trim() === "") {
       newErrors.NameofHostInstitute = "Name of Host Institute is required";
       valid = false;
-    } else {
+    }  else if (numericPattern.test(NameofHostInstitute)) {
+      newErrors.NameofHostInstitute = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    } 
+    else {
       newErrors.NameofHostInstitute = "";
     }
     if (AdressofHostInstitute.trim() === "") {
       newErrors.AdressofHostInstitute = "Address of Host Institute is required";
+      valid = false;
+    } else if (numericPattern.test(AdressofHostInstitute)) {
+      newErrors.AdressofHostInstitute = "Invalid Format(Shoudn't Contain numeric)";
       valid = false;
     } else {
       newErrors.AdressofHostInstitute = "";
@@ -74,13 +92,23 @@ function ResearchLinkageForm({ children }) {
     if (CollaboratingAgency.trim() === "") {
       newErrors.CollaboratingAgency = "Collaborating Agency is required";
       valid = false;
-    } else {
+    } 
+    else if (numericPattern.test(CollaboratingAgency)) {
+      newErrors.CollaboratingAgency = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    } 
+    else {
       newErrors.CollaboratingAgency = "";
     }
     if (CollaboratingAgencyAddress.trim() === "") {
       newErrors.CollaboratingAgencyAddress = "Collaborating Agency Address is required";
       valid = false;
-    } else {
+    } 
+    else if (numericPattern.test(CollaboratingAgencyAddress)) {
+      newErrors.CollaboratingAgencyAddress = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    } 
+    else {
       newErrors.CollaboratingAgencyAddress = "";
     }
     setErrors(newErrors);
@@ -94,7 +122,12 @@ function ResearchLinkageForm({ children }) {
     if (Features.trim() === "") {
       newErrors.Features = "Salient Features is required";
       valid = false;
-    } else {
+    }
+    else if (numericPattern.test(Features)) {
+      newErrors.Features = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    }
+     else {
       newErrors.Features = "";
     }
     if (!MoUcopy) {
@@ -111,7 +144,12 @@ function ResearchLinkageForm({ children }) {
     if (Scope.trim() === "") {
       newErrors.Scope = "Scope of Collanoration  is required";
       valid = false;
-    } else {
+    }
+    else if (numericPattern.test(Scope)) {
+      newErrors.Scope = "Invalid Format(Shoudn't Contain numeric)";
+      valid = false;
+    }
+     else {
       newErrors.Scope=""
     }
     setErrors(newErrors);

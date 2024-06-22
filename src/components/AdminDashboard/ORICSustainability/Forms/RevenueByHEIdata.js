@@ -20,21 +20,23 @@ const RevenueByHEIDataDisplay = ({ isOpen, closeModal, data }) => {
   const formattedDataStage3 = [
     { label: 'Licensee Name', value: data.Licensee_Name },
     { label: 'Licensee Organization', value: data.Licensee_Organization },
-    { label: 'Fee / Royalty Share Percentages', value: data.Fee_Royalty_Share_Percentages },
-    { label: 'Total Amount', value: data.Total_Amount },
-    { label: 'ORIC Approved Share', value: data.ORIC_Approved_Share },
-    { label: 'ORIC Received Share', value: data.ORIC_Received_Share },
+    ...(data.Fee_Royalty_Share_Percentages !== undefined ? [{ label: 'Fee / Royalty Share Percentages', value: `${data.Fee_Royalty_Share_Percentages}%` }] : []),
+        { label: 'Total Amount', value: data.Total_Amount },
+      ...(data.ORIC_Approved_Share !== undefined ? [{ label: 'ORIC Approved Share', value: `${data.ORIC_Approved_Share}%` }] : []),
+      ...(data.ORIC_Received_Share !== undefined ? [{ label: 'ORIC Received Share', value: `${data.ORIC_Received_Share}%` }] : [])
+  
+    
   ];
   const imageData = [
     {
       label: 'Audited Statement',
-      value: `/uploadFile/${data.username}/RevenueByHEI/${data.Title_of_Invention}_AuditedStatement.png`
+      value: `/uploadFile/${data.username}/RevenueByHEI/${data.id}_AuditedStatement.png`
     },
   ];
   const formattedDataStage4 = [
-    ...(data.Remarks ? [{ label: 'Remarks', value: data.Remarks }] : []),
+    ...(data.Remarks !== undefined && data.Remarks.trim() !== '' ? [{ label: 'Remarks', value: data.Remarks }] : [{ label: 'Remarks', value: 'N/A' }])
   ];
-
+  
   return (
     <Modal
       isOpen={isOpen}

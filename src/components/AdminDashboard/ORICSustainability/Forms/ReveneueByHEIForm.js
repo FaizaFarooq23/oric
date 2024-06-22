@@ -30,7 +30,11 @@ export default function ReveneueByHEIForm({ children }) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
- 
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -38,17 +42,29 @@ export default function ReveneueByHEIForm({ children }) {
     if (Name_of_Lead_Inventor.trim() === "") {
       newErrors.Name_of_Lead_Inventor = "Name of Lead Inventor is required";
       valid = false;
+    }else if(!textAndSymbolPattern.test(Name_of_Lead_Inventor)){
+      newErrors.Name_of_Lead_Inventor = "Inavlid Format";
+      valid = false;
     }
     if (Designation_of_Lead_Inventor.trim() === "") {
       newErrors.Designation_of_Lead_Inventor = "Designation of Lead Inventor is required";
+      valid = false;
+    }else if(!textAndSymbolPattern.test(Designation_of_Lead_Inventor)){
+      newErrors.Designation_of_Lead_Inventor = "Inavlid Format";
       valid = false;
     }
     if (Department_of_Lead_Inventor.trim() === "") {
       newErrors.Department_of_Lead_Inventor = "Department of Lead Inventor is required";
       valid = false;
+    }else if(!textAndSymbolPattern.test(Department_of_Lead_Inventor)){
+      newErrors.Department_of_Lead_Inventor = "Inavlid Format";
+      valid = false;
     }
     if (Title_of_Invention.trim() === "") {
       newErrors.Title_of_Invention = "Title of Invention is required";
+      valid = false;
+    }else if(numericPattern.test(Title_of_Invention)){
+      newErrors.Title_of_Invention = "Inavlid Format";
       valid = false;
     }
     if (Nationality.trim() === "") {
@@ -74,8 +90,15 @@ export default function ReveneueByHEIForm({ children }) {
       newErrors.Licensee_Name = "Licensee Name is required";
       valid = false;
     }
+    else if(numericPattern.test(Licensee_Name)){
+      newErrors.Licensee_Name = "Inavlid Format";
+      valid = false;
+    }
     if (Licensee_Organization.trim() === "") {
       newErrors.Licensee_Organization = "Licensee Organization is required";
+      valid = false;
+    }else if(numericPattern.test(Licensee_Organization)){
+      newErrors.Licensee_Organization = "Inavlid Format";
       valid = false;
     }
     if (Fee_Royalty_Share_Percentages.trim() === "") {
@@ -95,15 +118,16 @@ export default function ReveneueByHEIForm({ children }) {
     if (ORIC_Approved_Share.trim() === "") {
       newErrors.ORIC_Approved_Share = "ORIC Approved Share is required";
       valid = false;
-    }else if (isNaN(ORIC_Approved_Share)) {
-      newErrors.ORIC_Approved_Share = "ORIC Approved Share must be numeric";
+    }
+    else if(percentagePattern.test(ORIC_Approved_Share)){
+      newErrors.ORIC_Approved_Share = "Inavlid Format(Enter correct Percentage";
       valid = false;
     }
     if (ORIC_Received_Share.trim() === "") {
       newErrors.ORIC_Received_Share = "ORIC Received Share is required";
       valid = false;
-    }else if (isNaN(ORIC_Received_Share)) {
-      newErrors.ORIC_Received_Share = "ORIC Received Share must be numeric";
+    } else if(percentagePattern.test(ORIC_Received_Share)){
+      newErrors.ORIC_Received_Share = "Inavlid Format(Enter correct Percentage";
       valid = false;
     }
     if (!AuditedStatement) {
@@ -143,7 +167,7 @@ export default function ReveneueByHEIForm({ children }) {
     setRemarks(e.target.value);
   };
   const handleSubmit = async () => {
-    alert("clicked")
+   
     if (submitting) {
       return;
     }
@@ -156,25 +180,11 @@ export default function ReveneueByHEIForm({ children }) {
 
     if (!validateForm()) {
       alert("Please fill all the required fields")
+      setSubmitting(false)
       return;
     }
 
-    try {
-      if (AuditedStatement) {
-        await uploadFile(
-          AuditedStatement,
-          session.user.username,
-          `/api/Imagesfeilds/fileupload`,
-          `${Title_of_Invention}_AuditedStatement`,
-          "RevenueByHEI"
-        );
-      } else {
-        alert("Please upload Audited Statement Copy");
-      }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("error");
-    }
+   
     try {
       const res = await axios.post(`/api/ORIC_Sustainability/Revenue/insert_RevenueByHEI`, {
         username: session.user.username,
@@ -196,6 +206,28 @@ export default function ReveneueByHEIForm({ children }) {
       });
 
       console.log(res);
+      const {id}=res.data;
+      if(id){
+        try {
+          if (AuditedStatement) {
+            await uploadFile(
+              AuditedStatement,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${id}_AuditedStatement`,
+              "RevenueByHEI"
+            );
+          } else {
+            alert("Please upload Audited Statement Copy");
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("error");
+        }
+      }
+      else{
+        setSubmitting(false)
+      }
       setOpen(false);
       resetFields()
       setShowSuccessModal(true);
@@ -205,7 +237,7 @@ export default function ReveneueByHEIForm({ children }) {
     } finally {
       setSubmitting(false);
     }
-    console.log("Clicked")
+   
   };
 
   return (
@@ -434,14 +466,16 @@ export default function ReveneueByHEIForm({ children }) {
             value={Remarks}
             onChange={handleRemarksChange}
           />
-          </div>
-          
+          </div >
+          <div  className="flex justify-center ">
           <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    className="bg-blue-900 w-full text-white px-4 py-2 rounded-md mt-4 ">
                     {submitting ? "Saving..." : "Save"}
                   </button>
+          </div>
+          
         </div>
       </Modal>
       {

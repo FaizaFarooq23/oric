@@ -24,7 +24,7 @@ export default function RevenueByORICFields({ data, onDelete }) {
           onClick={() =>
             onDelete(
               data.id,
-              `${data.Title_of_ResearchProposal}_AuditedStatement.png`
+              `${data.id}_AuditedStatement.png`
             )
           }
         >

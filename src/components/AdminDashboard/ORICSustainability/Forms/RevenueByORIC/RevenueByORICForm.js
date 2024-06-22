@@ -40,12 +40,20 @@ export default function RevenueByORICForm({ children }) {
   const handletype = (e) => {
     setIsJoint(e);
   };
+  
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
-
     if (Name_of_Research_Grant.trim() === "") {
       newErrors.Name_of_Research_Grant = "Name of Research Grant is required";
+      valid = false;
+    }else if(numericPattern.test(Name_of_Research_Grant)){
+      newErrors.Name_of_Research_Grant = "Inavlid Format";
       valid = false;
     }
     if (Nationality.trim() === "") {
@@ -56,17 +64,30 @@ export default function RevenueByORICForm({ children }) {
       newErrors.Title_of_ResearchProposal =
         "Title of Research Proposal is required";
       valid = false;
+    }else if(numericPattern.test(Title_of_ResearchProposal)){
+      newErrors.Title_of_ResearchProposal = "Inavlid Format";
+      valid = false;
     }
     if (Name_of_PI.trim() === "") {
       newErrors.Name_of_PI = "Name of PI is required";
+      valid = false;
+    }else if(!textAndSymbolPattern.test(Name_of_PI)){
+      newErrors.Name_of_PI = "Inavlid Format";
       valid = false;
     }
     if (Designation_of_Pi.trim() === "") {
       newErrors.Designation_of_Pi = "Designation of PI is required";
       valid = false;
+    }else if(!textAndSymbolPattern.test(Designation_of_Pi)){
+      newErrors.Designation_of_Pi = "Inavlid Format";
+      valid = false;
     }
     if (Department_of_Pi.trim() === "") {
       newErrors.Department_of_Pi = "Department of PI is required";
+      valid = false;
+    }
+    else if(!textAndSymbolPattern.test(Department_of_Pi)){
+      newErrors.Department_of_Pi = "Inavlid Format";
       valid = false;
     }
     if (StartDate.trim() === "") {
@@ -75,6 +96,9 @@ export default function RevenueByORICForm({ children }) {
     }
     if (Collaborating_Partner.trim() === "" && isJoint === "Yes") {
       newErrors.Collaborating_Partner = "Collaborating Partner is required";
+      valid = false;
+    }else if(numericPattern.test(Collaborating_Partner)){
+      newErrors.Collaborating_Partner = "Inavlid Format";
       valid = false;
     }
     if (EndDate.trim() === "") {
@@ -114,7 +138,12 @@ export default function RevenueByORICForm({ children }) {
       newErrors.ORIC_Overhead_in_Approved_Funding =
         "ORIC Overhead in Approved Funding must be numeric";
       valid = false;
+    } else if (parseFloat(ORIC_Overhead_in_Approved_Funding) < 0 || parseFloat(ORIC_Overhead_in_Approved_Funding) > 100) {
+      newErrors.ORIC_Overhead_in_Approved_Funding =
+        "ORIC Overhead in Approved Funding must be a valid percentage (between 0 and 100)";
+      valid = false;
     }
+    
     if (ORIC_Overhead_in_Released_Funding.trim() === "") {
       newErrors.ORIC_Overhead_in_Released_Funding =
         "ORIC Overhead in Released Funding is required";
@@ -123,7 +152,12 @@ export default function RevenueByORICForm({ children }) {
       newErrors.ORIC_Overhead_in_Released_Funding =
         "ORIC Overhead in Released Funding must be numeric";
       valid = false;
+    } else if (parseFloat(ORIC_Overhead_in_Released_Funding) < 0 || parseFloat(ORIC_Overhead_in_Released_Funding) > 100) {
+      newErrors.ORIC_Overhead_in_Released_Funding =
+        "ORIC Overhead in Released Funding must be a valid percentage (between 0 and 100)";
+      valid = false;
     }
+    
     if (!AuditedStatement) {
       newErrors.AuditedStatement = "Audited Statement is required";
       valid = false;
@@ -179,26 +213,6 @@ export default function RevenueByORICForm({ children }) {
       setSubmitting(false);
       return;
     }
-  
-    try {
-      if (AuditedStatement) {
-        await uploadFile(
-          AuditedStatement,
-          session.user.username,
-          `/api/Imagesfeilds/fileupload`,
-          `${Title_of_ResearchProposal}_AuditedStatement`,
-          "RevenueByORIC"
-        );
-      } else {
-        alert("Please upload Audited Statement Copy");
-        return;
-      }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("Error uploading Audited Statement");
-      return;
-    }
-  
     try {
       const res = await axios.post(`/api/ORIC_Sustainability/Revenue/insert_RevenueByORIC`, {
         username: session.user.username,
@@ -217,7 +231,30 @@ export default function RevenueByORICForm({ children }) {
         Remarks:Remarks,
         Collaborating_Partner: isJoint === "Yes" ? Collaborating_Partner : null,
       });
-  
+  const {id}=res.data;
+  if(id){
+    try {
+      if (AuditedStatement) {
+        await uploadFile(
+          AuditedStatement,
+          session.user.username,
+          `/api/Imagesfeilds/fileupload`,
+          `${id}_AuditedStatement`,
+          "RevenueByORIC"
+        );
+      } else {
+        alert("Please upload Audited Statement Copy");
+        return;
+      }
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("Error uploading Audited Statement");
+      return;
+    }
+  }
+  else{
+    setSubmitting(false);
+  }
       console.log(res);
       setOpen(false);
       resetFields()
@@ -486,11 +523,11 @@ export default function RevenueByORICForm({ children }) {
               />
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center ">
            <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    className="bg-blue-900 w-full text-white px-4 py-2 rounded-md mt-4 ">
                     {submitting ? "Saving..." : "Save"}
                   </button>
           </div>

@@ -96,30 +96,30 @@ export default function AwardsModal({ children }) {
     setErrors(newErrors);
     return valid;
   };
-  //symbols and text patterns
-  const textPattern = /^[A-Za-z]+$/;
-  const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
+  
   
   const validateFormStage2 = () => {
     let valid = true;
     const newErrors = {};
-  
-   
-  
+  //symbols and text patterns
+  const numericPattern = /\d/;
+  const textPattern = /^[A-Za-z]+$/;
+  const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
     if (name_of_winner.trim() === "") {
       newErrors.name_of_winner = "Name is required";
       valid = false;
-    } else if (!textPattern.test(name_of_winner) && !symbolPattern.test(name_of_winner)) {
+    } else if (numericPattern.test(name_of_winner) ) {
       newErrors.name_of_winner = "Name shouldn't contain numbers";
       valid = false;
     } else {
       newErrors.name_of_winner = "";
     }
+    
   
     if (department_of_winner.trim() === "") {
       newErrors.department_of_winner = "Department is required";
       valid = false;
-    } else if (!textPattern.test(department_of_winner) && !symbolPattern.test(department_of_winner)) {
+    } else if (numericPattern.test(department_of_winner) ) {
       newErrors.department_of_winner = "Department shouldn't contain numbers";
       valid = false;
     } else {
@@ -129,7 +129,7 @@ export default function AwardsModal({ children }) {
     if (Designation_of_winner.trim() === "") {
       newErrors.Designation_of_winner = "Designation is required";
       valid = false;
-    } else if (!textPattern.test(Designation_of_winner) && !symbolPattern.test(Designation_of_winner)) {
+    } else if (numericPattern.test(Designation_of_winner) ) {
       newErrors.Designation_of_winner = "Designation shouldn't contain numbers";
       valid = false;
     } else {
@@ -145,11 +145,14 @@ export default function AwardsModal({ children }) {
     let valid = true;
     const newErrors = {};
   
-  
+  //symbols and text patterns
+  const numericPattern = /\d/;
+  const textPattern = /^[A-Za-z]+$/;
+  const symbolPattern = /^[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+$/;
     if (details.trim() === "") {
       newErrors.details = "Brief Detail of Work Honoured is required";
       valid = false;
-    } else if (!textPattern.test(details) && !symbolPattern.test(details)) {
+    } else if (numericPattern.test(details) ) {
       newErrors.details = "Details shouldn't contain numbers";
       valid = false;
     } else {

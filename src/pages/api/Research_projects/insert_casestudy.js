@@ -11,6 +11,9 @@ export default async function handler(req, res) {
     Coalation_Partner,
     Breif_Details,
     Issue_verification,
+    Name_of_pi  ,            
+    Designation_of_Pi  ,      
+    Department_of_Pi  
   } = req.body;
   try {
     const policy_casestudy = await prisma.Policy_CaseStudy.create({
@@ -24,6 +27,9 @@ export default async function handler(req, res) {
         Coalation_Partner: Coalation_Partner,
         Breif_Details: Breif_Details,
         Issue_verification: Issue_verification,
+        Name_of_pi       :Name_of_pi,        
+        Designation_of_Pi   :Designation_of_Pi,
+        Department_of_Pi  :Department_of_Pi
       },
     });
     res.status(200).json({ 

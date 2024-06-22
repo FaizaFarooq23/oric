@@ -40,9 +40,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     { label: 'Name of Pi', value: data.Name_of_pi },
     { label: 'Department of Pi', value: data.Department_of_Pi },
     { label: 'Designation of Pi', value: data.Designation_of_Pi },
-    ...((data.Status_of_proposal !== 'Submitted') && (data.type_of_research === 'Solo Project') && (data.category === 'Non-HEC') ? [
-      { label: 'ORIC Overhead', value: data.ORIC_Overhead }
-    ] : []),
+    
   ];
 
   const copiDetails = data.type_of_research === 'Joint Research' ? [
@@ -68,17 +66,22 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
 
   const fundingDetails = [
     ...(data.type_of_research !== 'Contract Research' ? [
-      { label: 'Total Funding Requested', value: data.funding_requested }
+      { label: 'Total Funding Requested', value: `${data.funding_requested} PKR Million`}
     ] : []),
     ...(data.Status_of_proposal === 'Approved' || data.type_of_research==="Contract Research" ? [
-      { label: 'Total Funding Approved', value: data.funding_approved }
+      { label: 'Total Funding Approved', value: `${data.funding_approved} PKR Million` }
     ] : []),
     ...(data.Status_of_project === 'Completed' ? [
-      { label: 'Total Funding Utilized', value: data.funding_utilized?data.funding_utilized:"N/A" }
+      { label: 'Total Funding Utilized', value: data.funding_utilized?`${data.funding_utilized} PKR Million`:"N/A" }
     ] : []),
     ...(data.Status_of_project === 'Completed' ? [
-      { label: 'Total Funding Realesed', value: data.funding_realesed }
-    ] : [])
+      { label: 'Total Funding Realesed', value: `${data.funding_realesed} PKR Million` }
+    ] : []),
+    ...(data.Status_of_proposal !== 'Submitted' &&
+      data.type_of_research === 'Solo Project' &&
+      data.category === 'Non-HEC' ? [
+        { label: 'ORIC Overhead', value: data.ORIC_Overhead?`${data.ORIC_Overhead} %`:"N/A" }
+      ] : [])
   ];
 
   const partnerDetails = data.type_of_research!=="Contract Research"? [
@@ -101,7 +104,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     if (data.Status_of_proposal === "Approved") {
       imageData.push({
         label: 'Award Letter Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.title}_AwardLetterCopy.png`
+        value: `/uploadFile/${data.username}/research_project/${data.id}_AwardLetterCopy.png`
       });
     
   } 
@@ -109,30 +112,32 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     
     imageData.push({
       label: 'Completion Letter Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.title}_Completionlettercopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.id}_CompletionLetterCopy.png`
     });
     
   } 
+ 
   
   if (data.reviwedbyIRB === "Yes") {
       imageData.push({
         label: 'Meeting Minutes Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.title}_meetingminutes.png`
+        value: `/uploadFile/${data.username}/research_project/${data.id}_meetingminutes.png`
       });
     
   }
   if(data.Status_of_proposal === "Approved"||data.Status_of_proposal === "Submitted"){
     imageData.push({
       label: 'Submission Email Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.title}_SubmissionEmailcopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.id}_SubmissionEmailcopy.png`
     });
   }
   }
   if (data.type_of_research === "Contract Research") {
     imageData.push({
       label: 'Contract Agreement Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.title}_ContractAgreementCopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.id}_ContractAgreementCopy.png`
     });
+    
   
 } 
   return (
@@ -145,7 +150,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       <div className="flex justify-end items-end gap-x-6">
         <FaTimes className="text-red-500 text-xl cursor-pointer" onClick={closeModal} />
       </div>
-      <h1 className="text-blue-900   font-bold text-xl py-2 border-black">Research Project Details</h1>
+      <h1 className="text-blue-900   font-bold text-xl  border-black">Research Project Details</h1>
       
       <DataDisplayModal title="Project Details" data={projectDetails} gridClassName="grid-cols-2" />
       {contractDetails.length > 0 && <DataDisplayModal title="Contract Details" data={contractDetails} gridClassName="grid-cols-2" />}

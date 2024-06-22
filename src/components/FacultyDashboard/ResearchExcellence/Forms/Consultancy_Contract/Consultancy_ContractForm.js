@@ -70,6 +70,11 @@ function ConsultacyContract({ children }) {
   useEffect(() => {
     console.log(session);
   }, [session]);
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateForm = async () => {
     let valid = true;
     const newErrors = {};
@@ -81,6 +86,9 @@ function ConsultacyContract({ children }) {
     else if (isExistingProject) {
       newErrors.Title_of_Project = "A Project with this title already exists for you";
       valid = false;
+    }else if(numericPattern.test(Title_of_Project)){
+      newErrors.Title_of_Project = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
     } else {
       newErrors.Title_of_Project= "";
     }
@@ -89,21 +97,30 @@ function ConsultacyContract({ children }) {
     if (NameofPi.trim() === "") {
       newErrors.NameofPi = "Name of Pi is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(NameofPi)){
+      newErrors.NameofPi = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.NameofPi = "";
     }
 
     if (Designation_of_Pi.trim() === "") {
       newErrors.Designation_of_Pi = "Designation of Pi is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Designation_of_Pi)){
+      newErrors.Designation_of_Pi = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Designation_of_Pi = "";
     }
 
     if (Department_of_Pi.trim() === "") {
       newErrors.Department_of_Pi = "Department of Pi is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(Department_of_Pi)){
+      newErrors.Department_of_Pi= "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Department_of_Pi = "";
     }
     if (DateofExecution.trim() === "") {
@@ -116,14 +133,20 @@ function ConsultacyContract({ children }) {
     if (Company_Name.trim() === "") {
       newErrors.Company_Name = "Company Name is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(Company_Name)){
+      newErrors.Company_Name = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Company_Name = "";
     }
 
     if (Company_Address.trim() === "") {
       newErrors.Company_Address = "Company Address is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(Company_Address)){
+      newErrors.Company_Address = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.Company_Address = "";
     }
 
@@ -145,10 +168,22 @@ function ConsultacyContract({ children }) {
     if (delievery.trim() === "") {
       newErrors.delievery = "Project deliverables are required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(delievery)){
+      newErrors.delievery = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }else {
       newErrors.delievery = "";
     }
-    if (!Contractcopy) {
+  if(!percentagePattern.test(ORICpercent)){
+      newErrors.ORICpercent = "Invalid Data Format";
+      valid = false;
+    }
+     if(numericPattern.test(Remarks)){
+      newErrors.Remarks = "Invalid Data Format (Shouldn't contain numeric)";
+      valid = false;
+    }
+    if 
+    (!Contractcopy) {
       newErrors.Contractcopy = "Contract copy are required";
       valid = false;
     } else if (!['image/jpeg', 'image/jpg', 'image/png'].includes(Contractcopy.type)) {
@@ -177,25 +212,18 @@ function ConsultacyContract({ children }) {
       return;
     }
     setSubmitting(true);
-    if (isValid && (Contractcopy)) {
+    if (!isValid) {
+alert("Fill all the feilds correctly")
+setSubmitting(false);
+    }
+
     try {
       if (session.user.username === "") {
         alert("Please login to continue");
         signOut({ callbackUrl: "http://localhost:3000/" });      
           return;
       }
-      try {
-        if (Contractcopy) {
-          await uploadFile(Contractcopy, session.user.username, `/api/Imagesfeilds/fileupload`,`${Title_of_Project}_Contractcopy`,"consultancy_contract");
-        }
-        else{
-          alert("Please upload Contact Copy")
-        }
-  
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("error")
-    }
+      
       const res = await axios.post(
         `/api/Research_projects/insert_consultancy_contract`,
         {
@@ -216,7 +244,19 @@ function ConsultacyContract({ children }) {
           deliverables: delievery,
         }
       );
-
+      const {id} = res.data.consultancy_contract;
+      try {
+        if (Contractcopy) {
+          await uploadFile(Contractcopy, session.user.username, `/api/Imagesfeilds/fileupload`,`${id}_Contractcopy`,"consultancy_contract");
+        }
+        else{
+          alert("Please upload Contact Copy")
+        }
+  
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("error")
+    }
       setOpen(false);
       console.log(res);
       resetFormFields()
@@ -228,11 +268,8 @@ function ConsultacyContract({ children }) {
     }finally {
       setSubmitting(false);
     }
-  }
-    
-  else{
-    alert("Please fill all the feilds");
-  }
+
+ 
   }
   return (
     <>
@@ -253,11 +290,7 @@ setOpen(false)
           Enter Details About Consultacy Contract Executed through ORIC
         </h1>
         <div className="py-2 m-2 flex flex-col gap-y-8   ">
-          <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
-            <div></div>
-
-            <br />
-            <div>
+        <div>
               <InputField
                 label={"Title of Project"}
                 value={Title_of_Project}
@@ -268,6 +301,8 @@ setOpen(false)
                 <span className="text-red-500">{errors.Title_of_Project}</span>
               )}
             </div>
+
+          <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
             <div>
               <InputField
                 label={"Name of Pi"}
@@ -368,11 +403,16 @@ setOpen(false)
       <span className="text-red-500">{errors.Enddate}</span>
     )}
     </div>
+    <div>
             <InputField
               label={"ORIC percentage(if any)"}
               value={ORICpercent}
               setVal={setORICpercent}
             />
+             {errors.ORICpercent && (
+                <span className="text-red-500">{errors.ORICpercent}</span>
+              )}
+              </div>
               <div className="grid grid-cols-2 gap-x-3   text-black">
         <label className="text-base font-medium">
         Contract Copy <span className="text-red-500">*</span>
@@ -409,9 +449,12 @@ setOpen(false)
               handleOptionChange={handleconsultancy_services}
             />
           </div>
-
+<div className="grid grid-rows-2">
           <label For="textarea" className="text-base font-medium text-black">
             Enter Remarks{" "}
+            {errors.Remarks && (
+                <span className="text-red-500">{errors.Remarks}</span>
+              )}
           </label>
           <textarea
             className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
@@ -421,27 +464,28 @@ setOpen(false)
             value={Remarks}
             onChange={handleRemarkschange}
           />
-
-          <label For="textarea" className="text-base font-medium text-black">
-            Enter Key Project deliverables<span className="text-red-500">*</span>
-          </label>
-          {errors.delievery&& (
-      <span className="text-red-500">{errors.delievery}</span>
-    )}
-          <textarea
-            className="outline  outline-1 focus:outline-2 focus:outline-blue-900 outline-black  px-2 rounded-sm"
-            rows="3"
-            cols="50"
-            id="Textarea"
-            value={delievery}
-            onChange={handledelieverychange}
-          />
- 
-          <div className="flex items-center justify-center w-full">
+          </div>
+ <div className="grid grid-rows-2">
+      <label htmlFor="textarea" className="text-base font-medium text-black">
+        Enter Key Project Deliverables<span className="text-red-500">*</span>
+      </label>
+      {errors.delievery && (
+        <span className="text-red-500">{errors.delievery }</span>
+      )}
+      <textarea
+        className="outline outline-1 focus:outline-2 focus:outline-blue-900 outline-black px-2 rounded-sm"
+        rows="3"
+        cols="50"
+        id="textarea"
+        value={delievery}
+        onChange={handledelieverychange}
+      />
+    </div>
+          <div className="flex items-center justify-center ">
           <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="ml-auto bg-blue-900 text-white px-4 py-2 rounded-md mt-4 ">
+                    className=" bg-blue-900 w-full text-white px-4 py-2 rounded-md mt-4 ">
                     {submitting ? "Saving..." : "Save"}
                   </button>
           </div>

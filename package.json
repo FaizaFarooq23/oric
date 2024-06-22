@@ -32,7 +32,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-simple-modal-provider": "^1.9.0",
     "react-spinners": "^0.13.8",
-    "react-toastify": "^10.0.4",
+    "react-toastify": "^10.0.5",
     "recharts": "^2.10.3",
     "simple-react-modal": "^0.5.1"
   },

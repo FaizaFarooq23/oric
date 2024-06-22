@@ -12,7 +12,7 @@ const Consultancy_data = ({ isOpen, closeModal, data, admin }) => {
     { label: 'Contract Value', value: `${data.Contract_Value} PKR Million` },
     { label: 'Start Date', value: data.start_Date.split("T")[0] },
     { label: 'End Date', value: data.end_Date.split("T")[0] },
-    { label: 'Oric Percentage', value: data.ORIC_percentage },
+    { label: 'Oric Percentage', value: `${data.ORIC_percentage} %` },
   ];
 
   const formattedConsultancyDataStage2 = [
@@ -27,13 +27,13 @@ const Consultancy_data = ({ isOpen, closeModal, data, admin }) => {
   ];
   const formattedConsultancyDataStage4=[
   
-    { label: 'Remarks', value: data.Remarks },
+    { label: 'Remarks', value: data.Remarks?data.Remarks:"N/A" },
     { label: 'Key Deliverables', value: data.deliverables },
   ];
   const imageData = [
     {
       label: 'Contract Copy',
-      value: `/uploadFile/${data.username}/consultancy_contract/${data.Title}_Contractcopy.png`,
+      value: `/uploadFile/${data.username}/consultancy_contract/${data.id}_Contractcopy.png`,
     },
   ]
   return (

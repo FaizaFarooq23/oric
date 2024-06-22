@@ -19,18 +19,19 @@ const Product_Displayeddata = ({ isOpen, closeModal, data, admin }) => {
 
   const forumData = [
     { label: 'Name of Forum', value: data.Name_of_Forum },
-    { label: 'Details of Forum', value: data.Detail_of_Forum },
+    { label: 'Details of Forum', value: data.Detail_of_Forum?data.Detail_of_Forum:'N/A' },
+
   ];
 
   const additionalData = [
-    { label: 'Fields of Use', value: data.Feild_of_use },
-       { label: 'Financial Support', value: data.Financial_support },
+    { label: 'Fields of Use', value: data.Feild_of_use?data.Feild_of_use:"N/A" },
+       { label: 'Financial Support', value: data.Financial_support?data.Financial_support:"N/A" },
   ];
 
   const imageData = [
     {
       label: 'Breif Copy',
-      value: `/uploadFile/${data.username}/product_displayed/${data.Title}_BreifCopy.png`,
+      value: `/uploadFile/${data.username}/product_displayed/${data.id}_BreifCopy.png`,
     },
   ];
 

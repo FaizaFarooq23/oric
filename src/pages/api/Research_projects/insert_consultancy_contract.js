@@ -38,7 +38,11 @@ export default async function handler(req, res) {
     deliverables:deliverables
       },
     });
-    res.status(200).json(consultancy_contract);
+    res.status(200).json({ 
+      message: "IP disclosure created successfully", 
+consultancy_contract,
+      id:consultancy_contract.id // Explicitly include the id in the response
+    });
   } catch (error) {
     console.error(error);
     res

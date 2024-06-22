@@ -99,15 +99,15 @@ export default function Researchprojectfeilds({ data, onDelete }) {
       if (!DateofApproval) {
         formErrors.DateofApproval = "Date of Approval is required";
       }
-      if((data.type_of_research === "Solo Project")){
-        if( (data.category === "HEC") &&(!ORIC_overhead))
-          {
-           formErrors.ORIC_overhead = "ORIC Overhead is required";
-           }
-          else if(!numericPattern.test(ORIC_overhead)){
-             formErrors.ORIC_overhead="Feild must be in numeric"
-           }
-           
+  
+      if (data.type_of_research === "Solo Project") {
+        if (data.category === "HEC") {
+          if (!ORIC_overhead) {
+            formErrors.ORIC_overhead = "ORIC Overhead is required";
+          } else if (!numericPattern.test(ORIC_overhead)) {
+            formErrors.ORIC_overhead = "Field must be numeric";
+          }
+        }
       }
      
       if (!fundingApproved) {
@@ -217,7 +217,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
             AwardLetterCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${data.title}_AwardLetterCopy`,
+            `${data.id}_AwardLetterCopy`,
             "research_project"
           );
         } else {
@@ -269,7 +269,7 @@ else{
           CompletionLetterCopy,
           session.user.username,
           `/api/Imagesfeilds/fileupload`,
-          `${data.title}_Completionlettercopy`,
+          `${data.id}_CompletionLetterCopy`,
           "research_project"
         );
       } else {
@@ -311,22 +311,22 @@ else{
       data.Status_of_proposal === "Approved" ||
       data.Status_of_project === "Completed"
     ) {
-      filenames.push(`${data.title}_AwardLetterCopy.png`);
+      filenames.push(`${data.id}_AwardLetterCopy.png`);
     }
     if (data.Status_of_project === "Completed") {
-      filenames.push(`${data.title}_CompletionLetterCopy.png`);
+      filenames.push(`${data.id}_CompletionLetterCopy.png`);
     }
     if (data.typeofresearch === "Contract Research") {
-      filenames.push(`${data.title}_ContractAgreementCopy.png`);
+      filenames.push(`${data.id}_ContractAgreementCopy.png`);
     }
     if (data.reviwedbyIRB === "Yes") {
-      filenames.push(`${data.title}_meetingminutes.png`);
+      filenames.push(`${data.id}_meetingminutes.png`);
     }
     if (
       data.Status_of_proposal === "Submitted" ||
       data.Status_of_proposal === "Approved"
     ) {
-      filenames.push(`${data.title}_SubmissionEmailcopy.png`);
+      filenames.push(`${data.id}_SubmissionEmailcopy.png`);
     }
     return filenames;
   };

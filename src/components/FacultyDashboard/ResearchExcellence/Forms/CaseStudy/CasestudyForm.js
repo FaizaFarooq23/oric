@@ -15,6 +15,9 @@ function CasestudyForm({ children }) {
   const [BackingResearchStatus, setBackingResearchStatus] = useState("");
   const [CoalitionPartners, setCoalitionPartners] = useState("");
   const [Breif, setBreif] = useState("");
+  const [Nameofpi, setNameofPi] = useState("");
+  const [DesignationofPi, setDesignationofPi] = useState("");
+  const [DepartmentofPi, setDepartmentofPi] = useState("");
   const [issueverification, setissueverification] = useState("");
   const [Casestudycopy, setCasestudycopy] = useState("");
   const { data: session } = useSession();
@@ -48,6 +51,11 @@ function CasestudyForm({ children }) {
 
   // Call resetAdvocacyFormFields whenever you need to reset the advocacy form fields
 
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -55,17 +63,59 @@ function CasestudyForm({ children }) {
     if (AreaAdvocated.trim() === "") {
       newErrors.AreaAdvocated = "Area Advocated is required";
       valid = false;
-    } else {
+    } else if(!textAndSymbolPattern.test(AreaAdvocated)){
+      newErrors.AreaAdvocated = "Inavlid Format";
+      valid = false;
+    }else {
       newErrors.AreaAdvocated = "";
     }
+    if (Nameofpi.trim() === "") {
+      newErrors.Nameofpi = "Name of Pi is required";
+      valid = false;
+    }else if (!textAndSymbolPattern.test(Nameofpi)) {
+      newErrors.Nameofpi = "Name of Pi must not contain numeric values";
+      valid = false;
+    }  else {
+      newErrors.Nameofpi = "";
+    }
+    if (DepartmentofPi.trim() === "") {
+      newErrors.DepartmentofPi = "Department of Pi is required";
+      valid = false;
+    } 
+    else if (!textAndSymbolPattern.test(DepartmentofPi)) {
+      newErrors.DepartmentofPi = "Department of Pi must not contain numeric values";
+      valid = false;
+    } else {
+      newErrors.DepartmentofPi = "";
+    }
 
+    if (DesignationofPi.trim() === "") {
+      newErrors.DesignationofPi = "Designation of Pi is required";
+      valid = false;
+    } 
+    else if (!textAndSymbolPattern.test(DesignationofPi)) {
+      newErrors.DesignationofPi = "DesignationofPi must not contain numeric values";
+      valid = false;
+    } 
+    else {
+      newErrors.DesignationofPi = "";
+    }
     if (NameGovernmentBody.trim() === "") {
       newErrors.NameGovernmentBody = "Name of Government Body is required";
       valid = false;
-    } else {
+    }
+    else if(numericPattern.test(NameGovernmentBody)){
+      newErrors.NameGovernmentBody = "Inavlid Format";
+      valid = false;
+    }
+     else {
       newErrors.NameGovernmentBody = "";
     }
 
+     if(numericPattern.test(CoalitionPartners)){
+      newErrors.CoalitionPartners = "Inavlid Format";
+      valid = false;
+    }
     if (DateofPresentation.trim() === "") {
       newErrors.DateofPresentation = "Date of Presentation is required";
       valid = false;
@@ -76,19 +126,30 @@ function CasestudyForm({ children }) {
     if (issueverification.trim() === "") {
       newErrors.issueverification = "Issue Verification is required";
       valid = false;
-    } else {
+    } else if (!textAndSymbolPattern.test(issueverification)) {
+      newErrors.issueverification = "Invalid Format(Shouldn't contain numerics)";
+      valid = false;
+    }
+    else {
       newErrors.issueverification = "";
     }
 
     if (AdvocacyTools.trim() === "") {
       newErrors.AdvocacyTools = "Advocacy Tools is required";
       valid = false;
-    } else {
+    } else if (numericPattern.test(AdvocacyTools)) {
+      newErrors.AdvocacyTools = "Invalid Format(Shouldn't contain only numerics)";
+      valid = false;
+    }
+    else {
       newErrors.AdvocacyTools = "";
     }
 
     if (BackingResearchStatus.trim() === "") {
       newErrors.BackingResearchStatus = "Backing Research Status is required";
+      valid = false;
+    } else if (numericPattern.test(BackingResearchStatus)) {
+      newErrors.BackingResearchStatus = "Invalid Format(Shouldn't contain only numerics)";
       valid = false;
     } else {
       newErrors.BackingResearchStatus = "";
@@ -107,7 +168,10 @@ function CasestudyForm({ children }) {
     if (Breif.trim() === "") {
       newErrors.Breif = "Brief is required";
       valid = false;
-    } else {
+    }  else if (numericPattern.test(Breif)) {
+      newErrors.Breif = "Invalid Format(Shouldn't contain only numerics)";
+      valid = false;
+    }else {
       newErrors.Breif = "";
     }
 
@@ -146,6 +210,9 @@ function CasestudyForm({ children }) {
         Coalation_Partner: CoalitionPartners,
         Breif_Details: Breif,
         Issue_verification: issueverification,
+        Name_of_pi:Nameofpi,                
+        Designation_of_Pi  :DesignationofPi,       
+        Department_of_Pi  :DepartmentofPi,
       });
   
       if (res.data && res.data.policy_casestudy) {
@@ -217,6 +284,48 @@ function CasestudyForm({ children }) {
                   </span>
                 )}
               </div>
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
+                    <div>
+                      <InputField
+                        label={"Name of Pi"}
+                        value={Nameofpi}
+                        setVal={setNameofPi}
+                        required
+                      />
+                      {errors.Nameofpi && (
+                        <span className="text-red-500">
+                          {errors.Nameofpi}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <InputField
+                        label={"Department of Pi"}
+                        value={DepartmentofPi}
+                        setVal={setDepartmentofPi}
+                        required
+                      />
+                      {errors.DepartmentofPi && (
+                        <span className="text-red-500">
+                          {errors.DepartmentofPi}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                    <InputField
+                      label={"Designation of Pi"}
+                      value={DesignationofPi}
+                      setVal={setDesignationofPi}
+                      required
+                    />
+                    {errors.DesignationofPi && (
+                      <span className="text-red-500">
+                        {errors.DesignationofPi}
+                      </span>
+                    )}
+                     </div>
+                  
+                  </div>
             <div className="grid grid-cols-2 gap-y-8 gap-x-16 ">
               
               <div>
@@ -246,12 +355,19 @@ function CasestudyForm({ children }) {
                   </span>
                 )}
               </div>
-
-              <InputField
+<div>
+<InputField
                 label={"Coalition Partners"}
                 value={CoalitionPartners}
                 setVal={setCoalitionPartners}
               />
+               {errors.CoalitionPartners && (
+                  <span className="text-red-500">
+                    {errors.CoalitionPartners}
+                  </span>
+                )}
+</div>
+            
               <div>
                 <InputField
                   label={"Issue Verification"}
