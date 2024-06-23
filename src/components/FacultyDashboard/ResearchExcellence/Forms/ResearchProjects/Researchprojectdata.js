@@ -104,7 +104,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     if (data.Status_of_proposal === "Approved") {
       imageData.push({
         label: 'Award Letter Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.id}_AwardLetterCopy.png`
+        value: `/uploadFile/${data.username}/research_project/${data.project_id}_AwardLetterCopy.png`
       });
     
   } 
@@ -112,7 +112,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
     
     imageData.push({
       label: 'Completion Letter Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.id}_CompletionLetterCopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.project_id}_CompletionLetterCopy.png`
     });
     
   } 
@@ -122,21 +122,21 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
   if (data.reviwedbyIRB === "Yes") {
       imageData.push({
         label: 'Meeting Minutes Copy',
-        value: `/uploadFile/${data.username}/research_project/${data.id}_meetingminutes.png`
+        value: `/uploadFile/${data.username}/research_project/${data.project_id}_meetingminutes.png`
       });
     
   }
   if(data.Status_of_proposal === "Approved"||data.Status_of_proposal === "Submitted"){
     imageData.push({
       label: 'Submission Email Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.id}_SubmissionEmailcopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.project_id}_SubmissionEmailcopy.png`
     });
   }
   }
   if (data.type_of_research === "Contract Research") {
     imageData.push({
       label: 'Contract Agreement Copy',
-      value: `/uploadFile/${data.username}/research_project/${data.id}_ContractAgreementCopy.png`
+      value: `/uploadFile/${data.username}/research_project/${data.project_id}_ContractAgreementCopy.png`
     });
     
     
@@ -169,7 +169,7 @@ const Researchprojectdata = ({ isOpen, closeModal, data, admin }) => {
       <DataDisplayModal title="Remarks" data={remarks}  />
       {deliverables.length > 0 && <DataDisplayModal title="Key Project Deliverables" data={deliverables}  />}
       {imageData.length > 0 && (
-          <ImageDisplay title="Document Copies" data={imageData} />
+          <ImageDisplay title="Document Copies" gridClassName="grid-cols-2" data={imageData} />
         )}
     </Modal>
 

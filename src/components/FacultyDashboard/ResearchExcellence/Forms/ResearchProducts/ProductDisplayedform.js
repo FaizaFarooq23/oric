@@ -218,7 +218,7 @@ function Product_DisplayedForm({children}) {
     setSubmitting(true);
     try {
       // Validate required fields
-      if (!validateFormStage4 ) {
+      if (!validateFormStage4 ()) {
         alert("Please fill all the required fields");
         setSubmitting(true)
         return;

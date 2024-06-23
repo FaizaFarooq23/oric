@@ -5,6 +5,8 @@ import FormInput from "../../Common/FormInput";
 import { useRouter } from "next/router";
 import PhoneInputComponent from "../../Common/PhoneNumberInput";
 import CnicInput from "../../Common/CNICInput";
+import { toast, ToastContainer } from "react-toastify";
+import SuccessModal from "../ResearchExcellence/components/UI/SuccessMessage";
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,13 +20,16 @@ export default function Register() {
   const [designation, setDesignation] = useState("");
   const [cnic, setCnic] = useState("");
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setshowSuccessSuccessModal] = useState(false); // State to control SuccessModal visibility // State to control SuccessModal visibility
+
 
   const router = useRouter();
   const [cnicError, setCnicError] = useState("");
+
   const validateForm = async () => {
     const newErrors = {};
     let isValid = true;
-  
+
     const requiredFields = [
       { field: "name", value: name, error: "Name is required" },
       { field: "email", value: email, error: "Email is required" },
@@ -62,51 +67,58 @@ export default function Register() {
       },
       { field: "cnic", value: cnic, error: "CNIC is required" },
     ];
-  
+
     requiredFields.forEach(({ field, value, error }) => {
       if (value.trim() === "") {
         newErrors[field] = error;
         isValid = false;
       }
     });
-  
+
+    // Check for numeric-only values
+    const nonNumericFields = [
+      { field: "name", value: name, error: "Name should not contain only numeric characters" },
+      { field: "username", value: username, error: "Username should not contain only numeric characters" },
+      { field: "department", value: department, error: "Department should not contain only numeric characters" },
+      { field: "designation", value: designation, error: "Designation should not contain only numeric characters" },
+      { field: "qualification", value: qualification, error: "Qualification should not contain only numeric characters" },
+    ];
+
+    nonNumericFields.forEach(({ field, value, error }) => {
+      if (/^\d+$/.test(value)) {
+        newErrors[field] = error;
+        isValid = false;
+       
+      }
+    });
+
+    // Validate email format
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+      
+    }
+
+    // Validate password strength
+    if (password && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+      newErrors.password = "Enter Strong Password";
+      isValid = false;
+      toast.error("Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character");
+    }
+
+    // Validate CNIC format
     if (cnic && !/^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(cnic)) {
       newErrors.cnic = "Invalid CNIC format.";
       isValid = false;
+    
     }
-  
-    if (password && confirmPassword && password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-      isValid = false;
-    }
-  
+
     if (!isValid) {
       setErrors(newErrors);
       return false;
     }
-    // try {
-    //   const response = await axios.post("/api/faculty/fieldscheck", {
-    //     name,
-    //     username,
-    //     email,
-    //     cnic,
-    //     phoneNumber,
-    //   });
-    //   const existingFields = response.data;
-
-    //   Object.entries(existingFields).forEach(([field, exists]) => {
-    //     if (exists) {
-    //       newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
-    //       isValid = false;
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error("Error checking existing fields:", error);
-    //   isValid = false;
-    // }
-      return isValid;
+    return isValid;
   };
-  
 
  
 
@@ -136,24 +148,32 @@ export default function Register() {
         if (response.ok) {
           // Registration successful
           console.log("Registration successful");
-          alert("Registration successful");
-          router.push("/");
+          alert("Registration Successful")
+          setshowSuccessSuccessModal(true)
+          
+         
         } else {
           // Handle registration error
           const data = await response.json();
           console.error("Registration failed:", data.error || "Unknown error");
-          alert(`Registration failed: ${data.error || "Unknown error"}`);
+          toast.error(`Registration failed: ${data.error || "Unknown error"}`);
         }
       } catch (error) {
         console.error("Error during registration:", error);
-        alert("Error during registration");
+        toast.error("Error during registration");
       }
     }
   };
+  const handleModalClose = () => {
+    setshowSuccessSuccessModal(false)
+    router.push("/");
+  };
 
   return (
+    <>
     <div className="w-screen h-screen flex flex-col justify-between ">
       <div className=" flex flex-col items-center">
+      <ToastContainer />
         <div className="flex justify-between items-center px-10 ">
           <div className="flex justify-center ">
             <img src="images/white-logo.png" alt="logo" className="h-24" />
@@ -174,7 +194,7 @@ export default function Register() {
                 />
 
                 {errors.name && (
-                  <span className="text-red-500">{errors.name}</span>
+                  <span className="text-red-500  w-50">{errors.name}</span>
                 )}
               </div>
               <div>
@@ -185,11 +205,11 @@ export default function Register() {
                   setVal={setUsername}
                 />
                 {errors.username && (
-                  <span className="text-red-500">{errors.username}</span>
+                  <span className="text-red-500  ">{errors.username}</span>
                 )}
               </div>
             </div>
-            <div className=" flex gap-x-4 gap-y-5">
+            <div className=" flex gap-x-4 gap-y-5 ">
               <div>
                 <FormInput
                   label={"Password"}
@@ -198,10 +218,10 @@ export default function Register() {
                   setVal={setPassword}
                 />
                 {errors.password && (
-                  <span className="text-red-500">{errors.password}</span>
+                  <span className="text-red-500  ">{errors.password}</span>
                 )}
               </div>
-              <div>
+              <div className="" >
                 <FormInput
                   label={"Confirm Password"}
                   value={confirmPassword}
@@ -209,7 +229,7 @@ export default function Register() {
                   setVal={setConfirmPassword}
                 />
                 {errors.confirmPassword && (
-                  <span className="text-red-500">{errors.confirmPassword}</span>
+                  <span className="text-red-500  ">{errors.confirmPassword}</span>
                 )}
               </div>
             </div>
@@ -222,7 +242,7 @@ export default function Register() {
                   setVal={setEmail}
                 />
                 {errors.email && (
-                  <span className="text-red-500">{errors.email}</span>
+                  <span className="text-red-500  ">{errors.email}</span>
                 )}
               </div>
               <div>
@@ -233,7 +253,7 @@ export default function Register() {
                   setVal={setDateOfBirth}
                 />
                 {errors.dateOfBirth && (
-                  <span className="text-red-500">{errors.dateOfBirth}</span>
+                  <span className="text-red-500  ">{errors.dateOfBirth}</span>
                 )}
               </div>
             </div>
@@ -246,7 +266,7 @@ export default function Register() {
                   error={cnicError}
                 />
                 {errors.cnic && (
-                  <span className="text-red-500">{errors.cnic}</span>
+                  <span className="text-red-500  ">{errors.cnic}</span>
                 )}
               </div>
               <div>
@@ -257,7 +277,7 @@ export default function Register() {
                   country={"pk"} // Specify the default country
                 />
                 {errors.phoneNumber && (
-                  <span className="text-red-500">{errors.phoneNumber}</span>
+                  <span className="text-red-500  ">{errors.phoneNumber}</span>
                 )}
               </div>
             </div>
@@ -270,7 +290,7 @@ export default function Register() {
                   setVal={setDepartment}
                 />
                 {errors.department && (
-                  <span className="text-red-500">{errors.department}</span>
+                  <span className="text-red-500  ">{errors.department}</span>
                 )}
               </div>
               <div>
@@ -281,7 +301,7 @@ export default function Register() {
                   setVal={setQualification}
                 />
                 {errors.qualification && (
-                  <span className="text-red-500">{errors.qualification}</span>
+                  <span className="text-red-500  ">{errors.qualification}</span>
                 )}
               </div>
               <div>
@@ -292,7 +312,7 @@ export default function Register() {
                   setVal={setDesignation}
                 />
                 {errors.designation && (
-                  <span className="text-red-500">{errors.designation}</span>
+                  <span className="text-red-500  ">{errors.designation}</span>
                 )}
               </div>
             </div>
@@ -314,9 +334,18 @@ export default function Register() {
                 className="h-96 pt-16 "
               />
             </div>
+         
           </div>
         </div>
       </div>
     </div>
+     {
+      showSuccessModal &&
+      (
+    
+        <SuccessModal isOpen={showSuccessModal} p={`Your are registered Sucessfully `} onClose={handleModalClose}/>
+      )
+    }
+    </>
   );
 }

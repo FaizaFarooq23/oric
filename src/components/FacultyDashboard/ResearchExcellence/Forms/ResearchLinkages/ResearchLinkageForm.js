@@ -276,7 +276,7 @@ function ResearchLinkageForm({ children }) {
         setshowSuccessSuccessModal(true)
       } 
 else{
-
+setSubmitting(false)
   alert("Fill All The feilds")
 }
      

@@ -21,7 +21,7 @@ export default function EventFields({ data,onDelete }) {
   return (
     <div  className={`flex flex-col bg-white h-68rounded-md    my-4 `}>
             <div className="flex justify-end items-center  mt-2">
-        <button onClick={() => onDelete(data.id,`${data.Title_of_Event}_Eventreport_bonchures.png`)}>
+        <button onClick={() => onDelete(data.id,`${data.id}_Eventreport_bonchures.png`)}>
           <RiDeleteBin6Line className="text-red-600 text-xl cursor-pointer" />
         </button>
       </div>

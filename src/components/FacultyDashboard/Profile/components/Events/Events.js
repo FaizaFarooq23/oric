@@ -59,7 +59,11 @@ export default function CivilEventsModal({ children }) {
       return false;
     }
   };
-  
+  const textAndSymbolPattern = /^[A-Za-z\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]+$/;
+  const textPattern = /^[a-zA-Z\s]+$/;
+  const numericPattern = /^[0-9]+$/;
+  const signPattern = /^[\s:;\-_.!?'"@#$%&*(){}\[\]\\/|+=<>~`^]+$/;
+  const percentagePattern = /^(100(\.0{1,2})?|[0-9]?[0-9](\.[0-9]{1,2})?)$/;
 
   const validateFormStage1 = async () => {
     let valid = true;
@@ -68,7 +72,12 @@ export default function CivilEventsModal({ children }) {
     if (Title_of_Event.trim() === "") {
       newErrors.Title_of_Event = "Title of Event is required";
       valid = false;
-    } else {
+    } 
+    else if(numericPattern.test(Title_of_Event)){
+      newErrors.Title_of_Event = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }
+    else {
       // Check if an award with the same title already exists for the user
       const isExistingEvents = await checkExistingEvent();
   
@@ -83,7 +92,10 @@ export default function CivilEventsModal({ children }) {
     if (Role.trim() === "") {
       newErrors.Role = "Role is required";
       valid = false;
-    } else {
+    }  else if(!textAndSymbolPattern.test(Role)){
+      newErrors.Role = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }else {
       newErrors.Role = "";
     }
     if (Date_of_event.trim() === "") {
@@ -95,13 +107,19 @@ export default function CivilEventsModal({ children }) {
     if (Venue_of_event.trim() === "") {
       newErrors.Venue_of_event = "Venue of Event is required";
       valid = false;
-    } else {
+    }  else if(numericPattern.test(Venue_of_event)){
+      newErrors.Venue_of_event = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }else {
       newErrors.Venue_of_event = "";
     }
     if (Community_Addressed.trim() === "") {
       newErrors.Community_Addressed = "Community Addressed is required";
       valid = false;
-    } else {
+    }  else if(!textAndSymbolPattern.test(Community_Addressed)){
+      newErrors.Community_Addressed = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }else {
       newErrors.Community_Addressed = "";
     }
     if (Sponcerned === "Yes") {
@@ -134,18 +152,27 @@ export default function CivilEventsModal({ children }) {
       newErrors.Collaborated_developed =
         "Collaborated Developed field is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(Collaborated_developed)){
+      newErrors.Collaborated_developed = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }else {
       newErrors.Collaborated_developed = "";
     }
     if (outcome.trim() === "") {
       newErrors.outcome = "Outcome field is required";
       valid = false;
-    } else {
+    } else if(numericPattern.test(outcome)){
+      newErrors.outcome = "Invalid Format(Shouldn't contain NUmerics)";
+      valid = false;
+    }else {
       newErrors.outcome = "";
     }
     if (Organization_involved.trim() === "") {
       newErrors.Organization_involved =
         "Name of Organization/Soceity Involved is required";
+      valid = false;
+    }else if(!textAndSymbolPattern.test(Organization_involved)){
+      newErrors.Organization_involved = "Invalid Format(Shouldn't contain NUmerics)";
       valid = false;
     } else {
       newErrors.Organization_involved = "";
@@ -239,26 +266,7 @@ export default function CivilEventsModal({ children }) {
       return;
     }
   
-    try {
-      if (Event_detail) {
-        await uploadFile(
-          Event_detail,
-          session.user.username,
-          `/api/Imagesfeilds/fileupload`,
-          `${Title_of_Event}_Eventreport_bonchures`,
-          "civil_engagement_events"
-        );
-      } else {
-        alert("Please upload Event Report Copy");
-        setSubmitting(false);
-        return;
-      }
-    } catch (error) {
-      console.error("Error saving image:", error);
-      alert("Error uploading file");
-      setSubmitting(false);
-      return;
-    }
+    
   
     try {
       const res = await axios.post(`/api/faculty/Events/insert`, {
@@ -279,6 +287,33 @@ export default function CivilEventsModal({ children }) {
       });
   
       console.log(res);
+      const {id}=res.data;
+      if(id){
+        try {
+          if (Event_detail) {
+            await uploadFile(
+              Event_detail,
+              session.user.username,
+              `/api/Imagesfeilds/fileupload`,
+              `${id}_Eventreport_bonchures`,
+              "civil_engagement_events"
+            );
+          } else {
+            alert("Please upload Event Report Copy");
+            setSubmitting(false);
+            return;
+          }
+        } catch (error) {
+          console.error("Error saving image:", error);
+          alert("Error uploading file");
+          setSubmitting(false);
+          return;
+        }
+      }
+      else{
+        alert("Error saving data");
+        setSubmitting(false);
+      }
       setOpen(false);
       resetForm();
       setshowSuccessSuccessModal(true);

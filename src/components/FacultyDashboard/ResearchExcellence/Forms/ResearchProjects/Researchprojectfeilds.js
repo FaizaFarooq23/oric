@@ -217,7 +217,7 @@ export default function Researchprojectfeilds({ data, onDelete }) {
             AwardLetterCopy,
             session.user.username,
             `/api/Imagesfeilds/fileupload`,
-            `${data.id}_AwardLetterCopy`,
+            `${data.project_id}_AwardLetterCopy`,
             "research_project"
           );
         } else {
@@ -269,7 +269,7 @@ else{
           CompletionLetterCopy,
           session.user.username,
           `/api/Imagesfeilds/fileupload`,
-          `${data.id}_CompletionLetterCopy`,
+          `${data.project_id}_CompletionLetterCopy`,
           "research_project"
         );
       } else {
@@ -311,22 +311,22 @@ else{
       data.Status_of_proposal === "Approved" ||
       data.Status_of_project === "Completed"
     ) {
-      filenames.push(`${data.id}_AwardLetterCopy.png`);
+      filenames.push(`${data.project_id}_AwardLetterCopy.png`);
     }
     if (data.Status_of_project === "Completed") {
-      filenames.push(`${data.id}_CompletionLetterCopy.png`);
+      filenames.push(`${data.project_id}_CompletionLetterCopy.png`);
     }
     if (data.typeofresearch === "Contract Research") {
-      filenames.push(`${data.id}_ContractAgreementCopy.png`);
+      filenames.push(`${data.project_id}_ContractAgreementCopy.png`);
     }
     if (data.reviwedbyIRB === "Yes") {
-      filenames.push(`${data.id}_meetingminutes.png`);
+      filenames.push(`${data.project_id}_meetingminutes.png`);
     }
     if (
       data.Status_of_proposal === "Submitted" ||
       data.Status_of_proposal === "Approved"
     ) {
-      filenames.push(`${data.id}_SubmissionEmailcopy.png`);
+      filenames.push(`${data.project_id}_SubmissionEmailcopy.png`);
     }
     return filenames;
   };

@@ -26,13 +26,13 @@ const Eventsdata = ({ isOpen, closeModal, data }) => {
     { label: 'Collaborated/Developed', value: data.Collaboration_Developed },
     { label: 'Organization Involved', value: data.Name_of_Collaborating_org },
     { label: 'Remarks', value: data.Remarks || 'N/A' },
-    { label: 'Outcome Material', value: data.Outcome_Material },
+    { label: 'Outcome Material', isLink:true ,value: data.Outcome_Material },
   ];
 
   const imageData = [
     {
       label: 'Event Report /Bonchure Copy',
-      value: `/uploadFile/${data.username}/civil_engagement_events/${data.Title_of_Event}_Eventreport_bonchures.png`,
+      value: `/uploadFile/${data.username}/civil_engagement_events/${data.id}_Eventreport_bonchures.png`,
     },
     // Add more image data as needed
   ];

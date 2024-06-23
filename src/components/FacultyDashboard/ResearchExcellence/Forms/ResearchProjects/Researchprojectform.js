@@ -847,9 +847,11 @@ if(Status_of_project === "Completed"){
       );
 
       console.log(res);
-const {id}=res.data;
-if(id){
-  await UploadFile();
+      const {project_id}=res.data;
+alert(project_id);
+if(project_id){
+  
+  await UploadFile(project_id);
 }
 else{
   console.log("Error in saving data");

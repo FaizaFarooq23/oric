@@ -363,7 +363,7 @@ function IPandPatentForm({ children }) {
     setSubmitting(true);
     try {
       // Validate required fields
-      if (!validateFormStage5) {
+      if (!validateFormStage5()) {
         alert("Please fill all the required fields");
         setSubmitting(false)
         return;
