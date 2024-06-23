@@ -6,7 +6,7 @@ import DataDisplayModal from '@/components/FacultyDashboard/Profile/components/C
 
 const Product_Displayeddata = ({ isOpen, closeModal, data, admin }) => {
   const generalData = [
-    { label: 'Title', value: data.Title },
+   
     { label: 'Category', value: data.Category },
     { label: 'Nationality', value: data.Nationality },
     { label: 'Status', value: data.Status },

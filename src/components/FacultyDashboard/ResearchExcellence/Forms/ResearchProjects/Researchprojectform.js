@@ -208,7 +208,7 @@ function Researchprojectform({ children }) {
     } else if (isExistingProject) {
       newErrors.TitleofResearch = "A Project with this title already exists for you";
       valid = false;
-    } else if (!textAndSymbolPattern.test(TitleofResearch)) {
+    } else if (/^\d+$/.test(TitleofResearch)) {
       newErrors.TitleofResearch = "Title of Research Proposal can only contain letters and symbols";
       valid = false;
     } else {
@@ -653,7 +653,7 @@ if(Status_of_project === "Completed"){
     newErrors.delivery =
       "Key Project Deliverables should contain no more than 1500 words";
     valid = false;
-  }if (!textAndSymbolPattern.test(delivery) ) {
+  }if (numericPattern.test(delivery) ) {
     newErrors.delivery = "Key Project delievery must not contain numeric values";
     valid = false;
   } else {
@@ -662,20 +662,8 @@ if(Status_of_project === "Completed"){
 }
 }
     
-    // Check if word count exceeds 1500
-    const RemarksWords = Remarks.trim().split(/\s+/);
-    // Count the number of words
-    const RemarkswordCount = RemarksWords.length;
-    if (RemarkswordCount > 1500) {
-      newErrors.Remarks = "Remarks should contain no more than 1500 words";
-      valid = false;
-    }if (!textAndSymbolPattern.test(Remarks) ) {
-      newErrors.Ramarks = "Remarks must not contain numeric values";
-      valid = false;
-    }
-     else {
-      newErrors.delivery = "";
-    }
+   
+  
 
     setErrors(newErrors);
     return valid;
@@ -848,7 +836,7 @@ if(Status_of_project === "Completed"){
 
       console.log(res);
       const {project_id}=res.data;
-alert(project_id);
+
 if(project_id){
   
   await UploadFile(project_id);
@@ -1698,11 +1686,8 @@ else{
                     id="Textarea"
                     value={Remarks}
                     onChange={handleRemarkschange}
-                    required
                   />
-                  {errors.Remarks && (
-                    <span className="text-red-500">{errors.Remarks}</span>
-                  )}
+                
                 </>
                 {Status_of_project === "Completed" && (
                   <>

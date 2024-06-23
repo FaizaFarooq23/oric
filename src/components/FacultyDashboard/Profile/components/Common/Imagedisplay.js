@@ -43,7 +43,7 @@ const ImageDisplay = ({ title, data, gridClassName = '', divClassName = '' }) =>
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          className="flex items-center justify-center h-screen w-screen bg-black bg-opacity-75"
+          className="flex items-center justify-center  w-full h-full bg-black bg-opacity-75"
         >
           <div className="relative bg-white p-4 rounded shadow-lg max-w-3xl max-h-[80vh] overflow-auto">
             <FaTimes

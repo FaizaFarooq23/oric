@@ -28,7 +28,7 @@ const IPdata = ({ isOpen, closeModal, data, admin }) => {
 
   const patentAuthorityData = [
     { label: 'Name of Patent Authority', value: data.Name_of_patentdept },
-    { label: 'Details of Patent Authority', value: data.Detail_of_patentdept },
+    { label: 'Details of Patent Authority', value: data.Detail_of_patentdept?data.Detail_of_patentdept:"N/A" },
   ];
 
   const additionalData = [
@@ -42,11 +42,16 @@ const IPdata = ({ isOpen, closeModal, data, admin }) => {
       label: 'Filing Copy',
       value: `/uploadFile/${data.username}/ipandpatent/${data.id}_filingcopy.png`,
     },
+    (data.Status_of_patent === "Granted") ? 
     {
       label: 'Granting Copy',
       value: `/uploadFile/${data.username}/ipandpatent/${data.id}_GrantingCopy.png`,
-    },
-  ] : [];
+    }
+    :{
+      
+    }
+] : [];
+
 
   const DisclosureimageData = data.Type === "IP disclosures" ? [
     {
