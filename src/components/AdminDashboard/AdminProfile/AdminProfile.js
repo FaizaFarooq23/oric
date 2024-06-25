@@ -28,6 +28,7 @@ console.log(user.email);
 
     const formData = new FormData();
     formData.append("profile_picture", profilePicture);
+    formData.append('profile_picture_name', user.email);
 
     try {
       const response = await fetch("/api/images_upload/profile", {
@@ -166,7 +167,7 @@ console.log(user.email);
               <div className="relative drop-shadow-2 rounded-full">
                 <img
                   src={profilePhoto}
-                  className="rounded-full items-center "
+                  className="rounded-full items-center w-28 h-28"
                   alt="profile"
                   onError={(e) => {
                     e.target.onerror = null;

@@ -27,6 +27,7 @@ export default function Index() {
   // Function to handle the file upload
   async function uploadProfilePicture(profilePicture) {
     console.log('Uploading profile picture:', profilePicture);
+    console.log('Email of the user is', user.email)
     // Create a FormData object to send the file and name
     const formData = new FormData();
     formData.append('profile_picture', profilePicture);

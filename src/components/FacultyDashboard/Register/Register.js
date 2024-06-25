@@ -100,7 +100,7 @@ export default function Register() {
     }
 
     // Validate password strength
-    if (password && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d$!%*?&]{8,}$/.test(password)) {
+    if (password && !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(password)) {
       newErrors.password = "Enter Strong Password";
       isValid = false;
       toast.error("Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character");

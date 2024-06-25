@@ -70,7 +70,7 @@ const DropdownUser = () => {
             {userEmail ==="admin@email.com"?
               <img
                 src={`/uploads/${userEmail}.png`}
-                className="rounded-full"
+                className="rounded-full h-12 w-12"
                 alt="User"
                 onError={(e) => {
                   e.target.onerror = null;
