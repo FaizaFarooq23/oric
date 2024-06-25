@@ -174,7 +174,7 @@ function ConsultacyContract({ children }) {
     }else {
       newErrors.delievery = "";
     }
-  if(ORICpercent.trim!=="" &&!percentagePattern.test(ORICpercent)){
+  if(ORICpercent.trim()!==" " &&!percentagePattern.test(ORICpercent)){
       newErrors.ORICpercent = "Invalid Data Format";
       valid = false;
     }

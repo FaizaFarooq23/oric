@@ -46,6 +46,9 @@ function CasestudyForm({ children }) {
     setBreif("");
     setissueverification("");
     setCasestudycopy(null);
+    setNameofPi("");
+    setDepartmentofPi("");
+    setDesignationofPi("");
     setErrors({});
   };
 

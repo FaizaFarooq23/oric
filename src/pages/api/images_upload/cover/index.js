@@ -1,4 +1,3 @@
-// Import the required libraries and modules
 import { IncomingForm } from "formidable";
 import mv from "mv";
 
@@ -17,6 +16,7 @@ export default async function handler(req, res) {
     const form = new IncomingForm();
     // Set the upload directory
     form.uploadDir = "./public/uploads";
+    form.keepExtensions = true; // Keep the file extensions
 
     // Parse the incoming form data
     form.parse(req, async (err, fields, files) => {
@@ -26,8 +26,8 @@ export default async function handler(req, res) {
       }
 
       try {
-        // If a profile picture was uploaded, move it to the specified directory
-        if (files.profile_picture) {
+        // Ensure the file exists and is an array
+        if (files.profile_picture && Array.isArray(files.profile_picture) && files.profile_picture.length > 0) {
           const oldPath = files.profile_picture[0].filepath;
           const filename = fields.profile_picture_name;
           const newPath = `./public/uploads/cover_${filename}.png`;

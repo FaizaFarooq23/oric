@@ -25,7 +25,7 @@ export default function Linkfield({data ,onDelete}) {
         <div className=" flex items-start justify-start"> <span className="text-gray-500  font-medium">Name of Research Grant</span>
         </div>
         <div className="flex justify-start ">
-          <span className="text-black ">`${data.Name_of_Research_Grant
+          <span className="text-black ">{data.Name_of_Research_Grant
               .split(" ")
               .slice(0, 2)
               .join(" ")}...`</span>

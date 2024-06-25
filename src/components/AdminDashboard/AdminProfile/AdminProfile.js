@@ -8,8 +8,8 @@ import axios from "axios";
 
 export default function AdminProfile() {
   const { user } = useContext(UserContext);
-
   const [profilePhoto, setProfilePhoto] = useState(`/uploads/${user.email}.png`);
+console.log(user.email);
   const [coverPhoto, setCoverPhoto] = useState(`/uploads/cover_${user.email}.png`);
 
   const initialProfile = {
